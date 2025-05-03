@@ -1,0 +1,6 @@
+@TechChallengeFastFood.API_HostAddress = http://localhost:5123
+
+GET {{TechChallengeFastFood.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
