@@ -1,0 +1,45 @@
+﻿services:
+  techchallengefastfoodapi:
+    image: techchallengefastfoodapi
+    ports:
+      - '8080:8080'
+      - '8081:8081'
+#TODO: Implementar Compose do banco Depends
+#    depends_on:
+#      - sqldatabase
+    restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          memory: 300MB
+          cpus: 0.4
+    healthcheck:
+      test: curl --fail http://localhost:8080/healthz || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    build:
+      context: .
+      dockerfile: src/Adapters/Driving/TechChallengeFastFood.API/Dockerfile
+
+#TODO: Implementar Compose do banco (Exemplo de SQL Server)
+
+#  sqldatabase:
+#    image: mcr.microsoft.com/mssql/server:2022-latest
+#    container_name: sqldatabase
+#    ports:
+#      - "1433:1433"
+#    environment:
+#      ACCEPT_EULA: 'Y'
+#      MSSQL_SA_PASSWORD: 'Mssql!Passw0rd'
+#    restart: unless-stopped
+#    volumes:
+#      - mssql_data:/var/opt/mssql
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 1GB
+#
+#volumes:
+#  mssql_data: { }
