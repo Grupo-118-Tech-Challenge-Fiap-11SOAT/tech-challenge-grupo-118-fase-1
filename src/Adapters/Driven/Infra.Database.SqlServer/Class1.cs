@@ -1,5 +1,16 @@
-﻿namespace Infra.Database.SqlServer;
+﻿using Microsoft.EntityFrameworkCore;
 
-public class Class1
+namespace Infra.Database.SqlServer;
+
+public class AppDbContext : DbContext
 {
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+    }
+    
 }

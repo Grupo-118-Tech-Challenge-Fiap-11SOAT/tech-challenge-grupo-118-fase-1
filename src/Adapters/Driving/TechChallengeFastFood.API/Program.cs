@@ -1,16 +1,18 @@
 using System.Reflection;
+using Infra.Database.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace TechChallengeFastFood.API;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
+        builder.Configuration.AddEnvironmentVariables();
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -20,6 +22,11 @@ public class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
+        
+        //Uso via variavel de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
+
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         
         //TODO: Insert Dependency Injections implementation
         
@@ -38,10 +45,17 @@ public class Program
             });
         });
 
-        builder.Services.AddHealthChecks();        
+        builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();     
         
         var app = builder.Build();
 
+        // Execute migrations automatically on app startup
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await db.Database.MigrateAsync();
+        }        
+        
         // Configure the HTTP request pipeline.
             app.UseSwagger();
             app.UseSwaggerUI(s =>
@@ -54,7 +68,6 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
         

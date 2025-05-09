@@ -5,7 +5,9 @@
       - '8080:8080'
       - '8081:8081'
     depends_on:
-      - sqldatabase
+      - sqldatabasetechchallenge
+    environment:
+      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;"
     restart: on-failure:5
     deploy:
       resources:
@@ -22,9 +24,9 @@
       context: .
       dockerfile: src/Adapters/Driving/TechChallengeFastFood.API/Dockerfile
   
-  sqldatabase:
+  sqldatabasetechchallenge:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqldatabase
+    container_name: sqldatabasetechchallenge
     ports:
       - "1433:1433"
     environment:
