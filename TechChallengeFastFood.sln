@@ -12,9 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driven", "Driven", "{B410E4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driving", "Driving", "{98FF289C-3236-4D5F-817E-673B50733B76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{1B725028-F622-4276-BB0F-BCBC196BC920}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Core\Application\Application.csproj", "{1B725028-F622-4276-BB0F-BCBC196BC920}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{63128117-C371-4C85-8ACE-13DB00029E88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Core\Domain\Domain.csproj", "{63128117-C371-4C85-8ACE-13DB00029E88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Database.Memory", "src\Adapters\Driven\Infra.Database.Memory\Infra.Database.Memory.csproj", "{5E04B450-99A0-463C-9BD7-CD704A2C5FF4}"
 EndProject
