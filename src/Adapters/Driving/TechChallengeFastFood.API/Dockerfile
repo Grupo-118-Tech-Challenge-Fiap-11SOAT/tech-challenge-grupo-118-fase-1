@@ -8,10 +8,16 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.csproj", "src/Adapters/Driving/TechChallengeFastFood.API/"]
+
 COPY ["src/Core/Application/Application.csproj", "src/Core/Application/"]
 COPY ["src/Core/Domain/Domain.csproj", "src/Core/Domain/"]
+
 COPY ["src/Adapters/Driven/Infra.Database.Memory/Infra.Database.Memory.csproj", "src/Adapters/Driven/Infra.Database.Memory/"]
 COPY ["src/Adapters/Driven/Infra.Database.SqlServer/Infra.Database.SqlServer.csproj", "src/Adapters/Driven/Infra.Database.SqlServer/"]
+
+COPY ["src/Adapters/Driven/Infra.Api.Memory/Infra.Api.Memory.csproj", "src/Adapters/Driven/Infra.Api.Memory/"]
+COPY ["src/Adapters/Driven/Infra.Api.MercadoPago/Infra.Api.MercadoPago.csproj", "src/Adapters/Driven/Infra.Api.MercadoPago/"]
+
 RUN dotnet restore "src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.csproj"
 COPY . .
 WORKDIR "/src/src/Adapters/Driving/TechChallengeFastFood.API"
