@@ -4,9 +4,8 @@
     ports:
       - '8080:8080'
       - '8081:8081'
-    #TODO: Implementar Compose do banco Depends
-    #    depends_on:
-    #      - sqldatabase
+    depends_on:
+      - sqldatabase
     restart: on-failure:5
     deploy:
       resources:
@@ -23,8 +22,6 @@
       context: .
       dockerfile: src/Adapters/Driving/TechChallengeFastFood.API/Dockerfile
   
-  #TODO: Implementar Compose do banco (Exemplo de SQL Server)
-
   sqldatabase:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqldatabase
