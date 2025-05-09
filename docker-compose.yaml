@@ -1,13 +1,13 @@
 ﻿services:
-  techchallengefastfoodapi:
-    image: techchallengefastfoodapi
+  techchallengefastfoodapi118:
+    image: techchallengefastfoodapi118
     ports:
       - '8080:8080'
       - '8081:8081'
     depends_on:
-      - sqldatabasetechchallenge
+      - sqldatabasetechchallenge118
     environment:
-      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;"
+      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;"
     restart: on-failure:5
     deploy:
       resources:
@@ -24,9 +24,9 @@
       context: .
       dockerfile: src/Adapters/Driving/TechChallengeFastFood.API/Dockerfile
   
-  sqldatabasetechchallenge:
+  sqldatabasetechchallenge118:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqldatabasetechchallenge
+    container_name: sqldatabasetechchallenge118
     ports:
       - "1433:1433"
     environment:
