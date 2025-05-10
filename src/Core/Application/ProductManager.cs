@@ -1,4 +1,5 @@
 using Domain.Products.Dtos;
+using Domain.Products.Entities;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 
@@ -15,19 +16,17 @@ public class ProductManager : IProductManager
 
     public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10)
     {
-        //TODO: Convert to DTO
-        // var products = (await _productRepository.GetProductsAsync(skip, take)).ConvertAll(p => new ProductDto(p));
         var products = await _productRepository.GetProductsAsync(skip, take);
 
         if (products is null || products.Count == 0)
             return null;
 
-        var productDto = products.ConvertAll(p=>new ProductDto(p));
+        var productDto = products.ConvertAll(p => new ProductDto(p));
 
         return productDto;
     }
 
-    public async Task<object> GetProductByIdAsync(int id)
+    public async Task<ProductDto> GetProductByIdAsync(int id)
     {
         var product = await _productRepository.GetProductByIdAsync(id);
 
@@ -36,5 +35,13 @@ public class ProductManager : IProductManager
 
         var productDto = new ProductDto(product);
         return productDto;
+    }
+
+    public async Task<int> CreateProductAsync(ProductDto productDto)
+    {
+        var product = new Product(productDto);
+
+        var productId = await _productRepository.CreateProductAsync(product);
+        return productId;
     }
 }

@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.ComTypes;
+using Domain.Products.Dtos;
 using Domain.Products.Ports.In;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ public class ProductsController : ControllerBase
     {
         _productManager = productManager;
     }
-    
+
     /// <summary>
     /// List Products
     /// </summary>
@@ -48,9 +49,11 @@ public class ProductsController : ControllerBase
     /// <param name="productDto"></param>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] object productDto)
+    public async Task<IActionResult> PostAsync([FromBody] ProductDto productDto)
     {
-        return Created();
+        var productId = await _productManager.CreateProductAsync(productDto);
+        // return Created(productId);
+        return new ObjectResult(productId) { StatusCode = StatusCodes.Status201Created };
     }
 
     /// <summary>
@@ -82,7 +85,6 @@ public class ProductsController : ControllerBase
     /// <param name="productId"></param>
     /// <param name="productImageDto"></param>
     /// <returns></returns>
-    
     [HttpPost("{productId}/images")]
     public async Task<IActionResult> PostProductImageAsync(int productId, [FromBody] object productImageDto)
     {

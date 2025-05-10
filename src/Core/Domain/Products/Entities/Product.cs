@@ -1,3 +1,4 @@
+using Domain.Products.Dtos;
 using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
@@ -26,12 +27,23 @@ public class Product
         this.IsActive = isActive;
 
         CheckProductValue(price);
-        
+
         Images = new List<ImageProduct>();
     }
 
-    public Product()
+    public Product(ProductDto productDto)
     {
+        if (productDto.Id != 0)
+            this.Id = productDto.Id;
+
+        this.Name = productDto.Name;
+        this.Description = productDto.Description;
+        this.Category = productDto.Category;
+        this.IsActive = productDto.IsActive;
+        
+        CheckProductValue(productDto.Price);
+
+        Images = new List<ImageProduct>();
     }
 
     public void AddImage(ImageProduct image)
