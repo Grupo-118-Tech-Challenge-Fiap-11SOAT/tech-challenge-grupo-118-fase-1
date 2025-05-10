@@ -1,4 +1,4 @@
-namespace Infra.Database.SqlServer;
+namespace Infra.Database.SqlServer.Products.Entities;
 
 public class ImageProduct
 {
@@ -7,4 +7,6 @@ public class ImageProduct
     public int ProductId { get; set; }
     
     public string Url { get; set; }
+    
+    public Product Product { get; set; }
 }
