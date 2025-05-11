@@ -39,11 +39,24 @@ public class ProductDto
     /// </summary>
     public bool IsActive { get; set; }
 
+
     public ProductDto(Product product)
     {
+        this.Id = product.Id;
+        this.Name = product.Name;
+        this.Description = product.Description;
+        this.Category = product.Category;
+        this.Price = product.Price;
+        this.IsActive = product.IsActive;
     }
 
-    public ProductDto()
+    [JsonConstructor]
+    public ProductDto(string name, string description, ProductType category, decimal price, bool isActive)
     {
+        this.Name = name;
+        this.Description = description;
+        this.Category = category;
+        this.Price = price;
+        this.IsActive = isActive;
     }
 }

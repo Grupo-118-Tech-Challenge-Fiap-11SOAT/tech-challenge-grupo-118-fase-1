@@ -40,7 +40,7 @@ public class Product
         this.Description = productDto.Description;
         this.Category = productDto.Category;
         this.IsActive = productDto.IsActive;
-        
+
         CheckProductValue(productDto.Price);
 
         Images = new List<ImageProduct>();
@@ -50,6 +50,24 @@ public class Product
     {
         if (this.Images.Any(im => im.Id.Equals(image.Id)))
             this.Images.Add(image);
+    }
+
+    public static Product Load(int id, string name, string description, ProductType category, decimal price,
+        bool isActive)
+    {
+        return new Product
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            Category = category,
+            Price = price,
+            IsActive = isActive,
+        };
+    }
+
+    private Product()
+    {
     }
 
     private void CheckProductValue(decimal value)
