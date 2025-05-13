@@ -1,7 +1,5 @@
-using System.Runtime.InteropServices.ComTypes;
 using Domain.Products.Dtos;
 using Domain.Products.Ports.In;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API.Controllers;
@@ -75,9 +73,16 @@ public class ProductsController : ControllerBase
     /// <param name="productDto"></param>
     /// <returns></returns>
     [HttpPut("{productId}")]
-    public async Task<IActionResult> PutAsync(int productId, [FromBody] object productDto)
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> PutAsync(int productId, [FromBody] ProductDto productDto)
     {
-        return Ok();
+        var affectedRows = await _productManager.UpdateProductAsync(productId, productDto);
+
+        if (affectedRows > IntPtr.Zero)
+            return Ok(affectedRows);
+
+        return NoContent();
     }
 
     /// <summary>

@@ -33,9 +33,9 @@ public class Product
 
     public Product(ProductDto productDto)
     {
-        if (productDto.Id != 0)
-            this.Id = productDto.Id;
-
+        if (productDto.Id is not null && productDto.Id > 0)
+            this.Id = productDto.Id.Value;
+        
         this.Name = productDto.Name;
         this.Description = productDto.Description;
         this.Category = productDto.Category;

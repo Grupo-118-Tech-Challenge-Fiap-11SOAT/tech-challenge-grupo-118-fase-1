@@ -44,4 +44,12 @@ public class ProductManager : IProductManager
         var productId = await _productRepository.CreateProductAsync(product);
         return productId;
     }
+
+    public async Task<int> UpdateProductAsync(int productId, ProductDto productDto)
+    {
+        var product = new Product(productDto);
+
+        var affectedRows = await _productRepository.UpdateProductAsync(productId, product);
+        return affectedRows;
+    }
 }

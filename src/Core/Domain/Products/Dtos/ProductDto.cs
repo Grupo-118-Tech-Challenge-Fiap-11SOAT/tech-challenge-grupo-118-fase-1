@@ -9,7 +9,7 @@ public class ProductDto
     /// <summary>
     /// The id of the product
     /// </summary>
-    public int Id { get; private set; }
+    public int? Id { get; private set; }
 
     /// <summary>
     /// The name of the product
