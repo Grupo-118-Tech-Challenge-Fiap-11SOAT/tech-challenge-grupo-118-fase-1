@@ -4,8 +4,8 @@
     {
         Task<Entities.Employee> Create(Entities.Employee employee);
         Task<Entities.Employee> Update(Entities.Employee employee);
-        Task<bool> Delete(int id);
-        Task<Entities.Employee?> GetById(Guid id);
-        Task<Entities.Employee?> GetAll();
+        Task Delete(Entities.Employee employee);
+        Task<Entities.Employee?> GetById(int id);
+        Task<List<Entities.Employee?>> GetAll();
     }
 }

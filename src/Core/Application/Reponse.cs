@@ -7,8 +7,6 @@
             // Employee related codes 1 to 99
             NotFound = 1,
             InvalidInput = 2,
-            Unauthorized = 3,
-            InternalServerError = 4
         }
 
         public abstract class Response

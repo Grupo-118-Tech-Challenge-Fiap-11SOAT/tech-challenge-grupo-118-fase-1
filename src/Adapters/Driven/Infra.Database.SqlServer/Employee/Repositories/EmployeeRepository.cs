@@ -1,32 +1,48 @@
 ﻿using Domain.Employee.Ports;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer.Employee.Repositories
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public Task<Domain.Employee.Entities.Employee> Create(Domain.Employee.Entities.Employee employee)
+        private readonly AppDbContext _context;
+        public EmployeeRepository(AppDbContext appDbContext)
         {
-            throw new NotImplementedException();
+            _context = appDbContext;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<Domain.Employee.Entities.Employee> Create(Domain.Employee.Entities.Employee employee)
         {
-            throw new NotImplementedException();
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+
+            return employee;
         }
 
-        public Task<Domain.Employee.Entities.Employee?> GetAll()
+        public async Task Delete(Domain.Employee.Entities.Employee employee)
         {
-            throw new NotImplementedException();
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Domain.Employee.Entities.Employee?> GetById(Guid id)
+        public async Task<List<Domain.Employee.Entities.Employee?>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Employees
+                .ToListAsync();
         }
 
-        public Task<Domain.Employee.Entities.Employee> Update(Domain.Employee.Entities.Employee employee)
+        public async Task<Domain.Employee.Entities.Employee?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Employees
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Domain.Employee.Entities.Employee> Update(Domain.Employee.Entities.Employee employee)
+        {
+            _context.Update(employee);
+            await _context.SaveChangesAsync();
+
+            return employee;
         }
     }
 }

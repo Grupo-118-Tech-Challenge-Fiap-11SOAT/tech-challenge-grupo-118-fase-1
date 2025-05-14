@@ -10,12 +10,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
         builder.ToTable("Employees");
         builder.HasKey(builder => builder.Id);
         builder.Property(builder => builder.Id)
-            .ValueGeneratedOnAdd()
-            .IsRequired();
+            .UseIdentityColumn();
 
         builder.Property(builder => builder.Cpf)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(11);
 
         builder.Property(builder => builder.Name)
             .IsRequired()
