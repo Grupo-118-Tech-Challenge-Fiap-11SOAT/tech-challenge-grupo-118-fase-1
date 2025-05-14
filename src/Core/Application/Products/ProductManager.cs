@@ -43,7 +43,8 @@ public class ProductManager : IProductManager
             productDto.Description,
             productDto.Category,
             productDto.Price,
-            productDto.IsActive);
+            productDto.IsActive,
+            productDto.CreatedAt);
 
         var productId = await _productRepository.CreateProductAsync(product);
         return productId;
@@ -55,7 +56,8 @@ public class ProductManager : IProductManager
             productDto.Description,
             productDto.Category,
             productDto.Price,
-            productDto.IsActive);
+            productDto.IsActive,
+            productDto.CreatedAt);
 
         var affectedRows = await _productRepository.UpdateProductAsync(productId, product);
         return affectedRows;

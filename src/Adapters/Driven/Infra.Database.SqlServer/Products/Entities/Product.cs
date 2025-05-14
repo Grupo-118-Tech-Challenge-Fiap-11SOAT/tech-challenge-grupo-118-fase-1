@@ -15,6 +15,10 @@ public class Product
     public decimal Price { get; set; }
 
     public bool IsActive { get; set; }
+    
+    public DateTimeOffset CreatedAt { get; set; }
 
+    public DateTimeOffset UpdatedAt { get; set; }
+    
     public List<ImageProduct> Images { get; set; } = new List<ImageProduct>();
 }

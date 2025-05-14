@@ -75,6 +75,8 @@ public class ProductRepository : IProductRepository
             IsActive = product.IsActive,
             Name = product.Name,
             Price = product.Price,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
         };
         
         _dbContext.Products.Update(productEntity);
