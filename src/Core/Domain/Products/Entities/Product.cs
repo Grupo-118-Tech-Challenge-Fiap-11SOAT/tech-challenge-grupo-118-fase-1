@@ -1,4 +1,5 @@
 using Domain.Products.Dtos;
+using Domain.Products.Exceptions;
 using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
@@ -73,7 +74,7 @@ public class Product
     private void CheckProductValue(decimal value)
     {
         if (value <= decimal.Zero)
-            throw new ArgumentException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
+            throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
 
         this.Price = value;
     }

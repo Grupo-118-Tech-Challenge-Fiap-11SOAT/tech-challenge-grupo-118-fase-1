@@ -1,3 +1,4 @@
+using Domain;
 using Domain.Products.Dtos;
 using Domain.Products.Ports.In;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +61,7 @@ public class ProductsController : ControllerBase
             var productId = await _productManager.CreateProductAsync(productDto);
             return new ObjectResult(productId) { StatusCode = StatusCodes.Status201Created };
         }
-        catch (ArgumentException e)
+        catch (DomainException e)
         {
             return BadRequest(e.Message);
         }
