@@ -3,7 +3,7 @@ using Domain.Products.Entities;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 
-namespace Application;
+namespace Application.Products;
 
 public class ProductManager : IProductManager
 {
@@ -39,7 +39,11 @@ public class ProductManager : IProductManager
 
     public async Task<int> CreateProductAsync(ProductDto productDto)
     {
-        var product = new Product(productDto);
+        var product = new Product(productDto.Name,
+            productDto.Description,
+            productDto.Category,
+            productDto.Price,
+            productDto.IsActive);
 
         var productId = await _productRepository.CreateProductAsync(product);
         return productId;
@@ -47,7 +51,11 @@ public class ProductManager : IProductManager
 
     public async Task<int> UpdateProductAsync(int productId, ProductDto productDto)
     {
-        var product = new Product(productDto);
+        var product = new Product(productDto.Name,
+            productDto.Description,
+            productDto.Category,
+            productDto.Price,
+            productDto.IsActive);
 
         var affectedRows = await _productRepository.UpdateProductAsync(productId, product);
         return affectedRows;

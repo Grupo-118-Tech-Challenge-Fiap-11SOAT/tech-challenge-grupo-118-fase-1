@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Application;
+using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;

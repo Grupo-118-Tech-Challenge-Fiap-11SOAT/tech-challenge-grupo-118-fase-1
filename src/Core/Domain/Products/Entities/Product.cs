@@ -1,4 +1,3 @@
-using Domain.Products.Dtos;
 using Domain.Products.Exceptions;
 using Domain.Products.ValueObjects;
 
@@ -28,21 +27,6 @@ public class Product
         this.IsActive = isActive;
 
         CheckProductValue(price);
-
-        Images = new List<ImageProduct>();
-    }
-
-    public Product(ProductDto productDto)
-    {
-        if (productDto.Id is not null && productDto.Id > 0)
-            this.Id = productDto.Id.Value;
-        
-        this.Name = productDto.Name;
-        this.Description = productDto.Description;
-        this.Category = productDto.Category;
-        this.IsActive = productDto.IsActive;
-
-        CheckProductValue(productDto.Price);
 
         Images = new List<ImageProduct>();
     }
