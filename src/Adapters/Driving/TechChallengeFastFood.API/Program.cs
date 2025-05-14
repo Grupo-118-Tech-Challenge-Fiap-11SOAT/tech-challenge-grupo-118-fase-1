@@ -1,8 +1,12 @@
 using System.Reflection;
 using Application;
+using Application.Employee;
+using Application.Employee.Ports;
+using Domain.Employee.Ports;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;
+using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -35,6 +39,9 @@ public class Program
         //TODO: Insert Dependency Injections implementation
         builder.Services.AddTransient<IProductManager, ProductManager>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
+        builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+        builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
 
         builder.Services.AddSwaggerGen(s =>
         {
