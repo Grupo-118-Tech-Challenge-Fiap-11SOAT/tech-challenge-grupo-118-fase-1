@@ -67,21 +67,16 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> UpdateProductAsync(int productId, Product product)
     {
-        var productEntity = new Entities.Product
-        {
-            Id = productId,
-            Category = product.Category,
-            Description = product.Description,
-            IsActive = product.IsActive,
-            Name = product.Name,
-            Price = product.Price,
-            CreatedAt = product.CreatedAt,
-            UpdatedAt = product.UpdatedAt
-        };
-        
-        _dbContext.Products.Update(productEntity);
-        var affectedRows = await _dbContext.SaveChangesAsync();
-        
+        var affectedRows = await _dbContext.Products
+            .Where(p => p.Id == productId)
+            .ExecuteUpdateAsync(p => p
+                .SetProperty(pp => pp.Name, product.Name)
+                .SetProperty(pp => pp.Description, product.Description)
+                .SetProperty(pp => pp.Category, product.Category)
+                .SetProperty(pp => pp.Price, product.Price)
+                .SetProperty(pp => pp.IsActive, product.IsActive)
+                .SetProperty(pp => pp.UpdatedAt, DateTimeOffset.UtcNow));
+
         return affectedRows;
     }
 }

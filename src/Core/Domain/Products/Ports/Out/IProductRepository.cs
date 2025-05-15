@@ -4,11 +4,33 @@ namespace Domain.Products.Ports.Out;
 
 public interface IProductRepository
 {
+    /// <summary>
+    /// Retrieves a list of products based on pagination parameters.
+    /// </summary>
+    /// <param name="skip">The number of items to skip.</param>
+    /// <param name="take">The number of items to retrieve.</param>
+    /// <returns>A list of products.</returns>
     Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10);
-    
+
+    /// <summary>
+    /// Retrieves a product by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the product.</param>
+    /// <returns>The product matching the specified identifier, or null if no such product exists.</returns>
     Task<Product> GetProductByIdAsync(int id);
-    
+
+    /// <summary>
+    /// Creates a new product in the system.
+    /// </summary>
+    /// <param name="product">The product entity containing the details of the product to be created.</param>
+    /// <returns>The unique identifier of the created product.</returns>
     Task<int> CreateProductAsync(Product product);
-    
+
+    /// <summary>
+    /// Updates an existing product with the provided details.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to be updated.</param>
+    /// <param name="product">The updated product data.</param>
+    /// <returns>The number of affected rows in the database.</returns>
     Task<int> UpdateProductAsync(int productId, Product product);
 }

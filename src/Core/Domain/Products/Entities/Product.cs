@@ -17,26 +17,18 @@ public class Product
 
     public bool IsActive { get; private set; }
 
-    public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
-
-    public DateTimeOffset UpdatedAt { get; private set; } = DateTimeOffset.UtcNow;
-
     public List<ImageProduct>? Images { get; private set; }
 
     public Product(string name,
         string description,
         ProductType productType,
         decimal price,
-        bool isActive,
-        DateTimeOffset? createdAt)
+        bool isActive)
     {
         this.Name = name;
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
-
-        if (createdAt.HasValue)
-            this.CreatedAt = createdAt.Value;
 
         CheckProductValue(price);
 

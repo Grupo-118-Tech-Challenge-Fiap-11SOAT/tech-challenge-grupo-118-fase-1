@@ -39,16 +39,6 @@ public class ProductDto
     /// </summary>
     public bool IsActive { get; set; }
 
-    /// <summary>
-    /// Product creation Date
-    /// </summary>
-    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
-
-    /// <summary>
-    /// Product update date
-    /// </summary>
-    public DateTimeOffset UpdatedAt { get; set; } = DateTimeOffset.UtcNow;
-
     public ProductDto(Product product)
     {
         this.Id = product.Id;
@@ -57,20 +47,15 @@ public class ProductDto
         this.Category = product.Category;
         this.Price = product.Price;
         this.IsActive = product.IsActive;
-        this.CreatedAt = product.CreatedAt;
-        this.UpdatedAt = product.UpdatedAt;
     }
 
     [JsonConstructor]
-    public ProductDto(string name, string description, ProductType category, decimal price, bool isActive,
-        DateTimeOffset createdAt, DateTimeOffset updatedAt)
+    public ProductDto(string name, string description, ProductType category, decimal price, bool isActive)
     {
         this.Name = name;
         this.Description = description;
         this.Category = category;
         this.Price = price;
         this.IsActive = isActive;
-        this.CreatedAt = createdAt;
-        this.UpdatedAt = updatedAt;
     }
 }
