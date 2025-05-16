@@ -33,4 +33,22 @@ public interface IProductManager
     /// <param name="productDto">The data transfer object containing updated product details.</param>
     /// <returns>A task representing an asynchronous operation that returns the number of rows affected by the update.</returns>
     Task<int> UpdateProductAsync(int productId, ProductDto productDto);
+
+
+    /// <summary>
+    /// Retrieves a list of product images associated with a specific product, with pagination.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product for which to retrieve images.</param>
+    /// <param name="skip">The number of images to skip from the beginning of the list.</param>
+    /// <param name="take">The maximum number of images to include in the result.</param>
+    /// <returns>A task representing an asynchronous operation that returns a list of ImageProductDto objects.</returns>
+    Task<List<ImageProductDto>> GetProductImagesAsync(int productId, int skip = 0, int take = 10);
+
+    /// <summary>
+    /// Creates a new image for a specific product using the provided details.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to associate the image with.</param>
+    /// <param name="imageProductDto">The details of the image to create, encapsulated in an ImageProductDto object.</param>
+    /// <returns>A task representing an asynchronous operation that returns the unique identifier of the created product image.</returns>
+    Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto);
 }

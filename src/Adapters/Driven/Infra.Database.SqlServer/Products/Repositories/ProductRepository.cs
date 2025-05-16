@@ -79,4 +79,32 @@ public class ProductRepository : IProductRepository
 
         return affectedRows;
     }
+
+    public async Task<List<ImageProduct>> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    {
+        var imageEntities = await _dbContext.ImageProducts
+            .Where(i => i.ProductId == productId)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        var imageProducts = imageEntities.ConvertAll(ip => ImageProduct.Load(ip.Id, ip.Url, ip.ProductId, ip.Position));
+
+        return imageProducts;
+    }
+
+    public async Task<int> CreateImageProductAsync(ImageProduct imageProduct)
+    {
+        var imageProductEntity = new Entities.ImageProduct
+        {
+            ProductId = imageProduct.ProductId,
+            Position = imageProduct.Position,
+            Url = imageProduct.Url
+        };
+
+        _dbContext.ImageProducts.Add(imageProductEntity);
+        await _dbContext.SaveChangesAsync();
+
+        return imageProductEntity.Id;
+    }
 }

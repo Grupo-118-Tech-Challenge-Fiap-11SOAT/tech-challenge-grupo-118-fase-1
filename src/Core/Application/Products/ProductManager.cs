@@ -60,4 +60,33 @@ public class ProductManager : IProductManager
         var affectedRows = await _productRepository.UpdateProductAsync(productId, product);
         return affectedRows;
     }
+
+    public async Task<List<ImageProductDto>> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    {
+        var product = await _productRepository.GetProductByIdAsync(productId);
+
+        if (product is null)
+            return null;
+
+        var productImages = await _productRepository.GetProductImagesAsync(productId, skip, take);
+
+        if (productImages is null || productImages.Count == 0)
+            return null;
+
+        var productImagesDto = productImages.ConvertAll(pi => new ImageProductDto(pi));
+
+        return productImagesDto;
+    }
+
+    public async Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto)
+    {
+        var product = await _productRepository.GetProductByIdAsync(productId);
+
+        if (product is null)
+            return 0;
+
+        var imageProduct = new ImageProduct(product.Id, imageProductDto.Position, imageProductDto.Url);
+
+        return await _productRepository.CreateImageProductAsync(imageProduct);
+    }
 }

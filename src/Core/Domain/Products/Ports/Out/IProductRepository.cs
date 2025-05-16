@@ -33,4 +33,21 @@ public interface IProductRepository
     /// <param name="product">The updated product data.</param>
     /// <returns>The number of affected rows in the database.</returns>
     Task<int> UpdateProductAsync(int productId, Product product);
+
+    /// <summary>
+    /// Retrieves a list of product images based on the product identifier and pagination parameters.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product whose images are to be retrieved.</param>
+    /// <param name="skip">The number of items to skip.</param>
+    /// <param name="take">The number of items to retrieve.</param>
+    /// <returns>A list of product images associated with the specified product.</returns>
+    Task<List<ImageProduct>> GetProductImagesAsync(int productId, int skip = 0, int take = 10);
+
+    /// <summary>
+    /// Adds a new image associated with a specific product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageProduct">The image product entity containing the image details to be created.</param>
+    /// <returns>The unique identifier of the created image product.</returns>
+    Task<int> CreateImageProductAsync(ImageProduct imageProduct);
 }

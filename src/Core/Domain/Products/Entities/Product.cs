@@ -29,8 +29,9 @@ public class Product
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
-
-        CheckProductValue(price);
+        this.Price = price;
+        
+        CheckProductValue();
 
         Images = new List<ImageProduct>();
     }
@@ -59,11 +60,11 @@ public class Product
     {
     }
 
-    private void CheckProductValue(decimal value)
+    private void CheckProductValue()
     {
-        if (value <= decimal.Zero)
+        if (this.Price <= decimal.Zero)
             throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
 
-        this.Price = value;
+
     }
 }
