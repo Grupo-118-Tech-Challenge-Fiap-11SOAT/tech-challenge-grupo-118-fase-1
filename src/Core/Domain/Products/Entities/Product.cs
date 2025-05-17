@@ -1,3 +1,4 @@
+using Domain.Products.Exceptions;
 using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
@@ -18,20 +19,21 @@ public class Product
 
     public List<ImageProduct>? Images { get; private set; }
 
-    public Product(string name, string description, ProductType productType, decimal price, bool isActive)
+    public Product(string name,
+        string description,
+        ProductType productType,
+        decimal price,
+        bool isActive)
     {
         this.Name = name;
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
-
-        CheckProductValue(price);
+        this.Price = price;
         
-        Images = new List<ImageProduct>();
-    }
+        CheckProductValue();
 
-    public Product()
-    {
+        Images = new List<ImageProduct>();
     }
 
     public void AddImage(ImageProduct image)
@@ -40,11 +42,29 @@ public class Product
             this.Images.Add(image);
     }
 
-    private void CheckProductValue(decimal value)
+    public static Product Load(int id, string name, string description, ProductType category, decimal price,
+        bool isActive)
     {
-        if (value <= decimal.Zero)
-            throw new ArgumentException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
+        return new Product
+        {
+            Id = id,
+            Name = name,
+            Description = description,
+            Category = category,
+            Price = price,
+            IsActive = isActive,
+        };
+    }
 
-        this.Price = value;
+    private Product()
+    {
+    }
+
+    private void CheckProductValue()
+    {
+        if (this.Price <= decimal.Zero)
+            throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
+
+
     }
 }

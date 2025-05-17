@@ -1,4 +1,5 @@
-﻿using Infra.Database.SqlServer.Products.Entities;
+﻿using Infra.Database.SqlServer.Products.Configuration;
+using Infra.Database.SqlServer.Products.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer;
@@ -25,11 +26,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ImageProduct>()
-            .HasOne(i => i.Product)
-            .WithMany(p => p.Images)
-            .HasForeignKey(i => i.ProductId);
-
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfiguration(new ImageProductsConfiguration());
+        modelBuilder.ApplyConfiguration(new ProductsConfiguration());
     }
 }
