@@ -150,10 +150,16 @@ public class ProductsController : ControllerBase
     /// <param name="imageId">The unique identifier of the image to be deleted.</param>
     /// <returns>A task representing the asynchronous operation that removes the specified product image.</returns>
     [HttpDelete("{productId}/images/{imageId}")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]    
     public async Task<IActionResult> DeleteAsync(int productId, int imageId)
     {
-        await _productManager.DeleteImageProductAsync(productId, imageId);
-        return Ok();
+        var affectedRows = await _productManager.DeleteImageProductAsync(productId, imageId);
+
+        if (affectedRows > 0)
+            return Ok();
+
+        return NoContent();
     }
 
     /// <summary>
@@ -172,9 +178,7 @@ public class ProductsController : ControllerBase
         var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto);
 
         if (affectedRows > 0)
-        {
             return Ok(affectedRows);
-        }
 
         return Accepted();
     }
