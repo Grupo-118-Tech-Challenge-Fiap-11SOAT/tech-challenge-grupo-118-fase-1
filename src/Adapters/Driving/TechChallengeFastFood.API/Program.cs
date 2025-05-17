@@ -1,8 +1,7 @@
-using System.Reflection;
 using Application;
 using Application.Employee;
-using Application.Employee.Ports;
 using Domain.Employee.Ports;
+using Domain.Employee.Ports.Out;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;
@@ -10,6 +9,7 @@ using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace TechChallengeFastFood.API;
 

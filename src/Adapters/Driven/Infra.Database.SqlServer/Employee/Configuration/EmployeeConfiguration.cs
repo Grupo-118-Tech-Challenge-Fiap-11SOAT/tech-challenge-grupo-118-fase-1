@@ -49,6 +49,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
             .IsRequired()
             .HasDefaultValue(true);
 
+        builder.Property(builder => builder.Role)
+            .IsRequired()
+            .HasConversion<string>()
+            .HasMaxLength(50);
+
         builder.HasIndex(builder => builder.Id)
             .HasDatabaseName("IX_Employees_Id");
 
