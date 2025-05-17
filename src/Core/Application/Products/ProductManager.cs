@@ -14,7 +14,8 @@ public class ProductManager : IProductManager
         _productRepository = productRepository;
     }
 
-    public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
+    public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,
+        bool searchActiveProducts = false)
     {
         var products = await _productRepository.GetProductsAsync(skip, take, searchActiveProducts);
 
@@ -61,7 +62,7 @@ public class ProductManager : IProductManager
         return affectedRows;
     }
 
-    public async Task<List<ImageProductDto>> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
     {
         var product = await _productRepository.GetProductByIdAsync(productId);
 

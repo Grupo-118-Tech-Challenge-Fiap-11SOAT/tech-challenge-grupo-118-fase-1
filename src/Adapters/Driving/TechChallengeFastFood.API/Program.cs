@@ -11,9 +11,11 @@ using Microsoft.OpenApi.Models;
 
 namespace TechChallengeFastFood.API;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public class Program
 {
     public static async Task Main(string[] args)
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         var builder = WebApplication.CreateBuilder(args);
 

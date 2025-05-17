@@ -14,6 +14,10 @@ public class ProductsController : ControllerBase
 {
     private readonly IProductManager _productManager;
 
+    /// <summary>
+    /// Product constructor
+    /// </summary>
+    /// <param name="productManager"></param>
     public ProductsController(IProductManager productManager)
     {
         _productManager = productManager;
@@ -143,7 +147,7 @@ public class ProductsController : ControllerBase
     [HttpDelete("{productId}/images/{imageId}")]
     public async Task<IActionResult> DeleteAsync(int productId, int imageId)
     {
-        _productManager.DeleteImageProductAsync(productId, imageId);
+        await _productManager.DeleteImageProductAsync(productId, imageId);
         return Ok();
     }
 

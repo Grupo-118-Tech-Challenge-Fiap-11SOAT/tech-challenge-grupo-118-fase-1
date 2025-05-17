@@ -15,7 +15,7 @@ public class ProductRepository : IProductRepository
 
     #region Products
 
-    public async Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
+    public async Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
     {
         var query = _dbContext.Products.AsQueryable();
 
@@ -27,6 +27,9 @@ public class ProductRepository : IProductRepository
             .Take(take)
             .ToListAsync();
 
+        if (productsEntities.Count == 0)
+            return null;
+        
         var products = productsEntities.ConvertAll(p => Product.Load(
             p.Id,
             p.Name,
@@ -39,7 +42,7 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<Product> GetProductByIdAsync(int id)
+    public async Task<Product?> GetProductByIdAsync(int id)
     {
         var productEntity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -94,7 +97,7 @@ public class ProductRepository : IProductRepository
 
     #region Image Products
 
-    public async Task<List<ImageProduct>> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    public async Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
     {
         var imageEntities = await _dbContext.ImageProducts
             .Where(ip => ip.ProductId == productId)

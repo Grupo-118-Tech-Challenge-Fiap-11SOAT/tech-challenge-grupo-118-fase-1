@@ -11,14 +11,14 @@ public interface IProductRepository
     /// <param name="take">The number of items to retrieve.</param>
     /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
     /// <returns>A list of products.</returns>
-    Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false);
+    Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false);
 
     /// <summary>
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the product.</param>
     /// <returns>The product matching the specified identifier, or null if no such product exists.</returns>
-    Task<Product> GetProductByIdAsync(int id);
+    Task<Product?> GetProductByIdAsync(int id);
 
     /// <summary>
     /// Creates a new product in the system.
@@ -42,7 +42,7 @@ public interface IProductRepository
     /// <param name="skip">The number of items to skip.</param>
     /// <param name="take">The number of items to retrieve.</param>
     /// <returns>A list of product images associated with the specified product.</returns>
-    Task<List<ImageProduct>> GetProductImagesAsync(int productId, int skip = 0, int take = 10);
+    Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10);
 
     /// <summary>
     /// Adds a new image associated with a specific product.
