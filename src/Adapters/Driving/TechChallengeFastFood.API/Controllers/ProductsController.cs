@@ -24,13 +24,14 @@ public class ProductsController : ControllerBase
     /// </summary>
     /// <param name="skip">The number of products to skip from the start of the list.</param>
     /// <param name="take">The maximum number of products to retrieve.</param>
+    /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of products if available, or a no content response if no products are found.</returns>
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
-    public async Task<IActionResult> GetAsync(int skip = 0, int take = 10)
+    public async Task<IActionResult> GetAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
     {
-        var products = await _productManager.GetProductsAsync(skip, take);
+        var products = await _productManager.GetProductsAsync(skip, take, searchActiveProducts);
 
         if (products is null || products.Count == 0)
             return NoContent();

@@ -9,8 +9,9 @@ public interface IProductManager
     /// </summary>
     /// <param name="skip">The number of products to skip from the beginning of the list.</param>
     /// <param name="take">The maximum number of products to include in the result.</param>
+    /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
     /// <returns>A task representing an asynchronous operation that returns a list of ProductDto objects.</returns>
-    Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10);
+    Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false);
 
     /// <summary>
     /// Retrieves a product by its unique identifier.

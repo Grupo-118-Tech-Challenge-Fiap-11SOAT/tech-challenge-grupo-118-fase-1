@@ -15,10 +15,14 @@ public class ProductRepository : IProductRepository
 
     #region Products
 
-    public async Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10)
+    public async Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
     {
-        var productsEntities = await _dbContext.Products
-            .OrderBy(p => p.Id)
+        var query = _dbContext.Products.AsQueryable();
+
+        if (searchActiveProducts)
+            query = query.Where(p => p.IsActive);
+
+        var productsEntities = await query.OrderBy(p => p.Id)
             .Skip(skip)
             .Take(take)
             .ToListAsync();
@@ -94,8 +98,8 @@ public class ProductRepository : IProductRepository
     {
         var imageEntities = await _dbContext.ImageProducts
             .Where(ip => ip.ProductId == productId)
-            .OrderBy(ip => ip.Id)
-            .ThenBy(ip => ip.Position)
+            .OrderBy(ip => ip.Position)
+            .ThenBy(ip => ip.Id)
             .Skip(skip)
             .Take(take)
             .ToListAsync();

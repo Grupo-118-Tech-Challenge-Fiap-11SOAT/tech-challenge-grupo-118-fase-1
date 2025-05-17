@@ -14,9 +14,9 @@ public class ProductManager : IProductManager
         _productRepository = productRepository;
     }
 
-    public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10)
+    public async Task<List<ProductDto>> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false)
     {
-        var products = await _productRepository.GetProductsAsync(skip, take);
+        var products = await _productRepository.GetProductsAsync(skip, take, searchActiveProducts);
 
         if (products is null || products.Count == 0)
             return null;
