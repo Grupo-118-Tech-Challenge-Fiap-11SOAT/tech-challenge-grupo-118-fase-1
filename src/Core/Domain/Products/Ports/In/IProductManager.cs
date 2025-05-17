@@ -18,7 +18,7 @@ public interface IProductManager
     /// </summary>
     /// <param name="id">The unique identifier of the product to retrieve.</param>
     /// <returns>A task representing an asynchronous operation that returns a ProductDto object if found, or null if the product does not exist.</returns>
-    Task<ProductDto> GetProductByIdAsync(int id);
+    Task<ProductDto?> GetProductByIdAsync(int id);
 
     /// <summary>
     /// Creates a new product using the provided product details.

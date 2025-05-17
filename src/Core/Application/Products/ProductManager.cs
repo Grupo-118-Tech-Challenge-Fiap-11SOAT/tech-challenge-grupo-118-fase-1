@@ -27,7 +27,7 @@ public class ProductManager : IProductManager
         return productDto;
     }
 
-    public async Task<ProductDto> GetProductByIdAsync(int id)
+    public async Task<ProductDto?> GetProductByIdAsync(int id)
     {
         var product = await _productRepository.GetProductByIdAsync(id);
 

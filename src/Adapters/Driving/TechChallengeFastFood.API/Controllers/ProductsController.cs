@@ -53,7 +53,12 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}")]
     public async Task<IActionResult> GetAsync(int productId)
     {
-        return Ok(await _productManager.GetProductByIdAsync(productId));
+        var product = await _productManager.GetProductByIdAsync(productId);
+
+        if (product is null)
+            return NoContent();
+
+        return Ok(product);
     }
 
     /// <summary>
@@ -90,7 +95,7 @@ public class ProductsController : ControllerBase
     {
         var affectedRows = await _productManager.UpdateProductAsync(productId, productDto);
 
-        if (affectedRows > IntPtr.Zero)
+        if (affectedRows > 0)
             return Ok(affectedRows);
 
         return Accepted();
@@ -166,7 +171,7 @@ public class ProductsController : ControllerBase
     {
         var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto);
 
-        if (affectedRows > IntPtr.Zero)
+        if (affectedRows > 0)
         {
             return Ok(affectedRows);
         }
