@@ -94,4 +94,12 @@ public class ProductManager : IProductManager
     {
         return await _productRepository.DeleteImageProductAsync(productId, imageProductId);
     }
+
+    public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto)
+    {
+        var imageProduct = new ImageProduct(productId, imageProductDto.Position, imageProductDto.Url);
+
+        var affectedRows = await _productRepository.UpdateImageProductAsync(productId, imageId, imageProduct);
+        return affectedRows;
+    }
 }

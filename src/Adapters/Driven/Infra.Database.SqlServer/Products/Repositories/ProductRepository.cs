@@ -13,9 +13,15 @@ public class ProductRepository : IProductRepository
         _dbContext = dbContext;
     }
 
+    #region Products
+
     public async Task<List<Product>> GetProductsAsync(int skip = 0, int take = 10)
     {
-        var productsEntities = await _dbContext.Products.Skip(skip).Take(take).ToListAsync();
+        var productsEntities = await _dbContext.Products
+            .OrderBy(p => p.Id)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
 
         var products = productsEntities.ConvertAll(p => Product.Load(
             p.Id,
@@ -80,10 +86,16 @@ public class ProductRepository : IProductRepository
         return affectedRows;
     }
 
+    #endregion
+
+    #region Image Products
+
     public async Task<List<ImageProduct>> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
     {
         var imageEntities = await _dbContext.ImageProducts
-            .Where(i => i.ProductId == productId)
+            .Where(ip => ip.ProductId == productId)
+            .OrderBy(ip => ip.Id)
+            .ThenBy(ip => ip.Position)
             .Skip(skip)
             .Take(take)
             .ToListAsync();
@@ -118,4 +130,18 @@ public class ProductRepository : IProductRepository
 
         return affectedRows;
     }
+
+    public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct)
+    {
+        var affectedRows = await _dbContext.ImageProducts
+            .Where(ip => ip.Id == imageId && ip.ProductId == productId)
+            .ExecuteUpdateAsync(ip => ip
+                .SetProperty(i => i.Position, imageProduct.Position)
+                .SetProperty(i => i.Url, imageProduct.Url)
+                .SetProperty(i => i.UpdatedAt, DateTimeOffset.UtcNow));
+
+        return affectedRows;
+    }
+
+    #endregion
 }

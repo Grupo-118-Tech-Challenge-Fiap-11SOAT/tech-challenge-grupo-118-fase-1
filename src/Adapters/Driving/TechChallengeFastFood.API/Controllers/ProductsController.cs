@@ -88,7 +88,7 @@ public class ProductsController : ControllerBase
         if (affectedRows > IntPtr.Zero)
             return Ok(affectedRows);
 
-        return NoContent();
+        return Accepted();
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    public async Task<IActionResult> GetAsync(int productId, int skip = 0, int take = 10)
     {
         var images = await _productManager.GetProductImagesAsync(productId, skip, take);
 
@@ -119,8 +119,8 @@ public class ProductsController : ControllerBase
     /// <returns>The result of the operation, including the status and any related data.</returns>
     [HttpPost("{productId}/images")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]    
-    public async Task<IActionResult> PostProductImageAsync(int productId, [FromBody] ImageProductDto productImageDto)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> PostAsync(int productId, [FromBody] ImageProductDto productImageDto)
     {
         try
         {
@@ -140,9 +140,32 @@ public class ProductsController : ControllerBase
     /// <param name="imageId">The unique identifier of the image to be deleted.</param>
     /// <returns>A task representing the asynchronous operation that removes the specified product image.</returns>
     [HttpDelete("{productId}/images/{imageId}")]
-    public async Task<IActionResult> DeleteProductImageAsync(int productId, int imageId)
+    public async Task<IActionResult> DeleteAsync(int productId, int imageId)
     {
-         _productManager.DeleteImageProductAsync(productId, imageId);
+        _productManager.DeleteImageProductAsync(productId, imageId);
         return Ok();
+    }
+
+    /// <summary>
+    /// Updates an existing product image for a specified product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageId">The unique identifier of the image to be updated.</param>
+    /// <param name="productImageDto">The updated details of the product image.</param>
+    /// <returns>A task representing an asynchronous operation that returns an IActionResult indicating the result of the operation.</returns>
+    [HttpPut("{productId}/images/{imageId}")]
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> PutAsync(int productId, int imageId,
+        [FromBody] ImageProductDto productImageDto)
+    {
+        var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto);
+
+        if (affectedRows > IntPtr.Zero)
+        {
+            return Ok(affectedRows);
+        }
+
+        return Accepted();
     }
 }

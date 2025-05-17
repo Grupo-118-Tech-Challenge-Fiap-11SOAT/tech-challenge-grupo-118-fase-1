@@ -58,4 +58,13 @@ public interface IProductRepository
     /// <param name="imageId">The unique identifier of the image to be deleted.</param>
     /// <returns>A task representing an asynchronous operation that returns the number of records affected.</returns>
     Task<int> DeleteImageProductAsync(int productId, int imageId);
+
+    /// <summary>
+    /// Updates an existing product image with the provided details.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageId">The unique identifier of the image to be updated.</param>
+    /// <param name="imageProduct">The updated details of the image, including position and URL.</param>
+    /// <returns>The number of rows affected by the update operation.</returns>
+    Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct);
 }
