@@ -3,7 +3,7 @@ using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
 
-public class Product
+public class Product : BaseDomain
 {
     public int Id { get; private set; }
 
@@ -23,14 +23,18 @@ public class Product
         string description,
         ProductType productType,
         decimal price,
-        bool isActive)
+        bool isActive,
+        int id = 0)
     {
+        if (id != 0)
+            this.Id = id;
+
         this.Name = name;
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
         this.Price = price;
-        
+
         CheckProductValue();
 
         Images = new List<ImageProduct>();
@@ -42,29 +46,9 @@ public class Product
             this.Images.Add(image);
     }
 
-    public static Product Load(int id, string name, string description, ProductType category, decimal price,
-        bool isActive)
-    {
-        return new Product
-        {
-            Id = id,
-            Name = name,
-            Description = description,
-            Category = category,
-            Price = price,
-            IsActive = isActive,
-        };
-    }
-
-    private Product()
-    {
-    }
-
     private void CheckProductValue()
     {
         if (this.Price <= decimal.Zero)
             throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
-
-
     }
 }

@@ -30,14 +30,7 @@ public class ProductRepository : IProductRepository
         if (productsEntities.Count == 0)
             return null;
 
-        var products = productsEntities.ConvertAll(p => Product.Load(
-            p.Id,
-            p.Name,
-            p.Description,
-            p.Category,
-            p.Price,
-            p.IsActive
-        ));
+        var products = productsEntities.ConvertAll(p => p.ToDomain());
 
         return products;
     }
@@ -49,14 +42,7 @@ public class ProductRepository : IProductRepository
         if (productEntity is null)
             return null;
 
-        var product = Product.Load(
-            productEntity.Id,
-            productEntity.Name,
-            productEntity.Description,
-            productEntity.Category,
-            productEntity.Price,
-            productEntity.IsActive
-        );
+        var product = productEntity.ToDomain();
 
         return product;
     }
@@ -111,7 +97,7 @@ public class ProductRepository : IProductRepository
             .Take(take)
             .ToListAsync();
 
-        var imageProducts = imageEntities.ConvertAll(ip => ImageProduct.Load(ip.Id, ip.Url, ip.ProductId, ip.Position));
+        var imageProducts = imageEntities.ConvertAll(ip => ip.ToDomain());
 
         return imageProducts;
     }

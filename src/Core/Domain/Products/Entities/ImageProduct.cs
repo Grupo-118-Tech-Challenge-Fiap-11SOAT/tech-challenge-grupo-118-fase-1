@@ -3,7 +3,7 @@ using Domain.Products.Exceptions;
 
 namespace Domain.Products.Entities;
 
-public class ImageProduct
+public class ImageProduct : BaseDomain
 {
     public int Id { get; set; }
 
@@ -15,29 +15,17 @@ public class ImageProduct
 
     private readonly Regex _imageRegex = new Regex(@"(\W)(jpg|jpeg|png|gif|webp)", RegexOptions.Compiled);
 
-    public ImageProduct(int productId, int position, string url)
+    public ImageProduct(int productId, int position, string url, int id = 0)
     {
+        if (id != 0)
+            this.Id = id;
+
         this.ProductId = productId;
         this.Position = position;
         this.Url = url;
 
         CheckImageUrlFormat();
         CheckIfIsAValidPosition();
-    }
-
-    private ImageProduct()
-    {
-    }
-
-    public static ImageProduct Load(int id, string url, int productId, int position)
-    {
-        return new ImageProduct
-        {
-            Id = id,
-            ProductId = productId,
-            Position = position,
-            Url = url
-        };
     }
 
     private void CheckImageUrlFormat()
