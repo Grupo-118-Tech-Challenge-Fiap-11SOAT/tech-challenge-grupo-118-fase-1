@@ -5,8 +5,6 @@ namespace Infra.Database.SqlServer.Products.Entities;
 
 public class Product : BaseEntity
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public string Description { get; set; }
@@ -40,8 +38,8 @@ public class Product : BaseEntity
         this.IsActive = product.IsActive;
 
         if (this.UpdatedAt != default)
-            this.UpdatedAt=DateTimeOffset.UtcNow;
-        
+            this.UpdatedAt = DateTimeOffset.UtcNow;
+
         this.UpdatedAt = DateTimeOffset.UtcNow;
     }
 }
