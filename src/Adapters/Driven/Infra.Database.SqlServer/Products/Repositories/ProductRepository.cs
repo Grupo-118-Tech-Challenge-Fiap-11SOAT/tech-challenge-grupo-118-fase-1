@@ -29,7 +29,7 @@ public class ProductRepository : IProductRepository
 
         if (productsEntities.Count == 0)
             return null;
-        
+
         var products = productsEntities.ConvertAll(p => Product.Load(
             p.Id,
             p.Name,
@@ -80,15 +80,19 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> UpdateProductAsync(int productId, Product product)
     {
-        var affectedRows = await _dbContext.Products
-            .Where(p => p.Id == productId)
-            .ExecuteUpdateAsync(p => p
-                .SetProperty(pp => pp.Name, product.Name)
-                .SetProperty(pp => pp.Description, product.Description)
-                .SetProperty(pp => pp.Category, product.Category)
-                .SetProperty(pp => pp.Price, product.Price)
-                .SetProperty(pp => pp.IsActive, product.IsActive)
-                .SetProperty(pp => pp.UpdatedAt, DateTimeOffset.UtcNow));
+        var productEntity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+        if (productEntity is null)
+            return 0;
+
+        productEntity.Name = product.Name;
+        productEntity.Description = product.Description;
+        productEntity.Category = product.Category;
+        productEntity.Price = product.Price;
+        productEntity.IsActive = product.IsActive;
+        productEntity.UpdatedAt = DateTimeOffset.UtcNow;
+
+        var affectedRows = await _dbContext.SaveChangesAsync();
 
         return affectedRows;
     }
@@ -129,23 +133,31 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> DeleteImageProductAsync(int productId, int imageId)
     {
-        var affectedRows = await _dbContext
-            .ImageProducts
-            .Where(ip => ip.ProductId == productId
-                         && ip.Id == imageId)
-            .ExecuteDeleteAsync();
+        var imageProductEntity =
+            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId);
+
+        if (imageProductEntity is null)
+            return 0;
+
+        _dbContext.ImageProducts.Remove(imageProductEntity);
+        var affectedRows = await _dbContext.SaveChangesAsync();
 
         return affectedRows;
     }
 
     public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct)
     {
-        var affectedRows = await _dbContext.ImageProducts
-            .Where(ip => ip.Id == imageId && ip.ProductId == productId)
-            .ExecuteUpdateAsync(ip => ip
-                .SetProperty(i => i.Position, imageProduct.Position)
-                .SetProperty(i => i.Url, imageProduct.Url)
-                .SetProperty(i => i.UpdatedAt, DateTimeOffset.UtcNow));
+        var imageProductEntity =
+            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId);
+
+        if (imageProductEntity is null)
+            return 0;
+
+        imageProductEntity.Position = imageProduct.Position;
+        imageProductEntity.Url = imageProduct.Url;
+        imageProductEntity.UpdatedAt = DateTimeOffset.UtcNow;
+
+        var affectedRows = await _dbContext.SaveChangesAsync();
 
         return affectedRows;
     }
