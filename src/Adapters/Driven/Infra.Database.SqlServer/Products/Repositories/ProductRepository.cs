@@ -107,4 +107,15 @@ public class ProductRepository : IProductRepository
 
         return imageProductEntity.Id;
     }
+
+    public async Task<int> DeleteImageProductAsync(int productId, int imageId)
+    {
+        var affectedRows = await _dbContext
+            .ImageProducts
+            .Where(ip => ip.ProductId == productId
+                         && ip.Id == imageId)
+            .ExecuteDeleteAsync();
+
+        return affectedRows;
+    }
 }

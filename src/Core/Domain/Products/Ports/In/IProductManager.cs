@@ -51,4 +51,12 @@ public interface IProductManager
     /// <param name="imageProductDto">The details of the image to create, encapsulated in an ImageProductDto object.</param>
     /// <returns>A task representing an asynchronous operation that returns the unique identifier of the created product image.</returns>
     Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto);
+
+    /// <summary>
+    /// Deletes an image associated with a specific product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageId">The unique identifier of the image to be deleted.</param>
+    /// <returns>A task representing an asynchronous operation that returns the number of records affected.</returns>
+    Task<int> DeleteImageProductAsync(int productId, int imageId);
 }

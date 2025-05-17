@@ -89,4 +89,9 @@ public class ProductManager : IProductManager
 
         return await _productRepository.CreateImageProductAsync(imageProduct);
     }
+
+    public async Task<int> DeleteImageProductAsync(int productId, int imageProductId)
+    {
+        return await _productRepository.DeleteImageProductAsync(productId, imageProductId);
+    }
 }

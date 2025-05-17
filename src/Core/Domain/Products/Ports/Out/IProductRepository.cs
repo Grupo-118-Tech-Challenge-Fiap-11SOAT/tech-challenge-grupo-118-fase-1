@@ -50,4 +50,12 @@ public interface IProductRepository
     /// <param name="imageProduct">The image product entity containing the image details to be created.</param>
     /// <returns>The unique identifier of the created image product.</returns>
     Task<int> CreateImageProductAsync(ImageProduct imageProduct);
+
+    /// <summary>
+    /// Deletes an image associated with a specific product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageId">The unique identifier of the image to be deleted.</param>
+    /// <returns>A task representing an asynchronous operation that returns the number of records affected.</returns>
+    Task<int> DeleteImageProductAsync(int productId, int imageId);
 }

@@ -142,6 +142,7 @@ public class ProductsController : ControllerBase
     [HttpDelete("{productId}/images/{imageId}")]
     public async Task<IActionResult> DeleteProductImageAsync(int productId, int imageId)
     {
+         _productManager.DeleteImageProductAsync(productId, imageId);
         return Ok();
     }
 }
