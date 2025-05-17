@@ -38,7 +38,7 @@ public class EmployeeController : ControllerBase
     /// <param name="employeeDto"></param>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     public async Task<ActionResult<EmployeeDto>> Update(int id, [FromBody] EmployeeDto employeeDto)
     {
         employeeDto.Id = id;
@@ -58,7 +58,7 @@ public class EmployeeController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete]
-    public async Task<ActionResult<EmployeeDto>> Delete([FromQuery] int id)
+    public async Task<ActionResult<int>> Delete([FromQuery] int id)
     {
         var result = await _employeeManager.Delete(id);
 

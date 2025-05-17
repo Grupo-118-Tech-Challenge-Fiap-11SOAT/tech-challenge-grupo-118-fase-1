@@ -53,7 +53,7 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task<List<Domain.Employee.Entities.Employee?>> GetAll()
     {
         return await _context.Employees
-            .ToListAsync(); ;
+            .ToListAsync();
     }
 
     /// <summary>  

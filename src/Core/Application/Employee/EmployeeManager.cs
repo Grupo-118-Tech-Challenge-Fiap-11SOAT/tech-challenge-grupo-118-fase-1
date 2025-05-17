@@ -44,15 +44,8 @@ public class EmployeeManager : IEmployeeManager
                                    ex is SurnameNullOrEmptyException ||
                                    ex is EmailNullOrEmptyException ||
                                    ex is BirthDayMinValueException ||
-                                   ex is PasswordNullOrEmptyException)
-        {
-            return new EmployeeDto
-            {
-                ErrorMessage = ex.Message,
-                Error = true
-            };
-        }
-        catch (Exception ex)
+                                   ex is PasswordNullOrEmptyException ||
+                                   ex is not null)
         {
             return new EmployeeDto
             {
@@ -172,15 +165,8 @@ public class EmployeeManager : IEmployeeManager
                                    ex is SurnameNullOrEmptyException ||
                                    ex is EmailNullOrEmptyException ||
                                    ex is BirthDayMinValueException ||
-                                   ex is PasswordNullOrEmptyException)
-        {
-            return new EmployeeDto
-            {
-                ErrorMessage = ex.Message,
-                Error = true
-            };
-        }
-        catch (Exception ex)
+                                   ex is PasswordNullOrEmptyException ||
+                                   ex is not null)
         {
             return new EmployeeDto
             {

@@ -2,5 +2,5 @@
 
 public class EmailNullOrEmptyException : Exception
 {
-    override public string Message => "Email was null or empty.";
+    public override string Message => "Email was null or empty.";
 }
