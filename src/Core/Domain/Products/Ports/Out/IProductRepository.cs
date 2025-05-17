@@ -17,8 +17,11 @@ public interface IProductRepository
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the product.</param>
+    /// <param name="includeImages">A flag indicating whether to include product images in the result.</param>
+    /// <param name="skip">The number of image product items to skip.</param>
+    /// <param name="take">The number of image product items to retrieve.</param>   
     /// <returns>The product matching the specified identifier, or null if no such product exists.</returns>
-    Task<Product?> GetProductByIdAsync(int id);
+    Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10);
 
     /// <summary>
     /// Creates a new product in the system.

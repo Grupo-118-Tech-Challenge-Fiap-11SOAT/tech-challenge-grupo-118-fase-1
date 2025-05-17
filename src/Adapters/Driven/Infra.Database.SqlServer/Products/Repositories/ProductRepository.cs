@@ -35,15 +35,19 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
-    public async Task<Product?> GetProductByIdAsync(int id)
+    public async Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10)
     {
-        var productEntity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+        var productQuery = _dbContext.Products.AsQueryable();
+
+        if (includeImages)
+            productQuery = productQuery.Include(p => p.Images.Skip(skip).Take(take));
+
+        var productEntity = await productQuery.FirstOrDefaultAsync(p => p.Id == id);
 
         if (productEntity is null)
             return null;
 
         var product = productEntity.ToDomain();
-
         return product;
     }
 
@@ -95,7 +99,7 @@ public class ProductRepository : IProductRepository
     public async Task<int> CreateImageProductAsync(ImageProduct imageProduct)
     {
         var imageProductEntity = new Entities.ImageProduct();
-        
+
         imageProductEntity.DomainToEntity(imageProduct);
 
         _dbContext.ImageProducts.Add(imageProductEntity);

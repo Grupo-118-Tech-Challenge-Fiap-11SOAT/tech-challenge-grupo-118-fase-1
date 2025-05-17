@@ -29,7 +29,7 @@ public class ProductsController : ControllerBase
     /// <param name="skip">The number of products to skip from the start of the list.</param>
     /// <param name="take">The maximum number of products to retrieve.</param>
     /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
-    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of products if available, or a no content response if no products are found.</returns>
+    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of products if available, or a no-content response if no products are found.</returns>
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
@@ -47,7 +47,7 @@ public class ProductsController : ControllerBase
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to retrieve.</param>
-    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing the product details if found, or a no content response if not found.</returns>
+    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing the product details if found, or a no-content response if not found.</returns>
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet("{productId}")]
@@ -107,7 +107,7 @@ public class ProductsController : ControllerBase
     /// <param name="productId">The unique identifier of the product for which images are being retrieved.</param>
     /// <param name="skip">The number of images to skip from the start of the list.</param>
     /// <param name="take">The maximum number of images to retrieve.</param>
-    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of ImageProductDto objects if found, or a no content response if no images are available.</returns>
+    /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of ImageProductDto objects if found, or a no-content response if no images are available.</returns>
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -151,7 +151,7 @@ public class ProductsController : ControllerBase
     /// <returns>A task representing the asynchronous operation that removes the specified product image.</returns>
     [HttpDelete("{productId}/images/{imageId}")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]    
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAsync(int productId, int imageId)
     {
         var affectedRows = await _productManager.DeleteImageProductAsync(productId, imageId);
@@ -172,14 +172,22 @@ public class ProductsController : ControllerBase
     [HttpPut("{productId}/images/{imageId}")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutAsync(int productId, int imageId,
         [FromBody] ImageProductDto productImageDto)
     {
-        var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto);
+        try
+        {
+            var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto);
 
-        if (affectedRows > 0)
-            return Ok(affectedRows);
+            if (affectedRows > 0)
+                return Ok(affectedRows);
 
-        return Accepted();
+            return Accepted();
+        }
+        catch (DomainException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }

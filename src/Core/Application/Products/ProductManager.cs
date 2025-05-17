@@ -14,6 +14,8 @@ public class ProductManager : IProductManager
         _productRepository = productRepository;
     }
 
+    #region Product Methods
+
     public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,
         bool searchActiveProducts = false)
     {
@@ -27,9 +29,9 @@ public class ProductManager : IProductManager
         return productDto;
     }
 
-    public async Task<ProductDto?> GetProductByIdAsync(int id)
+    public async Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10)
     {
-        var product = await _productRepository.GetProductByIdAsync(id);
+        var product = await _productRepository.GetProductByIdAsync(id, includeImages, skip, take);
 
         if (product is null)
             return null;
@@ -62,31 +64,31 @@ public class ProductManager : IProductManager
         return affectedRows;
     }
 
+    #endregion
+
+    #region Image Product Methods
+
     public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
     {
-        var product = await _productRepository.GetProductByIdAsync(productId);
+        var product = await _productRepository.GetProductByIdAsync(productId, true, skip, take);
 
-        if (product is null)
+        if (product is null && product?.Images?.Count == 0)
             return null;
 
-        var productImages = await _productRepository.GetProductImagesAsync(productId, skip, take);
-
-        if (productImages is null || productImages.Count == 0)
-            return null;
-
-        var productImagesDto = productImages.ConvertAll(pi => new ImageProductDto(pi));
-
+        var productImagesDto = product?.Images?.ConvertAll(pi => new ImageProductDto(pi));
         return productImagesDto;
     }
 
     public async Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto)
     {
-        var product = await _productRepository.GetProductByIdAsync(productId);
+        var product = await _productRepository.GetProductByIdAsync(productId, true);
 
         if (product is null)
             return 0;
 
         var imageProduct = new ImageProduct(product.Id, imageProductDto.Position, imageProductDto.Url);
+
+        product.AddImage(imageProduct);
 
         return await _productRepository.CreateImageProductAsync(imageProduct);
     }
@@ -98,9 +100,18 @@ public class ProductManager : IProductManager
 
     public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto)
     {
+        var product = await _productRepository.GetProductByIdAsync(productId, true);
+
+        if (product is null)
+            return 0;
+
         var imageProduct = new ImageProduct(productId, imageProductDto.Position, imageProductDto.Url);
+
+        product.ChangeImage(imageProduct);
 
         var affectedRows = await _productRepository.UpdateImageProductAsync(productId, imageId, imageProduct);
         return affectedRows;
     }
+
+    #endregion
 }

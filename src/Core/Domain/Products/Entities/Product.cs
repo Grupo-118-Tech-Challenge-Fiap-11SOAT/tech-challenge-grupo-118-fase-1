@@ -5,6 +5,8 @@ namespace Domain.Products.Entities;
 
 public class Product : BaseDomain
 {
+    private const int MAX_IMAGES = 5;
+
     public int Id { get; private set; }
 
     public string Name { get; set; }
@@ -24,7 +26,8 @@ public class Product : BaseDomain
         ProductType productType,
         decimal price,
         bool isActive,
-        int id = 0)
+        int id = 0,
+        List<ImageProduct>? images = null)
     {
         if (id != 0)
             this.Id = id;
@@ -37,13 +40,27 @@ public class Product : BaseDomain
 
         CheckProductValue();
 
-        Images = new List<ImageProduct>();
+        Images = images ?? new List<ImageProduct>();
     }
 
     public void AddImage(ImageProduct image)
     {
-        if (this.Images.Any(im => im.Id.Equals(image.Id)))
-            this.Images.Add(image);
+        if (this.Images.Count == MAX_IMAGES)
+            throw new ProductsException("The product already has the maximum number of images.");
+
+        if (this.Images.Any(im => im.Url.Equals(image.Url)))
+            throw new ProductsException("The product already has this image.");
+        
+        this.Images.Add(image);
+    }
+
+    public void ChangeImage(ImageProduct image)
+    {
+        if (this.Images.Any(i => i.Url.Equals(image.Url)))
+            throw new ProductsException("The product already has this image.");
+
+        var index = this.Images.FindIndex(i => i.Id == image.Id);
+        this.Images[index] = image;
     }
 
     private void CheckProductValue()

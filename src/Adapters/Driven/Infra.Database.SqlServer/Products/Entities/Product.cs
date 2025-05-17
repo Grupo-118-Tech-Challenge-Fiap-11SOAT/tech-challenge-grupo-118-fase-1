@@ -19,12 +19,15 @@ public class Product : BaseEntity
 
     public override Domain.Products.Entities.Product ToDomain()
     {
+        var imageProducts = this.Images.Select(ip => ip.ToDomain()).ToList();
+
         return new Domain.Products.Entities.Product(this.Name,
             this.Description,
             this.Category,
             this.Price,
             this.IsActive,
-            this.Id);
+            this.Id,
+            imageProducts);
     }
 
     public override void DomainToEntity(BaseDomain domain)

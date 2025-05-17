@@ -17,8 +17,11 @@ public interface IProductManager
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the product to retrieve.</param>
+    /// <param name="includeImages">A flag indicating whether to include product images in the result.</param>
+    /// <param name="skip">The number of image product items to skip.</param>
+    /// <param name="take">The number of image product items to retrieve.</param>  
     /// <returns>A task representing an asynchronous operation that returns a ProductDto object if found, or null if the product does not exist.</returns>
-    Task<ProductDto?> GetProductByIdAsync(int id);
+    Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10);
 
     /// <summary>
     /// Creates a new product using the provided product details.
