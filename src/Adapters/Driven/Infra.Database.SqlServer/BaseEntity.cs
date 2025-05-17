@@ -9,4 +9,6 @@ public abstract class BaseEntity
     public DateTimeOffset UpdatedAt { get; set; }
 
     public abstract BaseDomain ToDomain();
+
+    public abstract void DomainToEntity(BaseDomain domain);
 }

@@ -1,3 +1,4 @@
+using Domain;
 using Domain.Products.ValueObjects;
 
 namespace Infra.Database.SqlServer.Products.Entities;
@@ -26,5 +27,21 @@ public class Product : BaseEntity
             this.Price,
             this.IsActive,
             this.Id);
+    }
+
+    public override void DomainToEntity(BaseDomain domain)
+    {
+        var product = (Domain.Products.Entities.Product)domain;
+
+        this.Name = product.Name;
+        this.Description = product.Description;
+        this.Category = product.Category;
+        this.Price = product.Price;
+        this.IsActive = product.IsActive;
+
+        if (this.UpdatedAt != default)
+            this.UpdatedAt=DateTimeOffset.UtcNow;
+        
+        this.UpdatedAt = DateTimeOffset.UtcNow;
     }
 }

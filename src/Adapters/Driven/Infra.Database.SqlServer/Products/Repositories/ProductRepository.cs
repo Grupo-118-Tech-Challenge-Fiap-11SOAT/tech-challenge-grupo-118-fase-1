@@ -49,14 +49,9 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> CreateProductAsync(Product product)
     {
-        var productEntity = new Entities.Product
-        {
-            Category = product.Category,
-            Description = product.Description,
-            IsActive = product.IsActive,
-            Name = product.Name,
-            Price = product.Price,
-        };
+        var productEntity = new Entities.Product();
+
+        productEntity.DomainToEntity(product);
 
         _dbContext.Products.Add(productEntity);
         await _dbContext.SaveChangesAsync();
@@ -71,12 +66,7 @@ public class ProductRepository : IProductRepository
         if (productEntity is null)
             return 0;
 
-        productEntity.Name = product.Name;
-        productEntity.Description = product.Description;
-        productEntity.Category = product.Category;
-        productEntity.Price = product.Price;
-        productEntity.IsActive = product.IsActive;
-        productEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        productEntity.DomainToEntity(product);
 
         var affectedRows = await _dbContext.SaveChangesAsync();
 
@@ -104,12 +94,9 @@ public class ProductRepository : IProductRepository
 
     public async Task<int> CreateImageProductAsync(ImageProduct imageProduct)
     {
-        var imageProductEntity = new Entities.ImageProduct
-        {
-            ProductId = imageProduct.ProductId,
-            Position = imageProduct.Position,
-            Url = imageProduct.Url
-        };
+        var imageProductEntity = new Entities.ImageProduct();
+        
+        imageProductEntity.DomainToEntity(imageProduct);
 
         _dbContext.ImageProducts.Add(imageProductEntity);
         await _dbContext.SaveChangesAsync();
