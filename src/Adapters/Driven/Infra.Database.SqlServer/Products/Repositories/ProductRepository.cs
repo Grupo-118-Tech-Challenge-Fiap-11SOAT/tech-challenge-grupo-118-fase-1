@@ -25,6 +25,7 @@ public class ProductRepository : IProductRepository
         var productsEntities = await query.OrderBy(p => p.Id)
             .Skip(skip)
             .Take(take)
+            .AsNoTracking()
             .ToListAsync();
 
         if (productsEntities.Count == 0)
@@ -89,6 +90,7 @@ public class ProductRepository : IProductRepository
             .ThenBy(ip => ip.Id)
             .Skip(skip)
             .Take(take)
+            .AsNoTracking()
             .ToListAsync();
 
         var imageProducts = imageEntities.ConvertAll(ip => ip.ToDomain());
