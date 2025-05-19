@@ -14,7 +14,7 @@ public class ImageProduct : BaseEntity
 
     public override Domain.Products.Entities.ImageProduct ToDomain()
     {
-        return new Domain.Products.Entities.ImageProduct(this.ProductId, this.Position, this.Url);
+        return new Domain.Products.Entities.ImageProduct(this.ProductId, this.Position, this.Url, this.Id);
     }
 
     public override void DomainToEntity(BaseDomain domain)

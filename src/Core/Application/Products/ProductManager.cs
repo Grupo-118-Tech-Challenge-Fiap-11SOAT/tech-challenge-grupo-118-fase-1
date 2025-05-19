@@ -17,9 +17,9 @@ public class ProductManager : IProductManager
     #region Product Methods
 
     public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,
-        bool searchActiveProducts = false)
+        bool searchActiveProducts = false, CancellationToken cancellationToken = default)
     {
-        var products = await _productRepository.GetProductsAsync(skip, take, searchActiveProducts);
+        var products = await _productRepository.GetProductsAsync(skip, take, searchActiveProducts, cancellationToken: cancellationToken);
 
         if (products is null || products.Count == 0)
             return null;
@@ -29,9 +29,9 @@ public class ProductManager : IProductManager
         return productDto;
     }
 
-    public async Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10)
+    public async Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10, CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetProductByIdAsync(id, includeImages, skip, take);
+        var product = await _productRepository.GetProductByIdAsync(id, includeImages, skip, take, cancellationToken: cancellationToken);
 
         if (product is null)
             return null;
@@ -40,7 +40,7 @@ public class ProductManager : IProductManager
         return productDto;
     }
 
-    public async Task<int> CreateProductAsync(ProductDto productDto)
+    public async Task<int> CreateProductAsync(ProductDto productDto, CancellationToken cancellationToken = default)
     {
         var product = new Product(productDto.Name,
             productDto.Description,
@@ -48,11 +48,11 @@ public class ProductManager : IProductManager
             productDto.Price,
             productDto.IsActive);
 
-        var productId = await _productRepository.CreateProductAsync(product);
+        var productId = await _productRepository.CreateProductAsync(product, cancellationToken: cancellationToken);
         return productId;
     }
 
-    public async Task<int> UpdateProductAsync(int productId, ProductDto productDto)
+    public async Task<int> UpdateProductAsync(int productId, ProductDto productDto, CancellationToken cancellationToken = default)
     {
         var product = new Product(productDto.Name,
             productDto.Description,
@@ -60,7 +60,7 @@ public class ProductManager : IProductManager
             productDto.Price,
             productDto.IsActive);
 
-        var affectedRows = await _productRepository.UpdateProductAsync(productId, product);
+        var affectedRows = await _productRepository.UpdateProductAsync(productId, product, cancellationToken: cancellationToken);
         return affectedRows;
     }
 
@@ -68,9 +68,10 @@ public class ProductManager : IProductManager
 
     #region Image Product Methods
 
-    public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10)
+    public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetProductByIdAsync(productId, true, skip, take);
+        var product = await _productRepository.GetProductByIdAsync(productId, true, skip, take, cancellationToken: cancellationToken);
 
         if (product is null && product?.Images?.Count == 0)
             return null;
@@ -79,9 +80,10 @@ public class ProductManager : IProductManager
         return productImagesDto;
     }
 
-    public async Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto)
+    public async Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto,
+        CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetProductByIdAsync(productId, true);
+        var product = await _productRepository.GetProductByIdAsync(productId, true, cancellationToken: cancellationToken);
 
         if (product is null)
             return 0;
@@ -90,17 +92,19 @@ public class ProductManager : IProductManager
 
         product.AddImage(imageProduct);
 
-        return await _productRepository.CreateImageProductAsync(imageProduct);
+        return await _productRepository.CreateImageProductAsync(imageProduct, cancellationToken: cancellationToken);
     }
 
-    public async Task<int> DeleteImageProductAsync(int productId, int imageProductId)
+    public async Task<int> DeleteImageProductAsync(int productId, int imageProductId,
+        CancellationToken cancellationToken = default)
     {
-        return await _productRepository.DeleteImageProductAsync(productId, imageProductId);
+        return await _productRepository.DeleteImageProductAsync(productId, imageProductId, cancellationToken: cancellationToken);
     }
 
-    public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto)
+    public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto,
+        CancellationToken cancellationToken = default)
     {
-        var product = await _productRepository.GetProductByIdAsync(productId, true);
+        var product = await _productRepository.GetProductByIdAsync(productId, true, cancellationToken: cancellationToken);
 
         if (product is null)
             return 0;
@@ -109,7 +113,7 @@ public class ProductManager : IProductManager
 
         product.ChangeImage(imageProduct);
 
-        var affectedRows = await _productRepository.UpdateImageProductAsync(productId, imageId, imageProduct);
+        var affectedRows = await _productRepository.UpdateImageProductAsync(productId, imageId, imageProduct, cancellationToken: cancellationToken);
         return affectedRows;
     }
 

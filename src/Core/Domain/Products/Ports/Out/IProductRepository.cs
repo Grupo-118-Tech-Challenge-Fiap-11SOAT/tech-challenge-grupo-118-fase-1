@@ -10,8 +10,9 @@ public interface IProductRepository
     /// <param name="skip">The number of items to skip.</param>
     /// <param name="take">The number of items to retrieve.</param>
     /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of products.</returns>
-    Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false);
+    Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a product by its unique identifier.
@@ -20,48 +21,43 @@ public interface IProductRepository
     /// <param name="includeImages">A flag indicating whether to include product images in the result.</param>
     /// <param name="skip">The number of image product items to skip.</param>
     /// <param name="take">The number of image product items to retrieve.</param>   
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The product matching the specified identifier, or null if no such product exists.</returns>
-    Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10);
+    Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new product in the system.
     /// </summary>
     /// <param name="product">The product entity containing the details of the product to be created.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The unique identifier of the created product.</returns>
-    Task<int> CreateProductAsync(Product product);
+    Task<int> CreateProductAsync(Product product, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product with the provided details.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to be updated.</param>
     /// <param name="product">The updated product data.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The number of affected rows in the database.</returns>
-    Task<int> UpdateProductAsync(int productId, Product product);
-
-    /// <summary>
-    /// Retrieves a list of product images based on the product identifier and pagination parameters.
-    /// </summary>
-    /// <param name="productId">The unique identifier of the product whose images are to be retrieved.</param>
-    /// <param name="skip">The number of items to skip.</param>
-    /// <param name="take">The number of items to retrieve.</param>
-    /// <returns>A list of product images associated with the specified product.</returns>
-    Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10);
+    Task<int> UpdateProductAsync(int productId, Product product, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Adds a new image associated with a specific product.
     /// </summary>
-    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
     /// <param name="imageProduct">The image product entity containing the image details to be created.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The unique identifier of the created image product.</returns>
-    Task<int> CreateImageProductAsync(ImageProduct imageProduct);
+    Task<int> CreateImageProductAsync(ImageProduct imageProduct, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes an image associated with a specific product.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
     /// <param name="imageId">The unique identifier of the image to be deleted.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the number of records affected.</returns>
-    Task<int> DeleteImageProductAsync(int productId, int imageId);
+    Task<int> DeleteImageProductAsync(int productId, int imageId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product image with the provided details.
@@ -69,6 +65,7 @@ public interface IProductRepository
     /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
     /// <param name="imageId">The unique identifier of the image to be updated.</param>
     /// <param name="imageProduct">The updated details of the image, including position and URL.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The number of rows affected by the update operation.</returns>
-    Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct);
+    Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct, CancellationToken cancellationToken = default);
 }
