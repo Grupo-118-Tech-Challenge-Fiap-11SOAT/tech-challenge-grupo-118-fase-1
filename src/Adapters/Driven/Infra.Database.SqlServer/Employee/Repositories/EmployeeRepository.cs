@@ -19,18 +19,10 @@ public class EmployeeRepository : IEmployeeRepository
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving changes to the database.</exception>
     public async Task<Domain.Employee.Entities.Employee> CreateAsync(Domain.Employee.Entities.Employee employee, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            await _context.Employees.AddAsync(employee);
-            await _context.SaveChangesAsync(cancellationToken);
+        await _context.Employees.AddAsync(employee, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            return employee;
-        }
-        catch (Exception ex)
-        {
-
-            throw;
-        }
+        return employee;
     }
 
 

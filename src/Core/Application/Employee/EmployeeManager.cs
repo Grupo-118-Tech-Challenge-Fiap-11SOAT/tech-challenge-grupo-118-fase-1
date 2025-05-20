@@ -47,8 +47,7 @@ public class EmployeeManager : IEmployeeManager
                                    ex is SurnameNullOrEmptyException ||
                                    ex is EmailNullOrEmptyException ||
                                    ex is BirthDayMinValueException ||
-                                   ex is PasswordNullOrEmptyException ||
-                                   ex is not null)
+                                   ex is PasswordNullOrEmptyException)
         {
             return new EmployeeDto
             {
@@ -173,8 +172,7 @@ public class EmployeeManager : IEmployeeManager
                                    ex is SurnameNullOrEmptyException ||
                                    ex is EmailNullOrEmptyException ||
                                    ex is BirthDayMinValueException ||
-                                   ex is PasswordNullOrEmptyException ||
-                                   ex is not null)
+                                   ex is PasswordNullOrEmptyException)
         {
             return new EmployeeDto
             {

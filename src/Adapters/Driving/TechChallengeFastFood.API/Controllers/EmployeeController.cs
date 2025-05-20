@@ -25,17 +25,14 @@ public class EmployeeController : ControllerBase
     /// <param name="employeeDto">The data transfer object containing the details of the employee to be created.</param>  
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
     /// <returns>An <see cref="EmployeeDto"/> object representing the created employee, or a 400 status if the creation fails.</returns>  
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status400BadRequest)]
     [HttpPost]
-    public async Task<ActionResult<EmployeeDto>> Post([FromBody] EmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<EmployeeDto>> PostAsync([FromBody] EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.CreateAsync(employeeDto, cancellationToken);
 
-        if (result.Error)
-        {
-            return BadRequest(result);
-        }
-
-        return Created("", result);
+        return result.Error ? BadRequest(result) : CreatedAtAction(nameof(PostAsync), result);
     }
 
     /// <summary>  
@@ -45,18 +42,15 @@ public class EmployeeController : ControllerBase
     /// <param name="employeeDto">The updated employee data.</param>  
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
     /// <returns>An <see cref="EmployeeDto"/> object representing the updated employee, or a 400 status if the update fails.</returns>  
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
-    public async Task<ActionResult<EmployeeDto>> Update(int id, [FromBody] EmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<ActionResult<EmployeeDto>> PutAsync(int id, [FromBody] EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         employeeDto.Id = id;
         var result = await _employeeManager.UpdateAsync(employeeDto, cancellationToken);
 
-        if (result.Error)
-        {
-            return BadRequest(result);
-        }
-
-        return Ok(result);
+        return result.Error ? BadRequest(result) : Ok(result);
     }
 
     /// <summary>  
@@ -65,8 +59,10 @@ public class EmployeeController : ControllerBase
     /// <param name="id">The unique identifier of the employee to delete.</param>  
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
     /// <returns>The ID of the deleted employee if successful.</returns>  
-    [HttpDelete]
-    public async Task<ActionResult<int>> Delete([FromQuery] int id, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpDelete("id")]
+    public async Task<ActionResult<int>> Delete(int id, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.DeleteAsync(id, cancellationToken);
 
@@ -80,10 +76,14 @@ public class EmployeeController : ControllerBase
     /// <param name="skip">The number of records to skip for pagination. Default is 0.</param>  
     /// <param name="take">The number of records to take for pagination. Default is 10.</param>  
     /// <returns>A list of <see cref="EmployeeDto"/> objects representing the employees.</returns>  
+    [ProducesResponseType(typeof(List<EmployeeDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
     public async Task<ActionResult<List<EmployeeDto>>> GetAll(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
-        return Ok(await _employeeManager.GetAllAsync(cancellationToken, skip, take));
+        var employees = await _employeeManager.GetAllAsync(cancellationToken, skip, take);
+
+        return employees is { Count: > 0 } ? Ok(employees) : NoContent();
     }
 
     /// <summary>  
@@ -92,9 +92,13 @@ public class EmployeeController : ControllerBase
     /// <param name="id">The unique identifier of the employee to retrieve.</param>  
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
     /// <returns>An <see cref="EmployeeDto"/> object representing the employee, or a 404 status if not found.</returns>  
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}")]
     public async Task<ActionResult<EmployeeDto>> GetById(int id, CancellationToken cancellationToken)
     {
-        return Ok(await _employeeManager.GetByIdAsync(id, cancellationToken));
+        var employee = await _employeeManager.GetByIdAsync(id, cancellationToken);
+
+        return employee is null ? NotFound() : Ok(employee);
     }
 }

@@ -43,7 +43,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
 
         builder.Property(builder => builder.UpdatedAt)
             .HasColumnType("datetimeoffset")
-            .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+            .HasDefaultValueSql("SYSDATETIMEOFFSET()")
+            .ValueGeneratedOnUpdate();
 
         builder.Property(builder => builder.IsActive)
             .IsRequired()

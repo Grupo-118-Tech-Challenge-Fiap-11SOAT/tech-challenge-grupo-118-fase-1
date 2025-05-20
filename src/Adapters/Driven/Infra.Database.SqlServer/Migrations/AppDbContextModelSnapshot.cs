@@ -110,7 +110,7 @@ namespace Infra.Database.SqlServer.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ImageProducts");
+                    b.ToTable("ImageProducts", (string)null);
                 });
 
             modelBuilder.Entity("Infra.Database.SqlServer.Products.Entities.Product", b =>
@@ -140,7 +140,7 @@ namespace Infra.Database.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Infra.Database.SqlServer.Products.Entities.ImageProduct", b =>
