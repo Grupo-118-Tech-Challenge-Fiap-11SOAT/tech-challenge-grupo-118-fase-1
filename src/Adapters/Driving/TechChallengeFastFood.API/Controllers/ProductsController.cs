@@ -34,9 +34,12 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
-    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10, bool searchActiveProducts = false)
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10,
+        bool searchActiveProducts = false)
     {
-        var products = await _productManager.GetProductsAsync(skip, take, searchActiveProducts, cancellationToken: cancellationToken);
+        var products =
+            await _productManager.GetProductsAsync(skip, take, searchActiveProducts,
+                cancellationToken: cancellationToken);
 
         if (products is null || products.Count == 0)
             return NoContent();
@@ -53,6 +56,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet("{productId}")]
+    [ActionName("GetProductAsync")]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
         var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
@@ -77,7 +81,7 @@ public class ProductsController : ControllerBase
         try
         {
             var productId = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
-            return new ObjectResult(productId) { StatusCode = StatusCodes.Status201Created };
+            return CreatedAtAction("GetProductAsync", new { productId }, productId);
         }
         catch (DomainException e)
         {
@@ -95,9 +99,11 @@ public class ProductsController : ControllerBase
     [HttpPut("{productId}")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId, [FromBody] ProductDto productDto)
+    public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId,
+        [FromBody] ProductDto productDto)
     {
-        var affectedRows = await _productManager.UpdateProductAsync(productId, productDto, cancellationToken: cancellationToken);
+        var affectedRows =
+            await _productManager.UpdateProductAsync(productId, productDto, cancellationToken: cancellationToken);
 
         if (affectedRows > 0)
             return Ok(affectedRows);
@@ -116,9 +122,12 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0, int take = 10)
+    [ActionName("GetImageProduct")]
+    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0,
+        int take = 10)
     {
-        var images = await _productManager.GetProductImagesAsync(productId, skip, take, cancellationToken: cancellationToken);
+        var images =
+            await _productManager.GetProductImagesAsync(productId, skip, take, cancellationToken: cancellationToken);
 
         if (images is null || images.Count == 0)
             return NoContent();
@@ -136,12 +145,14 @@ public class ProductsController : ControllerBase
     [HttpPost("{productId}/images")]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId, [FromBody] ImageProductDto productImageDto)
+    public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId,
+        [FromBody] ImageProductDto productImageDto)
     {
         try
         {
-            var imageId = await _productManager.CreateImageProductAsync(productId, productImageDto, cancellationToken: cancellationToken);
-            return new ObjectResult(imageId) { StatusCode = StatusCodes.Status201Created };
+            var imageId = await _productManager.CreateImageProductAsync(productId, productImageDto,
+                cancellationToken: cancellationToken);
+            return CreatedAtAction("GetProductAsync", new { productId }, productId);
         }
         catch (DomainException e)
         {
@@ -161,7 +172,8 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteAsync(CancellationToken cancellationToken, int productId, int imageId)
     {
-        var affectedRows = await _productManager.DeleteImageProductAsync(productId, imageId, cancellationToken: cancellationToken);
+        var affectedRows =
+            await _productManager.DeleteImageProductAsync(productId, imageId, cancellationToken: cancellationToken);
 
         if (affectedRows > 0)
             return Ok();
@@ -186,7 +198,8 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto, cancellationToken: cancellationToken);
+            var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
+                cancellationToken: cancellationToken);
 
             if (affectedRows > 0)
                 return Ok(affectedRows);
