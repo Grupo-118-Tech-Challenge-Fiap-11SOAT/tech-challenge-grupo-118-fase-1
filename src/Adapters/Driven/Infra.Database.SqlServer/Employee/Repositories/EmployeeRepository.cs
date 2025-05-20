@@ -17,12 +17,12 @@ public class EmployeeRepository : IEmployeeRepository
     /// <param name="employee">The employee entity to be added to the database.</param>
     /// <returns>The created employee entity.</returns>
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving changes to the database.</exception>
-    public async Task<Domain.Employee.Entities.Employee> Create(Domain.Employee.Entities.Employee employee)
+    public async Task<Domain.Employee.Entities.Employee> CreateAsync(Domain.Employee.Entities.Employee employee, CancellationToken cancellationToken = default)
     {
         try
         {
             await _context.Employees.AddAsync(employee);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return employee;
         }
@@ -40,20 +40,25 @@ public class EmployeeRepository : IEmployeeRepository
     /// <param name="employee">The employee entity to be removed from the database.</param>
     /// <returns>The number of state entries written to the database.</returns>
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving changes to the database.</exception>
-    public async Task<int> Delete(Domain.Employee.Entities.Employee employee)
+    public async Task<int> DeleteAsync(Domain.Employee.Entities.Employee employee, CancellationToken cancellationToken = default)
     {
         _context.Employees.Remove(employee);
-        return await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>  
     /// Asynchronously retrieves all employee records from the database.  
     /// </summary>  
     /// <returns>A list of all employee entities, or an empty list if no employees are found.</returns>  
-    public async Task<List<Domain.Employee.Entities.Employee?>> GetAll()
+    public async Task<List<Domain.Employee.Entities.Employee?>> GetAllAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {
-        return await _context.Employees
-            .ToListAsync();
+        var employees = await _context.Employees
+            .Skip(skip)
+            .Take(take)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return employees;
     }
 
     /// <summary>  
@@ -61,10 +66,10 @@ public class EmployeeRepository : IEmployeeRepository
     /// </summary>  
     /// <param name="id">The unique identifier of the employee to retrieve.</param>  
     /// <returns>The employee entity if found; otherwise, null.</returns>  
-    public async Task<Domain.Employee.Entities.Employee?> GetById(int id)
+    public async Task<Domain.Employee.Entities.Employee?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Employees
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     /// <summary>  
@@ -73,10 +78,10 @@ public class EmployeeRepository : IEmployeeRepository
     /// <param name="employee">The employee entity with updated information to be saved to the database.</param>  
     /// <returns>The updated employee entity.</returns>  
     /// <exception cref="DbUpdateException">Thrown if an error occurs while saving changes to the database.</exception>  
-    public async Task<Domain.Employee.Entities.Employee> Update(Domain.Employee.Entities.Employee employee)
+    public async Task<Domain.Employee.Entities.Employee> UpdateAsync(Domain.Employee.Entities.Employee employee, CancellationToken cancellationToken = default)
     {
         _context.Update(employee);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return employee;
     }

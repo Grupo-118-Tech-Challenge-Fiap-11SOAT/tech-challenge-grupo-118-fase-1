@@ -1,6 +1,6 @@
 ﻿namespace Application.Base.Dtos;
 
-public class PersonDto : BaseDto
+public abstract class PersonDto : BaseDto
 {
     public string Cpf { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

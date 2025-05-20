@@ -54,9 +54,6 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
             .HasConversion<string>()
             .HasMaxLength(50);
 
-        builder.HasIndex(builder => builder.Id)
-            .HasDatabaseName("IX_Employees_Id");
-
         builder.HasIndex(builder => builder.Email)
             .IsUnique()
             .HasDatabaseName("IX_Employees_Email");

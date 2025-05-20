@@ -1,6 +1,6 @@
 ﻿using Domain.Employee.Dtos;
 using Domain.Employee.Exceptions;
-using Domain.Employee.Ports;
+using Domain.Employee.Ports.In;
 using Domain.Employee.Ports.Out;
 
 namespace Application.Employee;
@@ -28,13 +28,16 @@ public class EmployeeManager : IEmployeeManager
     /// <exception cref="EmailNullOrEmptyException">Thrown when the email is null or empty.</exception>
     /// <exception cref="BirthDayMinValueException">Thrown when the birth date is invalid.</exception>
     /// <exception cref="PasswordNullOrEmptyException">Thrown when the password is null or empty.</exception>
-    public async Task<EmployeeDto> Create(EmployeeDto employeeDto)
+    public async Task<EmployeeDto> CreateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         try
         {
             var employee = EmployeeDto.ToEntity(employeeDto);
 
-            await employee.Save(_employeeRepository);
+            employee.ValidateEmployee();
+
+            await _employeeRepository.CreateAsync(employee, cancellationToken);
+
             employeeDto.Id = employee.Id;
 
             return employeeDto;
@@ -49,7 +52,7 @@ public class EmployeeManager : IEmployeeManager
         {
             return new EmployeeDto
             {
-                ErrorMessage = ex.Message,
+                ErrorMessage = $"Message: {ex.Message}",
                 Error = true
             };
         }
@@ -66,15 +69,15 @@ public class EmployeeManager : IEmployeeManager
     /// <item><description>The number of records affected if the employee is successfully deleted.</description></item>
     /// </list>
     /// </returns>
-    public async Task<int> Delete(int id)
+    public async Task<int> DeleteAsync(int id, CancellationToken cancellationToken)
     {
-        var employee = await _employeeRepository.GetById(id);
+        var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
         if (employee == null)
         {
             return 0;
         }
 
-        return await _employeeRepository.Delete(employee);
+        return await _employeeRepository.DeleteAsync(employee, cancellationToken);
     }
 
     /// <summary>  
@@ -83,14 +86,17 @@ public class EmployeeManager : IEmployeeManager
     /// <returns>  
     /// A task that represents the asynchronous operation. The task result contains a list of <see cref="EmployeeDto"/> objects.  
     /// </returns>  
-    public async Task<List<EmployeeDto>> GetAll()
+    public async Task<List<EmployeeDto>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
-        var employeeList = await _employeeRepository.GetAll();
+        var employeeList = await _employeeRepository.GetAllAsync(cancellationToken, skip, take);
+
         var result = new List<EmployeeDto>(employeeList.Count);
+
         foreach (var employee in employeeList)
         {
             result.Add(new EmployeeDto(employee));
         }
+
         return result;
     }
 
@@ -102,9 +108,9 @@ public class EmployeeManager : IEmployeeManager
     /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeDto"/> object  
     /// representing the employee if found, or an empty <see cref="EmployeeDto"/> if the employee does not exist.  
     /// </returns>  
-    public async Task<EmployeeDto> GetById(int id)
+    public async Task<EmployeeDto> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var employee = await _employeeRepository.GetById(id);
+        var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
         if (employee == null)
         {
             return new EmployeeDto
@@ -131,11 +137,11 @@ public class EmployeeManager : IEmployeeManager
     /// <exception cref="EmailNullOrEmptyException">Thrown when the email is null or empty.</exception>  
     /// <exception cref="BirthDayMinValueException">Thrown when the birth date is invalid.</exception>  
     /// <exception cref="PasswordNullOrEmptyException">Thrown when the password is null or empty.</exception>  
-    public async Task<EmployeeDto> Update(EmployeeDto employeeDto)
+    public async Task<EmployeeDto> UpdateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _employeeRepository.GetById(employeeDto.Id);
+            var employee = await _employeeRepository.GetByIdAsync(employeeDto.Id, cancellationToken);
 
             if (employee == null)
             {
@@ -156,7 +162,9 @@ public class EmployeeManager : IEmployeeManager
             employee.IsActive = employeeDto.IsActive;
             employee.UpdatedAt = DateTime.UtcNow;
 
-            var updatedEmployee = await _employeeRepository.Update(employee);
+            employee.ValidateEmployee();
+
+            var updatedEmployee = await _employeeRepository.UpdateAsync(employee, cancellationToken);
 
             return EmployeeDto.ToDto(updatedEmployee);
         }
@@ -170,7 +178,7 @@ public class EmployeeManager : IEmployeeManager
         {
             return new EmployeeDto
             {
-                ErrorMessage = ex.Message,
+                ErrorMessage = $"Message: {ex.Message}",
                 Error = true
             };
         }
