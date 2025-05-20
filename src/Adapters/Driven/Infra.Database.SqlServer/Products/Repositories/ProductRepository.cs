@@ -54,7 +54,7 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<int> CreateProductAsync(Product product, CancellationToken cancellationToken = default)
+    public async Task<Product> CreateProductAsync(Product product, CancellationToken cancellationToken = default)
     {
         var productEntity = new Entities.Product();
 
@@ -63,29 +63,29 @@ public class ProductRepository : IProductRepository
         _dbContext.Products.Add(productEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return productEntity.Id;
+        return productEntity.ToDomain();
     }
 
-    public async Task<int> UpdateProductAsync(int productId, Product product,
+    public async Task<Product?> UpdateProductAsync(int productId, Product product,
         CancellationToken cancellationToken = default)
     {
         var productEntity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
 
         if (productEntity is null)
-            return 0;
+            return null;
 
         productEntity.DomainToEntity(product);
 
         var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return affectedRows;
+        return productEntity.ToDomain();
     }
 
     #endregion
 
     #region Image Products
     
-    public async Task<int> CreateImageProductAsync(ImageProduct imageProduct,
+    public async Task<ImageProduct> CreateImageProductAsync(ImageProduct imageProduct,
         CancellationToken cancellationToken = default)
     {
         var imageProductEntity = new Entities.ImageProduct();
@@ -95,7 +95,7 @@ public class ProductRepository : IProductRepository
         _dbContext.ImageProducts.Add(imageProductEntity);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return imageProductEntity.Id;
+        return imageProductEntity.ToDomain();
     }
 
     public async Task<int> DeleteImageProductAsync(int productId, int imageId,
@@ -113,14 +113,14 @@ public class ProductRepository : IProductRepository
         return affectedRows;
     }
 
-    public async Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct,
+    public async Task<ImageProduct?> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct,
         CancellationToken cancellationToken = default)
     {
         var imageProductEntity =
             await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId, cancellationToken);
 
         if (imageProductEntity is null)
-            return 0;
+            return null;
 
         imageProductEntity.Position = imageProduct.Position;
         imageProductEntity.Url = imageProduct.Url;
@@ -128,7 +128,7 @@ public class ProductRepository : IProductRepository
 
         var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return affectedRows;
+        return imageProductEntity.ToDomain();
     }
 
     #endregion

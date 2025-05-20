@@ -19,7 +19,7 @@ public class Product : BaseDomain
 
     public bool IsActive { get; private set; }
 
-    public List<ImageProduct>? Images { get; private set; }
+    public List<ImageProduct> Images { get; private set; }
 
     public Product(string name,
         string description,
@@ -60,6 +60,10 @@ public class Product : BaseDomain
             throw new ProductsException("The product already has this image.");
 
         var index = this.Images.FindIndex(i => i.Id == image.Id);
+        
+        if (index == -1)
+            return;
+        
         this.Images[index] = image;
     }
 

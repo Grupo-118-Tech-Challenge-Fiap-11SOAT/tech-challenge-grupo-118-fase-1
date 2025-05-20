@@ -31,7 +31,7 @@ public interface IProductManager
     /// <param name="productDto">The details of the product to create, encapsulated in a ProductDto object.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the unique identifier of the created product.</returns>
-    Task<int> CreateProductAsync(ProductDto productDto, CancellationToken cancellationToken = default);
+    Task<ProductDto> CreateProductAsync(ProductDto productDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product with the specified details.
@@ -40,7 +40,7 @@ public interface IProductManager
     /// <param name="productDto">The data transfer object containing updated product details.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the number of rows affected by the update.</returns>
-    Task<int> UpdateProductAsync(int productId, ProductDto productDto, CancellationToken cancellationToken = default);
+    Task<ProductDto?> UpdateProductAsync(int productId, ProductDto productDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves a list of product images associated with a specific product, with pagination.
@@ -59,7 +59,7 @@ public interface IProductManager
     /// <param name="imageProductDto">The details of the image to create, encapsulated in an ImageProductDto object.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the unique identifier of the created product image.</returns>
-    Task<int> CreateImageProductAsync(int productId, ImageProductDto imageProductDto, CancellationToken cancellationToken = default);
+    Task<ImageProductDto?> CreateImageProductAsync(int productId, ImageProductDto imageProductDto, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Deletes an image associated with a specific product.
@@ -78,5 +78,5 @@ public interface IProductManager
     /// <param name="imageProductDto">The updated details of the product image, encapsulated in an ImageProductDto object.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the unique identifier of the updated image.</returns>
-    Task<int> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto, CancellationToken cancellationToken = default);
+    Task<ImageProductDto?> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto, CancellationToken cancellationToken = default);
 }

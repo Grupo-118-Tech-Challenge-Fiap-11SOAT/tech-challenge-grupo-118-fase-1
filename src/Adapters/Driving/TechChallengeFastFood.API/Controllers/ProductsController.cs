@@ -55,8 +55,7 @@ public class ProductsController : ControllerBase
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing the product details if found, or a no-content response if not found.</returns>
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpGet("{productId}")]
-    [ActionName("GetProductAsync")]
+    [HttpGet("{productId}"), ActionName("GetDetailedProduct")]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
         var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
@@ -72,16 +71,16 @@ public class ProductsController : ControllerBase
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="productDto">The product data transfer object containing information about the product to create.</param>
-    /// <returns>The ID of the newly created product.</returns>
-    [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+    /// <returns>The created Product.</returns>
+    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpPost]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, [FromBody] ProductDto productDto)
     {
         try
         {
-            var productId = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
-            return CreatedAtAction("GetProductAsync", new { productId }, productId);
+            var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
+            return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
         }
         catch (DomainException e)
         {
@@ -95,20 +94,20 @@ public class ProductsController : ControllerBase
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="productId">The unique identifier of the product to be updated.</param>
     /// <param name="productDto">The object containing the updated product information.</param>
-    /// <returns>Returns an HTTP result indicating the outcome of the update operation.</returns>
+    /// <returns>Returns an HTTP result indicating the outcome of the update operation with the modified entity.</returns>
     [HttpPut("{productId}")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ProductDto productDto)
     {
-        var affectedRows =
+        var product =
             await _productManager.UpdateProductAsync(productId, productDto, cancellationToken: cancellationToken);
 
-        if (affectedRows > 0)
-            return Ok(affectedRows);
+        if (product is null)
+            return Accepted();
 
-        return Accepted();
+        return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
     }
 
     /// <summary>
@@ -122,7 +121,6 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ActionName("GetImageProduct")]
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0,
         int take = 10)
     {
@@ -150,9 +148,13 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var imageId = await _productManager.CreateImageProductAsync(productId, productImageDto,
+            var createdImageProduct = await _productManager.CreateImageProductAsync(productId, productImageDto,
                 cancellationToken: cancellationToken);
-            return CreatedAtAction("GetProductAsync", new { productId }, productId);
+
+            if (createdImageProduct is null)
+                return Accepted();
+
+            return CreatedAtAction("GetDetailedProduct", new { productId }, createdImageProduct);
         }
         catch (DomainException e)
         {
@@ -198,13 +200,13 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var affectedRows = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
+            var updatedImageProduct = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
                 cancellationToken: cancellationToken);
 
-            if (affectedRows > 0)
-                return Ok(affectedRows);
+            if (updatedImageProduct is null)
+                return Accepted();
 
-            return Accepted();
+            return CreatedAtAction("GetDetailedProduct", new { productId }, updatedImageProduct);
         }
         catch (DomainException e)
         {
