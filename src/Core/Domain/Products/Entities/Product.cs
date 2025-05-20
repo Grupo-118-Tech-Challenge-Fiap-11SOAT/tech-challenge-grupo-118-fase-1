@@ -48,22 +48,16 @@ public class Product : BaseDomain
         if (this.Images.Count == MAX_IMAGES)
             throw new ProductsException("The product already has the maximum number of images.");
 
-        if (this.Images.Any(im => im.Url.Equals(image.Url)))
-            throw new ProductsException("The product already has this image.");
-        
         this.Images.Add(image);
     }
 
     public void ChangeImage(ImageProduct image)
     {
-        if (this.Images.Any(i => i.Url.Equals(image.Url)))
-            throw new ProductsException("The product already has this image.");
-
         var index = this.Images.FindIndex(i => i.Id == image.Id);
-        
+
         if (index == -1)
             return;
-        
+
         this.Images[index] = image;
     }
 

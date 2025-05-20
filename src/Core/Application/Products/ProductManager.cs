@@ -142,5 +142,16 @@ public class ProductManager : IProductManager
         return new ImageProductDto(updatedImageProduct);
     }
 
+    public async Task<ImageProductDto?> GetProductImageByIdAsync(int productId, int imageId, CancellationToken cancellationToken = default)
+    {
+        var imageProduct = await _productRepository.GetImageProductByIdAsync(productId, imageId, cancellationToken);
+
+        if (imageProduct is null)
+            return null;
+        
+        var imageProductDto = new ImageProductDto(imageProduct);
+        return imageProductDto;
+    }
+
     #endregion
 }

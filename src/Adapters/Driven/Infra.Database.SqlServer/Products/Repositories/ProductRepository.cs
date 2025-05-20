@@ -84,7 +84,7 @@ public class ProductRepository : IProductRepository
     #endregion
 
     #region Image Products
-    
+
     public async Task<ImageProduct> CreateImageProductAsync(ImageProduct imageProduct,
         CancellationToken cancellationToken = default)
     {
@@ -102,7 +102,8 @@ public class ProductRepository : IProductRepository
         CancellationToken cancellationToken = default)
     {
         var imageProductEntity =
-            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId, cancellationToken);
+            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId,
+                cancellationToken);
 
         if (imageProductEntity is null)
             return 0;
@@ -117,7 +118,8 @@ public class ProductRepository : IProductRepository
         CancellationToken cancellationToken = default)
     {
         var imageProductEntity =
-            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId, cancellationToken);
+            await _dbContext.ImageProducts.FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId,
+                cancellationToken);
 
         if (imageProductEntity is null)
             return null;
@@ -128,6 +130,20 @@ public class ProductRepository : IProductRepository
 
         var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
 
+        return imageProductEntity.ToDomain();
+    }
+
+    public async Task<ImageProduct?> GetImageProductByIdAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default)
+    {
+        var imageProductEntity =
+            await _dbContext.ImageProducts
+                .AsNoTracking()
+                .FirstOrDefaultAsync(ip => ip.Id == imageId && ip.ProductId == productId, cancellationToken);
+
+        if (imageProductEntity is null)
+            return null;
+        
         return imageProductEntity.ToDomain();
     }
 

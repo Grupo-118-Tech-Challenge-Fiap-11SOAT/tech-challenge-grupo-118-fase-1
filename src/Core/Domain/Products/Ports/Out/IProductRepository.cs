@@ -72,4 +72,14 @@ public interface IProductRepository
     /// <returns>The updated Image Product entity</returns>
     Task<ImageProduct?> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves an image product associated with a specific product by its identifier.
+    /// </summary>
+    /// <param name="productId">The identifier of the product associated with the image.</param>
+    /// <param name="imageId">The identifier of the image product to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The requested image product if found, otherwise null.</returns>
+    Task<ImageProduct?> GetImageProductByIdAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default);
 }

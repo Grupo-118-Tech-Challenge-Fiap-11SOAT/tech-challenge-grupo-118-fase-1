@@ -79,4 +79,14 @@ public interface IProductManager
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the unique identifier of the updated image.</returns>
     Task<ImageProductDto?> UpdateImageProductAsync(int productId, int imageId, ImageProductDto imageProductDto, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves the details of a specific product image by its ID.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
+    /// <param name="imageId">The unique identifier of the image to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task representing an asynchronous operation that returns an ImageProductDto object if found, otherwise null.</returns>
+    Task<ImageProductDto?> GetProductImageByIdAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default);
 }

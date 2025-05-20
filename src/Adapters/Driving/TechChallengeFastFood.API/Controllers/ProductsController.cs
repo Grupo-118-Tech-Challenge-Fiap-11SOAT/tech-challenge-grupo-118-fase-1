@@ -110,6 +110,8 @@ public class ProductsController : ControllerBase
         return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
     }
 
+    #region Image Products Methods
+
     /// <summary>
     /// Retrieves a paginated list of images associated with a specific product.
     /// </summary>
@@ -134,6 +136,26 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves the details of a specific image associated with a product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product.</param>
+    /// <param name="imageId">The unique identifier of the image.</param>
+    /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+    /// <returns>A specific image product</returns>
+    [HttpGet("{productId}/images/{imageId}"), ActionName("GetDetailedImageProduct")]
+    [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetAsync(int productId, int imageId, CancellationToken cancellationToken)
+    {
+        var imageProduct = await _productManager.GetProductImageByIdAsync(productId, imageId, cancellationToken);
+
+        if (imageProduct is null)
+            return NoContent();
+
+        return Ok(imageProduct);
+    }
+
+    /// <summary>
     /// Adds a new image to a product.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -154,7 +176,7 @@ public class ProductsController : ControllerBase
             if (createdImageProduct is null)
                 return Accepted();
 
-            return CreatedAtAction("GetDetailedProduct", new { productId }, createdImageProduct);
+            return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId = createdImageProduct.Id }, createdImageProduct);
         }
         catch (DomainException e)
         {
@@ -206,11 +228,13 @@ public class ProductsController : ControllerBase
             if (updatedImageProduct is null)
                 return Accepted();
 
-            return CreatedAtAction("GetDetailedProduct", new { productId }, updatedImageProduct);
+            return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId }, updatedImageProduct);
         }
         catch (DomainException e)
         {
             return BadRequest(e.Message);
         }
     }
+
+    #endregion
 }
