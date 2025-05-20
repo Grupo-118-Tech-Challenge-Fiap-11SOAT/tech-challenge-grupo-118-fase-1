@@ -141,7 +141,7 @@ public class ProductsController : ControllerBase
     /// <param name="productImageDto">The data of the product image to be added.</param>
     /// <returns>The result of the operation, including the status and any related data.</returns>
     [HttpPost("{productId}/images")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ImageProductDto productImageDto)
@@ -190,9 +190,9 @@ public class ProductsController : ControllerBase
     /// <param name="productId">The unique identifier of the product to which the image belongs.</param>
     /// <param name="imageId">The unique identifier of the image to be updated.</param>
     /// <param name="productImageDto">The updated details of the product image.</param>
-    /// <returns>A task representing an asynchronous operation that returns an IActionResult indicating the result of the operation.</returns>
+    /// <returns>The updated Image Product</returns>
     [HttpPut("{productId}/images/{imageId}")]
-    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId, int imageId,
