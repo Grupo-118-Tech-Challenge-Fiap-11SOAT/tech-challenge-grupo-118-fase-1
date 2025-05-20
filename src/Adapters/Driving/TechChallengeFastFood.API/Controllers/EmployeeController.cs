@@ -27,12 +27,12 @@ public class EmployeeController : ControllerBase
     /// <returns>An <see cref="EmployeeDto"/> object representing the created employee, or a 400 status if the creation fails.</returns>  
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status400BadRequest)]
-    [HttpPost]
+    [HttpPost("Post")]
     public async Task<ActionResult<EmployeeDto>> PostAsync([FromBody] EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.CreateAsync(employeeDto, cancellationToken);
 
-        return result.Error ? BadRequest(result) : CreatedAtAction(nameof(PostAsync), result);
+        return result.Error ? BadRequest(result) : CreatedAtAction("GetById", new { result.Id }, result);
     }
 
     /// <summary>  
@@ -62,7 +62,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("id")]
-    public async Task<ActionResult<int>> Delete(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<int>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.DeleteAsync(id, cancellationToken);
 
@@ -79,7 +79,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(typeof(List<EmployeeDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
-    public async Task<ActionResult<List<EmployeeDto>>> GetAll(CancellationToken cancellationToken, int skip = 0, int take = 10)
+    public async Task<ActionResult<List<EmployeeDto>>> GetAllPaginatedAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
         var employees = await _employeeManager.GetAllAsync(cancellationToken, skip, take);
 
@@ -95,7 +95,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<EmployeeDto>> GetById(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<EmployeeDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var employee = await _employeeManager.GetByIdAsync(id, cancellationToken);
 
