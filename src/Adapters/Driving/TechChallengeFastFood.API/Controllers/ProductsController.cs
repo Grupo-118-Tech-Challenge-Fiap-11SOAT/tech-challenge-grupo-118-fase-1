@@ -32,7 +32,7 @@ public class ProductsController : ControllerBase
     /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of products if available, or a no-content response if no products are found.</returns>
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet]
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10,
         bool searchActiveProducts = false)
@@ -42,7 +42,7 @@ public class ProductsController : ControllerBase
                 cancellationToken: cancellationToken);
 
         if (products is null || products.Count == 0)
-            return NoContent();
+            return NotFound();
 
         return Ok(products);
     }
@@ -54,14 +54,14 @@ public class ProductsController : ControllerBase
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing the product details if found, or a no-content response if not found.</returns>
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{productId}"), ActionName("GetDetailedProduct")]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
         var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
 
         if (product is null)
-            return NoContent();
+            return NotFound();
 
         return Ok(product);
     }
@@ -122,7 +122,7 @@ public class ProductsController : ControllerBase
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of ImageProductDto objects if found, or a no-content response if no images are available.</returns>
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0,
         int take = 10)
     {
@@ -130,7 +130,7 @@ public class ProductsController : ControllerBase
             await _productManager.GetProductImagesAsync(productId, skip, take, cancellationToken: cancellationToken);
 
         if (images is null || images.Count == 0)
-            return NoContent();
+            return NotFound();
 
         return Ok(images);
     }
@@ -144,13 +144,13 @@ public class ProductsController : ControllerBase
     /// <returns>A specific image product</returns>
     [HttpGet("{productId}/images/{imageId}"), ActionName("GetDetailedImageProduct")]
     [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAsync(int productId, int imageId, CancellationToken cancellationToken)
     {
         var imageProduct = await _productManager.GetProductImageByIdAsync(productId, imageId, cancellationToken);
 
         if (imageProduct is null)
-            return NoContent();
+            return NotFound();
 
         return Ok(imageProduct);
     }
