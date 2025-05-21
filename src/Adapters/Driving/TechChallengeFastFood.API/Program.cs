@@ -2,6 +2,9 @@ using Application;
 using Application.Employee;
 using Domain.Employee.Ports.In;
 using Domain.Employee.Ports.Out;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;
@@ -13,6 +16,7 @@ using System.Reflection;
 
 namespace TechChallengeFastFood.API;
 
+
 public class Program
 {
     public static async Task Main(string[] args)
@@ -21,7 +25,11 @@ public class Program
 
         // Add services to the container.
         builder.Configuration.AddEnvironmentVariables();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+        builder.Services.AddControllers(options => { options.SuppressAsyncSuffixInActionNames = false; });
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>

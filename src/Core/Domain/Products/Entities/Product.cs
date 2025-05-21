@@ -1,9 +1,12 @@
+using Domain.Products.Exceptions;
 using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
 
-public class Product
+public class Product : BaseDomain
 {
+    private const int MAX_IMAGES = 5;
+
     public int Id { get; private set; }
 
     public string Name { get; set; }
@@ -16,35 +19,51 @@ public class Product
 
     public bool IsActive { get; private set; }
 
-    public List<ImageProduct>? Images { get; private set; }
+    public List<ImageProduct> Images { get; private set; }
 
-    public Product(string name, string description, ProductType productType, decimal price, bool isActive)
+    public Product(string name,
+        string description,
+        ProductType productType,
+        decimal price,
+        bool isActive,
+        int id = 0,
+        List<ImageProduct>? images = null)
     {
+        if (id != 0)
+            this.Id = id;
+
         this.Name = name;
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
+        this.Price = price;
 
-        CheckProductValue(price);
-        
-        Images = new List<ImageProduct>();
-    }
+        CheckProductValue();
 
-    public Product()
-    {
+        Images = images ?? new List<ImageProduct>();
     }
 
     public void AddImage(ImageProduct image)
     {
-        if (this.Images.Any(im => im.Id.Equals(image.Id)))
-            this.Images.Add(image);
+        if (this.Images.Count == MAX_IMAGES)
+            throw new ProductsException("The product already has the maximum number of images.");
+
+        this.Images.Add(image);
     }
 
-    private void CheckProductValue(decimal value)
+    public void ChangeImage(ImageProduct image)
     {
-        if (value <= decimal.Zero)
-            throw new ArgumentException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
+        var index = this.Images.FindIndex(i => i.Id == image.Id);
 
-        this.Price = value;
+        if (index == -1)
+            return;
+
+        this.Images[index] = image;
+    }
+
+    private void CheckProductValue()
+    {
+        if (this.Price <= decimal.Zero)
+            throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
     }
 }
