@@ -60,7 +60,7 @@ public class ProductRepository : IProductRepository
 
         productEntity.DomainToEntity(product);
 
-        _dbContext.Products.Add(productEntity);
+        await _dbContext.Products.AddAsync(productEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return productEntity.ToDomain();
@@ -76,7 +76,7 @@ public class ProductRepository : IProductRepository
 
         productEntity.DomainToEntity(product);
 
-        var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return productEntity.ToDomain();
     }
@@ -92,7 +92,7 @@ public class ProductRepository : IProductRepository
 
         imageProductEntity.DomainToEntity(imageProduct);
 
-        _dbContext.ImageProducts.Add(imageProductEntity);
+        await _dbContext.ImageProducts.AddAsync(imageProductEntity, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return imageProductEntity.ToDomain();
@@ -128,7 +128,7 @@ public class ProductRepository : IProductRepository
         imageProductEntity.Url = imageProduct.Url;
         imageProductEntity.UpdatedAt = DateTimeOffset.UtcNow;
 
-        var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return imageProductEntity.ToDomain();
     }
@@ -143,7 +143,7 @@ public class ProductRepository : IProductRepository
 
         if (imageProductEntity is null)
             return null;
-        
+
         return imageProductEntity.ToDomain();
     }
 

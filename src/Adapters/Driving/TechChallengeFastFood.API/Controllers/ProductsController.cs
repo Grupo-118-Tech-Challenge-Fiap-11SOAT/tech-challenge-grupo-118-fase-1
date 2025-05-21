@@ -107,7 +107,7 @@ public class ProductsController : ControllerBase
         if (product is null)
             return Accepted();
 
-        return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
+        return Ok(product);
     }
 
     #region Image Products Methods
@@ -228,7 +228,7 @@ public class ProductsController : ControllerBase
             if (updatedImageProduct is null)
                 return Accepted();
 
-            return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId }, updatedImageProduct);
+            return Ok(updatedImageProduct);
         }
         catch (DomainException e)
         {
