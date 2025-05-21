@@ -1,21 +1,25 @@
+using Application;
+using Application.Employee;
+using Domain.Employee.Ports.In;
+using Domain.Employee.Ports.Out;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using Application;
 using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;
+using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace TechChallengeFastFood.API;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
 public class Program
 {
     public static async Task Main(string[] args)
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +47,9 @@ public class Program
         //TODO: Insert Dependency Injections implementation
         builder.Services.AddTransient<IProductManager, ProductManager>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
+        builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+        builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
 
         builder.Services.AddSwaggerGen(s =>
         {
