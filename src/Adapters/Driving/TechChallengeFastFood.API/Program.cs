@@ -7,12 +7,18 @@ using System.Text.Json.Serialization;
 using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
+using Domain.Payments.Ports.In;
+using Domain.Payments.Ports.Out;
+using Application.Payments;
 using Infra.Database.SqlServer;
 using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Infra.Api.MercadoPago.Payments.Repositories.Interfaces;
+using Infra.Api.MercadoPago.Payments.Repositories;
+using Refit;
 
 namespace TechChallengeFastFood.API;
 
@@ -50,6 +56,16 @@ public class Program
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
+
+        builder.Services.AddTransient<IPaymentManager, PaymentManager>();
+        builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+
+        builder.Services.AddRefitClient<IPaymentMercadoPagoRepository>().ConfigureHttpClient(c =>
+        {
+            c.BaseAddress = new Uri(builder.Configuration.GetSection("MercadoPago.API:BaseUrl").Value);
+            c.DefaultRequestHeaders.Add("Authorization",
+                $"Bearer {builder.Configuration.GetSection("MercadoPago.API:AccessToken").Value}");
+        });
 
         builder.Services.AddSwaggerGen(s =>
         {
