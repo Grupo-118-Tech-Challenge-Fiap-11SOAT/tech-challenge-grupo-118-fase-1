@@ -13,6 +13,10 @@ using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Domain.Customer.Ports.In;
+using Domain.Customer.Ports.Out;
+using Infra.Database.SqlServer.Customers.Repositories;
+using Application.Customer;
 
 namespace TechChallengeFastFood.API;
 
@@ -50,6 +54,10 @@ public class Program
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
+
+        builder.Services.AddTransient<ICustomerRepository, CustomersRepository>();
+        builder.Services.AddTransient<ICustomerManager, CustomerManager>();
+
 
         builder.Services.AddSwaggerGen(s =>
         {
