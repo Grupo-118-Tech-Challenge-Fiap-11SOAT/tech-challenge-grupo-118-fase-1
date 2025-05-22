@@ -30,17 +30,15 @@ public class Program
             {
                 setupAction.InvalidModelStateResponseFactory = context =>
                 {
-                    var response = new
-                    {
-                        Type = "model - https://tools.ietf.org/html/rfc9110#section-15.5.1",
-                        Title = "One or more model validation errors occurred.",
-                        Error = new List<string>()
-                    };
+                    var compiledErrors = context.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage)
+                        .ToArray();
 
-                    foreach (var (_, value) in context.ModelState)
+                    var response = new ProblemDetails
                     {
-                        response.Error.AddRange(value.Errors.Select(e => e.ErrorMessage));
-                    }
+                        Type = "",
+                        Title = "One or more model validation errors occurred.",
+                        Detail = string.Join(" || ", compiledErrors)
+                    };
 
                     return new BadRequestObjectResult(response);
                 };
