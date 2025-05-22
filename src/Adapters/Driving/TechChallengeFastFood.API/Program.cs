@@ -13,6 +13,7 @@ using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.API.Handlers;
 
 namespace TechChallengeFastFood.API;
 
@@ -23,6 +24,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
         builder.Configuration.AddEnvironmentVariables();
         builder.Services.AddControllers().AddJsonOptions(options =>
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
@@ -110,6 +112,9 @@ public class Program
         app.MapControllers();
 
         app.MapHealthChecks("/healthz");
+ 
+        //Clean the Standard Exception handlers to a more custom return
+        app.UseExceptionHandler(o => { });
 
         app.Run();
     }
