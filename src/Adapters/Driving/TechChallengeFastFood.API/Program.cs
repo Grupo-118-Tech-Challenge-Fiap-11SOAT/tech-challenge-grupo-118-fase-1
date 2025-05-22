@@ -12,10 +12,9 @@ using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API;
-
 
 public class Program
 {
@@ -26,7 +25,26 @@ public class Program
         // Add services to the container.
         builder.Configuration.AddEnvironmentVariables();
         builder.Services.AddControllers().AddJsonOptions(options =>
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var response = new
+                    {
+                        Type = "model - https://tools.ietf.org/html/rfc9110#section-15.5.1",
+                        Title = "One or more model validation errors occurred.",
+                        Error = new List<string>()
+                    };
+
+                    foreach (var (_, value) in context.ModelState)
+                    {
+                        response.Error.AddRange(value.Errors.Select(e => e.ErrorMessage));
+                    }
+
+                    return new BadRequestObjectResult(response);
+                };
+            });
 
         builder.Services.AddControllers(options => { options.SuppressAsyncSuffixInActionNames = false; });
 
