@@ -1,4 +1,5 @@
-using Infra.Database.SqlServer.Employee.Configuration;
+﻿using Infra.Database.SqlServer.Employee.Configuration;
+using Infra.Database.SqlServer.Products.Configuration;
 using Infra.Database.SqlServer.Products.Entities;
 using Microsoft.EntityFrameworkCore;
 
