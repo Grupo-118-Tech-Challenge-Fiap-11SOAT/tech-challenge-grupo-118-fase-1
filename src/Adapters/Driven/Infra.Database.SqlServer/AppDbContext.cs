@@ -1,4 +1,6 @@
 using Infra.Database.SqlServer.Employee.Configuration;
+using Infra.Database.SqlServer.Order.Configuration;
+using Infra.Database.SqlServer.Products.Configuration;
 using Infra.Database.SqlServer.Products.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +10,8 @@ public class AppDbContext : DbContext
 {
     // public DbSet<Customer> Customers { get; set; }
     //
-    // public DbSet<Order> Orders { get; set; }
-    //
+     public DbSet<Domain.Order.Entities.Order> Orders { get; set; }
+   
     // public DbSet<OrderItem> OrderItems { get; set; }
     //
     // public DbSet<Payment> Payments { get; set; }
@@ -30,5 +32,6 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
         modelBuilder.ApplyConfiguration(new ImageProductsConfiguration());
         modelBuilder.ApplyConfiguration(new ProductsConfiguration());
+        modelBuilder.ApplyConfiguration(new OrderConfiguration());
     }
 }
