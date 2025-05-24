@@ -88,6 +88,8 @@ public class Program
         builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
         var app = builder.Build();
+        //Clean the Standard Exception handlers to a more custom return
+        app.UseExceptionHandler(_ => { });
 
         // Execute migrations automatically on app startup
         using (var scope = app.Services.CreateScope())
@@ -112,9 +114,6 @@ public class Program
         app.MapControllers();
 
         app.MapHealthChecks("/healthz");
- 
-        //Clean the Standard Exception handlers to a more custom return
-        app.UseExceptionHandler(o => { });
 
         app.Run();
     }
