@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Infra.Api.MercadoPago.Payments.Models
 {
-    public class PaymentModel
+    public class PaymentMercadoPagoModel
     {
         [JsonPropertyName("external_reference")]
         public string ExternalReference { get; set; }
@@ -20,16 +20,16 @@ namespace Infra.Api.MercadoPago.Payments.Models
         public decimal TotalAmount { get; set; }
 
         [JsonPropertyName("items")]
-        public List<ItemModel> Items { get; set; }
+        public List<ItemMercadoPagoModel> Items { get; set; }
 
         [JsonPropertyName("sponsor")]
-        public SponsorModel Sponsor { get; set; }
+        public SponsorMercadoPagoModel Sponsor { get; set; }
 
         [JsonPropertyName("cash_out")]
-        public CashOutModel CashOut { get; set; }
+        public CashOutMercadoPagoModel CashOut { get; set; }
     }
 
-    public class ItemModel
+    public class ItemMercadoPagoModel
     {
         [JsonPropertyName("sku_number")]
         public string SkuNumber { get; set; }
@@ -56,13 +56,13 @@ namespace Infra.Api.MercadoPago.Payments.Models
         public decimal TotalAmount { get; set; }
     }
 
-    public class SponsorModel
+    public class SponsorMercadoPagoModel
     {
         [JsonPropertyName("id")]
         public long Id { get; set; }
     }
 
-    public class CashOutModel
+    public class CashOutMercadoPagoModel
     {
         [JsonPropertyName("amount")]
         public decimal Amount { get; set; }

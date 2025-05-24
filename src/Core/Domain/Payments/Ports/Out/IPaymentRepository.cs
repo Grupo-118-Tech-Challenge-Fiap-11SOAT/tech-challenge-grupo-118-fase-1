@@ -1,13 +1,14 @@
-using Domain.Products.Entities;
+using Domain.Payments.Entities;
 
 namespace Domain.Payments.Ports.Out;
 
 public interface IPaymentRepository
 {
     /// <summary>
-    /// Creates a payment
+    /// Creates a new payment record in the database.
     /// </summary>
+    /// <param name="payment">The payment that will be persisted</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The unique identifier of the created product.</returns>
-    Task CreateQrCodeAsync(CancellationToken cancellationToken = default);
+    /// <returns></returns>
+    Task CreateAsync(Payment payment, CancellationToken cancellationToken = default);
 }

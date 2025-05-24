@@ -1,31 +1,28 @@
-using Domain;
+using Domain.Payments.Dtos;
 using Domain.Payments.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API.Controllers;
 
+/// <summary>
+/// Payments controller
+/// </summary>
 [ApiController]
-[Route("[controller]")]
-public class PaymentsController : ControllerBase
+[Route("payments")]
+public class PaymentsController(IPaymentManager paymentManager) : ControllerBase
 {
-    private readonly IPaymentManager _paymentManager;
-
-    public PaymentsController(IPaymentManager paymentManager)
-    {
-        _paymentManager = paymentManager;
-    }
-
     /// <summary>
     /// Creates a payment.
     /// </summary>
+    /// <param name="request">The requested payment informations</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(PaymentResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost]
-    public async Task<IActionResult> GetAsync(CancellationToken cancellationToken)
+    public async Task<ActionResult<PaymentResponse>> CreatePaymentAsync([FromBody] PaymentRequest request, CancellationToken cancellationToken)
     {
-        await _paymentManager.CreatePaymentAsync(cancellationToken);
-        return Ok();
+        var response = await paymentManager.CreatePaymentAsync(request, cancellationToken);
+        return Created(response.Id.ToString(), response);
     }
 }
