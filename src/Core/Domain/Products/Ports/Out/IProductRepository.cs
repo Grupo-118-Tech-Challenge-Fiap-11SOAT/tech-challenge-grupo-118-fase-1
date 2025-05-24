@@ -16,6 +16,15 @@ public interface IProductRepository
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves a list of active products based on their IDs.
+    /// </summary>
+    /// <param name="ids">An array of product IDs to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task representing an asynchronous operation that returns a list of active Product objects, or null if no products are found.</returns>
+    Task<List<Product>?> GetProductsByIds(int[] ids,
+        CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the product.</param>

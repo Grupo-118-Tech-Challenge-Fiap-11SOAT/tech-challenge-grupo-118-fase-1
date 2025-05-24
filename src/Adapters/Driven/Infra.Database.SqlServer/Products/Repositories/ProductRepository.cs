@@ -37,6 +37,19 @@ public class ProductRepository : IProductRepository
         return products;
     }
 
+    public async Task<List<Product>?> GetProductsByIds(int[] ids, CancellationToken cancellationToken = default)
+    {
+        var productsEntities = await _dbContext.Products
+            .Where(p => ids.Contains(p.Id))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+        
+        if (productsEntities.Count == 0)
+            return null;
+        
+        return productsEntities.ConvertAll(p => p.ToDomain());
+    }
+
     public async Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default)
     {

@@ -46,7 +46,7 @@ public class Product : BaseDomain
     public void AddImage(ImageProduct image)
     {
         if (this.Images.Count == MAX_IMAGES)
-            throw new ProductsException("The product already has the maximum number of images.");
+            throw new ProductMaxImageException();
 
         this.Images.Add(image);
     }
@@ -64,6 +64,6 @@ public class Product : BaseDomain
     private void CheckProductValue()
     {
         if (this.Price <= decimal.Zero)
-            throw new ProductsException($"{nameof(Product)}.{nameof(Product.Price)} cannot be zero or negative.");
+            throw new ProductInvalidPriceException();
     }
 }

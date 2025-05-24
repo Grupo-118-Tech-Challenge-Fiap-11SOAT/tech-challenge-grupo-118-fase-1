@@ -7,7 +7,7 @@
     depends_on:
       - sqldatabasetechchallenge118
     environment:
-      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;"
+      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
     restart: on-failure:5
     deploy:
       resources:
