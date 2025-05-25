@@ -206,7 +206,7 @@ public class EmployeeManager : IEmployeeManager
         var employee = await _employeeRepository.GetByEmailAsync(email, cancellationToken);
         if (employee == null)
         {
-            throw new Exception("Employee not found.");
+            throw new ArgumentNullException("Employee not found.");
         }
 
         if (!VerifyPassword(password, employee.Password))

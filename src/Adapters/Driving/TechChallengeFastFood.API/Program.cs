@@ -118,9 +118,9 @@ public class Program
 
         // Configuração JWT
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opitons =>
+            .AddJwtBearer(options =>
             {
-                opitons.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
