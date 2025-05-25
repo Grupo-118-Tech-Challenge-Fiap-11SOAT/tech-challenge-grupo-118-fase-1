@@ -2,24 +2,18 @@
 using Domain.Employee.Exceptions;
 using Domain.Employee.Ports.In;
 using Domain.Employee.Ports.Out;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Application.Employee;
 
 public class EmployeeManager : IEmployeeManager
 {
     private readonly IEmployeeRepository _employeeRepository;
-    private readonly IConfiguration _configuration;
+    private readonly IPasswordManager _passwordManager;
 
-    public EmployeeManager(IEmployeeRepository employeeRepository, IConfiguration configuration)
+    public EmployeeManager(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
         _employeeRepository = employeeRepository;
-        _configuration = configuration;
+        _passwordManager = passwordManager;
     }
 
     /// <summary>
@@ -43,7 +37,7 @@ public class EmployeeManager : IEmployeeManager
             var employee = EmployeeDto.ToEntity(employeeDto);
 
             employee.ValidateEmployee();
-            CreatePasswordHash(employeeDto.Password, out var passwordHash);
+            _passwordManager.CreatePasswordHash(employeeDto.Password, out var passwordHash);
             employee.Password = passwordHash.ToString();
             await _employeeRepository.CreateAsync(employee, cancellationToken);
 
@@ -209,56 +203,11 @@ public class EmployeeManager : IEmployeeManager
             throw new ArgumentNullException("Employee not found.");
         }
 
-        if (!VerifyPassword(password, employee.Password))
+        if (!_passwordManager.VerifyPassword(password, employee.Password))
         {
             throw new Exception("Invalid password.");
         }
 
-        return CreateToken(EmployeeDto.ToDto(employee));
-    }
-
-    private void CreatePasswordHash(string password, out string passwordHash)
-    {
-        var secretKey = Encoding.UTF8.GetBytes(_configuration["Security:Key"]);
-        using var hmac = new HMACSHA512(secretKey);
-        passwordHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
-    }
-
-    private bool VerifyPassword(string password, string storedHash)
-    {
-        var secretKey = Encoding.UTF8.GetBytes(_configuration["Security:Key"]);
-        using var hmac = new HMACSHA512(secretKey);
-        var computedHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
-        return computedHash == storedHash;
-    }
-
-    private string CreateToken(EmployeeDto employee)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, employee.Id.ToString()),
-            new Claim(ClaimTypes.Name, employee.Name),
-            new Claim(ClaimTypes.Role, employee.Role.ToString())
-        };
-
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(
-                int.Parse(_configuration["Jwt:ExpirationMinutes"]
-                )),
-            SigningCredentials = creds,
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"]
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        return _passwordManager.CreateToken(EmployeeDto.ToDto(employee));
     }
 }
