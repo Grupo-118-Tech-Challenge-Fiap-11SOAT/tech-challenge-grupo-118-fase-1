@@ -3,7 +3,7 @@
 /// <summary>
 /// Exception thrown when the name is null or empty.
 /// </summary>
-public class NameNullOrEmptyException : Exception
+public class NameNullOrEmptyException : DomainException
 {
     /// <summary>
     /// Gets the error message indicating that the name was null or empty.

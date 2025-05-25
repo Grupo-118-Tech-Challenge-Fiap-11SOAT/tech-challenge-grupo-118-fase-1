@@ -77,15 +77,8 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, [FromBody] ProductDto productDto)
     {
-        try
-        {
-            var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
-            return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
-        }
-        catch (DomainException e)
-        {
-            return BadRequest(e.Message);
-        }
+        var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
+        return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
     }
 
     /// <summary>
@@ -168,20 +161,14 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ImageProductDto productImageDto)
     {
-        try
-        {
-            var createdImageProduct = await _productManager.CreateImageProductAsync(productId, productImageDto,
-                cancellationToken: cancellationToken);
+        var createdImageProduct = await _productManager.CreateImageProductAsync(productId, productImageDto,
+            cancellationToken: cancellationToken);
 
-            if (createdImageProduct is null)
-                return Accepted();
+        if (createdImageProduct is null)
+            return Accepted();
 
-            return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId = createdImageProduct.Id }, createdImageProduct);
-        }
-        catch (DomainException e)
-        {
-            return BadRequest(e.Message);
-        }
+        return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId = createdImageProduct.Id },
+            createdImageProduct);
     }
 
     /// <summary>
@@ -220,20 +207,13 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId, int imageId,
         [FromBody] ImageProductDto productImageDto)
     {
-        try
-        {
-            var updatedImageProduct = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
-                cancellationToken: cancellationToken);
+        var updatedImageProduct = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
+            cancellationToken: cancellationToken);
 
-            if (updatedImageProduct is null)
-                return Accepted();
+        if (updatedImageProduct is null)
+            return Accepted();
 
-            return Ok(updatedImageProduct);
-        }
-        catch (DomainException e)
-        {
-            return BadRequest(e.Message);
-        }
+        return Ok(updatedImageProduct);
     }
 
     #endregion
