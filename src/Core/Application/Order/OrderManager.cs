@@ -33,7 +33,7 @@ namespace Application.Order
         public async Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken)
         {
 
-            var order = OrderDto.ToEntity(orderDto);
+            var order = new Domain.Order.Entities.Order(orderDto);
 
             await _orderRepository.CreateAsync(order, cancellationToken);
 
@@ -43,13 +43,21 @@ namespace Application.Order
 
         }
 
-        public async Task<OrderDto> UpdateStatusAsync(int orderId,OrderStatus status, CancellationToken cancellationToken)
+        public async Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
         {     
             var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
-            order.Status = status;
+            order.ChangeStatus();
             await _orderRepository.UpdateAsync(order, cancellationToken);
 
             return OrderDto.ToDto(order);
+        }
+
+        public async Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
+            var result = OrderDto.ToDto(order);
+
+            return result;
         }
     }
 }

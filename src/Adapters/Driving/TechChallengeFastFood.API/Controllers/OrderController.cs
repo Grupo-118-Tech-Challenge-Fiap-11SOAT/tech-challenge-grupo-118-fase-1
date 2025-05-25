@@ -45,12 +45,22 @@ public class OrderController : ControllerBase
         return CreatedAtAction("GetById", new { result.Id }, result);
     }
 
-    [HttpPatch("{id}/status/{status}")]
-    public async Task<IActionResult> PatchStatus(int id, OrderStatus status, CancellationToken cancellationToken)
+    [HttpPatch("{id}/change-status")]
+    public async Task<IActionResult> PatchStatus(int id, CancellationToken cancellationToken)
     {
 
-        var result = await _orderManager.UpdateStatusAsync(id, status, cancellationToken);
+        var result = await _orderManager.UpdateStatusAsync(id, cancellationToken);
 
         return Ok(result);
+    }
+
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet("{id}"), ActionName("GetById")]
+    public async Task<ActionResult<OrderDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        var order = await _orderManager.GetByIdAsync(id, cancellationToken);
+
+        return order is null ? NotFound() : Ok(order);
     }
 }

@@ -16,6 +16,7 @@ public class OrderDto
     {
         
     }
+
     public OrderDto(Entities.Order order)
     {
         Id = order.Id;
@@ -33,21 +34,6 @@ public class OrderDto
             OrderNumber = order.OrderNumber,
             Status = order.Status,
             Total = order.Total
-        };
-    }
-
-    public static Entities.Order ToEntity(OrderDto orderDto)
-    {
-        var random = new Random();
-
-        return new Entities.Order
-        {
-            Cpf = orderDto.Cpf,
-            OrderNumber = random.Next(100000, 1000000),
-            Total = orderDto.Total,
-            Status = OrderStatus.Recebido,
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
         };
     }
 }
