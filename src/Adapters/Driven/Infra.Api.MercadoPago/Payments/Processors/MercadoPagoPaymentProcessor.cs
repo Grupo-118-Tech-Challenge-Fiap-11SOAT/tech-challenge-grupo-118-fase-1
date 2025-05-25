@@ -7,6 +7,7 @@ using Domain.Payments.Enumerators;
 using Infra.Api.MercadoPago.Payments.Options;
 using Microsoft.Extensions.Options;
 using Refit;
+using Domain.Payments.Dtos;
 
 namespace Infra.Api.MercadoPago.Payments.Processors
 {
@@ -16,7 +17,7 @@ namespace Infra.Api.MercadoPago.Payments.Processors
     {
         private readonly MercadoPagoOptions _options = options.Value;
 
-        public async Task ProcessAsync(Payment payment, CancellationToken cancellationToken = default)
+        public async Task<ProcessedPaymentDto> ProcessAsync(Payment payment, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -25,9 +26,12 @@ namespace Infra.Api.MercadoPago.Payments.Processors
                 PaymentMercadoPagoDto paymentDto = await client
                     .CreateQrCodeAsync(_options.UserId, _options.PosId, paymentModel);
 
-                payment.SetExternalId(paymentDto.InStoreOrderId);
-                payment.SetUserPaymentCode(paymentDto.QrData);
-                payment.SetStatus(PaymentStatus.Pending);
+                return new ProcessedPaymentDto
+                {
+                    ExternalId = paymentDto.InStoreOrderId,
+                    Status = PaymentStatus.Pending,
+                    UserPaymentCode = paymentDto.QrData
+                };
             }
             catch (ApiException ex)
             {

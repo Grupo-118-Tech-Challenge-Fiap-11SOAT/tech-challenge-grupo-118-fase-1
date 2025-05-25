@@ -13,9 +13,18 @@ public class PaymentManager(IPaymentProcessorFactory factory, IPaymentRepository
         var payment = new Payment(request.OrderId, request.Provider, 100);
 
         IPaymentProcessor processor = factory.GetProcessor(payment.Provider);
-        await processor.ProcessAsync(payment, cancellationToken);
+        ProcessedPaymentDto paymentData = await processor.ProcessAsync(payment, cancellationToken);
+        UpdatePaymentData(payment, paymentData);
+
         await repository.CreateAsync(payment, cancellationToken);
 
         return new PaymentResponse(payment);
+    }
+
+    private void UpdatePaymentData(Payment payment, ProcessedPaymentDto paymentData)
+    {
+        payment.SetExternalId(paymentData.ExternalId);
+        payment.SetUserPaymentCode(paymentData.UserPaymentCode);
+        payment.SetStatus(paymentData.Status);
     }
 }

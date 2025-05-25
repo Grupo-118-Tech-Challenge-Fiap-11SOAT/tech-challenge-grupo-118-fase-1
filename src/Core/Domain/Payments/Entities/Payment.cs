@@ -42,7 +42,7 @@ public class Payment : BaseDomain
     protected void SetValue(decimal value)
     {
         if (value <= 0)
-            throw new InvalidAtributeException("Value");
+            throw new InvalidAtributeException(nameof(value));
 
         this.Value = value;
     }
