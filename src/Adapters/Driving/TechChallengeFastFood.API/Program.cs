@@ -14,9 +14,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.API.Handlers;
 
 namespace TechChallengeFastFood.API;
-
 
 public class Program
 {
@@ -25,9 +26,27 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
         builder.Configuration.AddEnvironmentVariables();
         builder.Services.AddControllers().AddJsonOptions(options =>
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var compiledErrors = context.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage)
+                        .ToArray();
+
+                    var response = new ProblemDetails
+                    {
+                        Type = "",
+                        Title = "One or more model validation errors occurred.",
+                        Detail = string.Join(" || ", compiledErrors)
+                    };
+
+                    return new BadRequestObjectResult(response);
+                };
+            });
 
         builder.Services.AddControllers(options => { options.SuppressAsyncSuffixInActionNames = false; });
 
@@ -118,6 +137,8 @@ public class Program
         builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
         var app = builder.Build();
+        //Clean the Standard Exception handlers to a more custom return
+        app.UseExceptionHandler(_ => { });
 
         // Execute migrations automatically on app startup
         using (var scope = app.Services.CreateScope())
