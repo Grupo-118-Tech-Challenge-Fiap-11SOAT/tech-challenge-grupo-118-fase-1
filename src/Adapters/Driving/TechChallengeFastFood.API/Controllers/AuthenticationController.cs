@@ -1,4 +1,5 @@
-﻿using Domain.Employee.Dtos;
+﻿using Domain.Base.Dtos;
+using Domain.Employee.Dtos;
 using Domain.Employee.Ports.In;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,18 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Register(EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         var employee = await _employeeManager.CreateAsync(employeeDto, cancellationToken);
-        return CreatedAtAction(nameof(Register), new { id = employee.Id }, employee);
+        return Ok(new LoginResponseDto
+        {
+            Id = employee.Id,
+            Name = employee.Name,
+            Email = employee.Email
+        });
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(string email, string password, CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
     {
-        var token = await _employeeManager.Login(email, password, cancellationToken);
+        var token = await _employeeManager.Login(loginDto.Email, loginDto.Password, cancellationToken);
         if (string.IsNullOrEmpty(token))
         {
             return Unauthorized();

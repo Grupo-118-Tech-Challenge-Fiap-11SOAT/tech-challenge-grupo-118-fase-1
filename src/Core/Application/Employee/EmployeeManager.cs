@@ -211,7 +211,6 @@ public class EmployeeManager : IEmployeeManager
     {
         var secretKey = Encoding.UTF8.GetBytes(_configuration["Security:Key"]);
         using var hmac = new HMACSHA512(secretKey);
-        var t = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         passwordHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
     }
 
@@ -219,7 +218,6 @@ public class EmployeeManager : IEmployeeManager
     {
         var secretKey = Encoding.UTF8.GetBytes(_configuration["Security:Key"]);
         using var hmac = new HMACSHA512(secretKey);
-        var t = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         var computedHash = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(password)));
         return computedHash == storedHash;
     }
