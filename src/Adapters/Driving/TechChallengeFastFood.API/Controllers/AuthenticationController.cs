@@ -15,6 +15,12 @@ public class AuthenticationController : Controller
         _employeeManager = employeeManager;
     }
 
+    /// <summary>
+    /// Registers a new employee in the system.
+    /// </summary>
+    /// <param name="employeeDto">The data transfer object containing employee details.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>An <see cref="IActionResult"/> containing the registered employee's details.</returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register(EmployeeDto employeeDto, CancellationToken cancellationToken)
     {
@@ -27,6 +33,15 @@ public class AuthenticationController : Controller
         });
     }
 
+    /// <summary>
+    /// Authenticates an employee and generates a token if the credentials are valid.
+    /// </summary>
+    /// <param name="loginDto">The data transfer object containing the login credentials (email and password).</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>
+    /// An <see cref="IActionResult"/> containing a token if authentication is successful, 
+    /// or an <see cref="UnauthorizedResult"/> if the credentials are invalid.
+    /// </returns>
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
     {

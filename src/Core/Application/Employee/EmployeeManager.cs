@@ -191,6 +191,16 @@ public class EmployeeManager : IEmployeeManager
         }
     }
 
+    /// <summary>  
+    /// Authenticates an employee using their email and password.  
+    /// </summary>  
+    /// <param name="email">The email address of the employee.</param>  
+    /// <param name="password">The password of the employee.</param>  
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
+    /// <returns>  
+    /// A task that represents the asynchronous operation. The task result contains a JWT token if authentication is successful.  
+    /// </returns>  
+    /// <exception cref="Exception">Thrown when the employee is not found or the password is invalid.</exception>  
     public async Task<string> Login(string email, string password, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByEmailAsync(email, cancellationToken);
