@@ -31,15 +31,15 @@ public class ImageProduct : BaseDomain
     private void CheckImageUrlFormat()
     {
         if (!Uri.IsWellFormedUriString(this.Url, UriKind.Absolute))
-            throw new ImageProductsException("The provided URL is not valid ");
+            throw new UrlNotValidException();
 
         if (!_imageRegex.IsMatch(this.Url))
-            throw new ImageProductsException("The provided URL is not valid image");
+            throw new UrlIsNotAnImageException();
     }
 
     private void CheckIfIsAValidPosition()
     {
         if (this.Position <= 0)
-            throw new ImageProductsException("The provided position should be greater than zero");
+            throw new ImagePositionException();
     }
 }
