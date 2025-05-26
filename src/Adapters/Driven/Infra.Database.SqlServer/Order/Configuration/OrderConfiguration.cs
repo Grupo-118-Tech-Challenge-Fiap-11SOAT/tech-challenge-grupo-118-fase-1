@@ -35,5 +35,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domain.Order.Entities
             .HasColumnType("datetimeoffset")
             .HasDefaultValueSql("SYSDATETIMEOFFSET()")
             .ValueGeneratedOnUpdate();
+
+        builder.Ignore(builder => builder.IsActive);
     }
 }

@@ -5,7 +5,7 @@ using Domain.Base.Entities;
 
 namespace Domain.Order.Entities;
 
-public class Order: BaseEntity
+public class Order : BaseEntity
 {
     public int OrderNumber { get; set; }
     public string Cpf { get; set; }
@@ -23,7 +23,6 @@ public class Order: BaseEntity
 
     public Order()
     {
-
     }
 
     public Order(OrderDto orderDto)
@@ -36,7 +35,6 @@ public class Order: BaseEntity
         Status = OrderStatus.Recebido;
         CreatedAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
-
     }
 
     public void ChangeStatus()
@@ -45,7 +43,8 @@ public class Order: BaseEntity
         {
             if (nextStatus is null)
             {
-                throw new InvalidOperationException($"Não é possível alterar o status quando ele está como '{Status}'.");
+                throw new InvalidOperationException(
+                    $"Não é possível alterar o status quando ele está como '{Status}'.");
             }
 
             Status = nextStatus.Value;
@@ -56,6 +55,4 @@ public class Order: BaseEntity
             throw new InvalidOperationException($"Status atual '{Status}' não é reconhecido.");
         }
     }
-
 }
-
