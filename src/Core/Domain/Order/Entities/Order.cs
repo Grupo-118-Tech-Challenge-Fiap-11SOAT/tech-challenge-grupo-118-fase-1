@@ -1,7 +1,6 @@
-﻿using Domain.Employee.Exceptions;
-using Domain.Order.Dtos;
-using System;
+﻿using Domain.Order.Dtos;
 using Domain.Base.Entities;
+using Domain.Order.Exceptions;
 
 namespace Domain.Order.Entities;
 
@@ -41,18 +40,16 @@ public class Order : BaseEntity
     {
         if (NextStatus.TryGetValue(Status, out OrderStatus? nextStatus))
         {
-            if (nextStatus is null)
-            {
-                throw new InvalidOperationException(
-                    $"Não é possível alterar o status quando ele está como '{Status}'.");
-            }
+            if (nextStatus is null)           
+                throw new ChangeStatusNotAllowed(Status);
+            
 
             Status = nextStatus.Value;
             UpdatedAt = DateTimeOffset.Now;
         }
         else
         {
-            throw new InvalidOperationException($"Status atual '{Status}' não é reconhecido.");
+            throw new ChangeStatusInvalidException();
         }
     }
 }

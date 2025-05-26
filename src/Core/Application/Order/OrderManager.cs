@@ -1,5 +1,6 @@
 ﻿using Domain.Order.Dtos;
 using Domain.Order.Entities;
+using Domain.Order.Exceptions;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
 
@@ -46,6 +47,10 @@ namespace Application.Order
         public async Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
         {     
             var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+
+            if (order is null)           
+                throw new OrderNotFoundExpetion(orderId);
+            
             order.ChangeStatus();
             await _orderRepository.UpdateAsync(order, cancellationToken);
 
