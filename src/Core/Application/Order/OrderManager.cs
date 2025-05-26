@@ -5,64 +5,64 @@ using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
 
 
-namespace Application.Order
+namespace Application.Order;
+
+public class OrderManager : IOrderManager
 {
-    class OrderManager : IOrderManager
+    private readonly IOrderRepository _orderRepository;
+
+    public OrderManager(IOrderRepository orderRepository)
     {
-        private readonly IOrderRepository _orderRepository;
+        _orderRepository = orderRepository;
+    }
 
-        public OrderManager(IOrderRepository orderRepository)
+
+    public async Task<List<OrderDto>> GetAllAsync(OrderStatus status, int skip, int take, CancellationToken cancellationToken)
+    {
+        var ordersList = await _orderRepository.GetAllAsync(status, cancellationToken, skip, take);
+
+        var result = new List<OrderDto>(ordersList.Count);
+
+        foreach (var order in ordersList)
         {
-            _orderRepository = orderRepository;
+            result.Add(new OrderDto(order));
         }
 
+        return result;
+    }
 
-        public async Task<List<OrderDto>> GetAllAsync(OrderStatus status, int skip, int take, CancellationToken cancellationToken)
-        {
-            var ordersList = await _orderRepository.GetAllAsync(status, cancellationToken, skip, take);
+    public async Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken)
+    {
 
-            var result = new List<OrderDto>(ordersList.Count);
+        var order = new Domain.Order.Entities.Order(orderDto);
 
-            foreach (var order in ordersList)
-            {
-                result.Add(new OrderDto(order));
-            }
+        await _orderRepository.CreateAsync(order, cancellationToken);
 
-            return result;
-        }
+        orderDto.Id = order.Id;
 
-        public async Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken)
-        {
+        return orderDto;
 
-            var order = new Domain.Order.Entities.Order(orderDto);
+    }
 
-            await _orderRepository.CreateAsync(order, cancellationToken);
+    public async Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
 
-            orderDto.Id = order.Id;
+        if (order is null)
+            throw new OrderNotFoundExpetion(orderId);
 
-            return orderDto;
+        order.ChangeStatus();
+        await _orderRepository.UpdateAsync(order, cancellationToken);
 
-        }
+        return OrderDto.ToDto(order);
+    }
 
-        public async Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
-        {     
-            var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
+    public async Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
+        var result = OrderDto.ToDto(order);
 
-            if (order is null)           
-                throw new OrderNotFoundExpetion(orderId);
-            
-            order.ChangeStatus();
-            await _orderRepository.UpdateAsync(order, cancellationToken);
-
-            return OrderDto.ToDto(order);
-        }
-
-        public async Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
-            var result = OrderDto.ToDto(order);
-
-            return result;
-        }
+        return result;
     }
 }
+

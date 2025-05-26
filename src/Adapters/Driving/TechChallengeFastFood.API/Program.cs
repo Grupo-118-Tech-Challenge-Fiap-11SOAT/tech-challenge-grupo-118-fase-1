@@ -1,4 +1,3 @@
-using Application;
 using Application.Employee;
 using Domain.Employee.Ports.In;
 using Domain.Employee.Ports.Out;
@@ -10,12 +9,15 @@ using Domain.Products.Ports.Out;
 using Infra.Database.SqlServer;
 using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
+using Infra.Database.SqlServer.Order.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.API.Handlers;
+using Domain.Order.Ports.In;
+using Domain.Order.Ports.Out;
+using Application.Order;
 
 namespace TechChallengeFastFood.API;
 
@@ -70,6 +72,9 @@ public class Program
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
+
+        builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+        builder.Services.AddTransient<IOrderManager, OrderManager>();
 
         builder.Services.AddSwaggerGen(s =>
         {

@@ -1,11 +1,10 @@
-﻿using Domain.Order.Dtos;
-using Domain.Order.Entities;
+﻿using Domain.Order.Entities;
 using Domain.Order.Ports.Out;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer.Order.Repositories;
 
-class OrderRepository : IOrderRepository
+public class OrderRepository : IOrderRepository
 {
     private readonly AppDbContext _dbContext;
 
