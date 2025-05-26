@@ -10,6 +10,8 @@ public class Order : BaseEntity
     public string Cpf { get; set; }
     public double Total { get; set; }
     public OrderStatus Status { get; set; }
+    public ICollection<OrderItem> OrderItems { get; set; }
+
 
     private static readonly Dictionary<OrderStatus, OrderStatus?> NextStatus = new()
     {
@@ -34,6 +36,12 @@ public class Order : BaseEntity
         Status = OrderStatus.Recebido;
         CreatedAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
+        OrderItems = orderDto.Items.Select(item => new OrderItem
+        {
+            OrderId = orderDto.Id,
+            ProductId = item.ProductId,
+            Quantity = item.Quantity
+        }).ToList() ?? new List<OrderItem>();
     }
 
     public void ChangeStatus()

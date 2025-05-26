@@ -11,6 +11,7 @@ public class OrderDto
     public string Cpf { get; set; }
     public double Total { get; set; }
     public OrderStatus Status { get; set; }
+    public List<OrderItemDto> Items { get; set; }
 
     public OrderDto()
     {
@@ -24,16 +25,10 @@ public class OrderDto
         Cpf = order.Cpf;
         Total = order.Total;
         Status = order.Status;
-    }
-
-    public static OrderDto ToDto(Entities.Order order)
-    {
-        return new OrderDto
+        Items = order.OrderItems.Select(item => new OrderItemDto
         {
-            Cpf = order.Cpf,
-            OrderNumber = order.OrderNumber,
-            Status = order.Status,
-            Total = order.Total
-        };
+            ProductId = item.ProductId,
+            Quantity = item.Quantity
+        }).ToList() ?? new List<OrderItemDto>();
     }
 }

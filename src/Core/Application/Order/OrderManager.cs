@@ -54,13 +54,13 @@ public class OrderManager : IOrderManager
         order.ChangeStatus();
         await _orderRepository.UpdateAsync(order, cancellationToken);
 
-        return OrderDto.ToDto(order);
+        return new OrderDto(order);
     }
 
     public async Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
-        var result = OrderDto.ToDto(order);
+        var result = new OrderDto(order);
 
         return result;
     }

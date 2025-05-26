@@ -37,5 +37,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domain.Order.Entities
             .ValueGeneratedOnUpdate();
 
         builder.Ignore(builder => builder.IsActive);
+
+        builder.HasMany(o => o.OrderItems)
+               .WithOne(oi => oi.Order)
+               .HasForeignKey(oi => oi.OrderId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

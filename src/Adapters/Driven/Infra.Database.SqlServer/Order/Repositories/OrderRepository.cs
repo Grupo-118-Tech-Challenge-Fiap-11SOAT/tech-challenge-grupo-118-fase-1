@@ -20,6 +20,7 @@ public class OrderRepository : IOrderRepository
             .Skip(skip)
             .Take(take)
             .AsNoTracking()
+            .Include(o => o.OrderItems)
             .ToListAsync(cancellationToken);
 
         return orders;
