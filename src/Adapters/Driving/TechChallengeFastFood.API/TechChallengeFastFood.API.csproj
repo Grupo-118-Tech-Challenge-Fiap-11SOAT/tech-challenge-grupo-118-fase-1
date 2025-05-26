@@ -35,6 +35,7 @@
       <ProjectReference Include="..\..\Driven\Infra.Api.MercadoPago\Infra.Api.MercadoPago.csproj" />
       <ProjectReference Include="..\..\Driven\Infra.Database.Memory\Infra.Database.Memory.csproj" />
       <ProjectReference Include="..\..\Driven\Infra.Database.SqlServer\Infra.Database.SqlServer.csproj" />
+      <ProjectReference Include="..\..\Driven\Infra.Password\Infra.Password.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -13,6 +13,7 @@ using Infra.Database.SqlServer.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Infra.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.API.Handlers;
@@ -71,6 +72,8 @@ public class Program
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
 
+        builder.Services.AddTransient<IPasswordManager, PasswordManager>();
+        
         builder.Services.AddSwaggerGen(s =>
         {
             s.SwaggerDoc("v1", new OpenApiInfo
