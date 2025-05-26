@@ -25,4 +25,19 @@ public class PaymentsController(IPaymentManager paymentManager) : ControllerBase
         var response = await paymentManager.CreatePaymentAsync(request, cancellationToken);
         return Created(response.Id.ToString(), response);
     }
+
+    /// <summary>
+    /// Precess a payment update from Mercado Pago webhook.
+    /// </summary>
+    /// <param name="request">The updated payment data</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns></returns>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [HttpPost("webhooks/mercado-pago")]
+    public async Task<IActionResult> ProcessUpdateAsync([FromBody] PaymentRequest request, CancellationToken cancellationToken)
+    {
+        var response = await paymentManager.CreatePaymentAsync(request, cancellationToken);
+        return Created(response.Id.ToString(), response);
+    }
 }
