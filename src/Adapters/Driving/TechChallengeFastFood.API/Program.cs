@@ -6,13 +6,20 @@ using System.Text.Json.Serialization;
 using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
+using Domain.Payments.Ports.In;
+using Domain.Payments.Ports.Out;
+using Application.Payments;
 using Infra.Database.SqlServer;
 using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
 using Infra.Database.SqlServer.Order.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
+using Infra.Api.MercadoPago.Payments.Options;
+using Infra.Api.MercadoPago.Payments.Repositories.Interfaces;
+using Infra.Api.MercadoPago.Payments.Processors;
+using Infra.Api.MercadoPago.Payments.Factories;
+using Infra.Database.SqlServer.Payments.Repositories;
 using Infra.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +27,8 @@ using TechChallengeFastFood.API.Handlers;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
 using Application.Order;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Refit;
 
 namespace TechChallengeFastFood.API;
 
@@ -65,6 +74,8 @@ public class Program
 
         //Uso via variavel de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
 
+        builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPago"));
+
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -77,6 +88,20 @@ public class Program
 
         builder.Services.AddTransient<IOrderRepository, OrderRepository>();
         builder.Services.AddTransient<IOrderManager, OrderManager>();
+
+        builder.Services.AddTransient<IPaymentManager, PaymentManager>();
+        builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+        builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
+        builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
+
+        builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
+        {
+            c.BaseAddress = new Uri(
+                builder.Configuration.GetSection("MercadoPago:BaseUrl").Value
+                ?? throw new ArgumentNullException("BaseUrl"));
+            c.DefaultRequestHeaders.Add("Authorization",
+                $"Bearer {builder.Configuration.GetSection("MercadoPago:AccessToken").Value}");
+        });
 
         builder.Services.AddTransient<IPasswordManager, PasswordManager>();
         

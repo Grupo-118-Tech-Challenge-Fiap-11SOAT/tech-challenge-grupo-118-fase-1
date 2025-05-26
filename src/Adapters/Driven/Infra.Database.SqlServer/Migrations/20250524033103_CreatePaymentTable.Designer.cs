@@ -4,6 +4,7 @@ using Infra.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250524033103_CreatePaymentTable")]
+    partial class CreatePaymentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,41 +94,7 @@ namespace Infra.Database.SqlServer.Migrations
                     b.ToTable("Employees", (string)null);
                 });
 
-
-            modelBuilder.Entity("Domain.Order.Entities.Order", b =>
-            {
-                b.Property<string>("Cpf")
-                       .IsRequired()
-                       .HasMaxLength(11)
-                       .HasColumnType("nvarchar(11)");
-
-                b.Property<DateTimeOffset>("CreatedAt")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("datetimeoffset")
-                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                b.Property<int>("OrderNumber")
-                    .HasColumnType("int");
-
-                b.Property<int>("Status")
-                    .HasColumnType("int");
-
-                b.Property<double>("Total")
-                    .HasColumnType("float");
-
-                b.Property<DateTimeOffset>("UpdatedAt")
-                    .ValueGeneratedOnUpdate()
-                    .HasColumnType("datetimeoffset")
-                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                b.HasKey("Id");
-
-                b.ToTable("Orders", (string)null);
-            });
-
-
             modelBuilder.Entity("Domain.Payments.Entities.Payment", b =>
-
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
