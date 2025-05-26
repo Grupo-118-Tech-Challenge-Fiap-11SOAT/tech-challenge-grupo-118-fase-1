@@ -53,6 +53,13 @@ public class EmployeeRepository : IEmployeeRepository
         return employees;
     }
 
+    public Task<Domain.Employee.Entities.Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    {
+        return _context.Employees
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+    }
+
     /// <summary>  
     /// Asynchronously retrieves an employee record from the database by its unique identifier.  
     /// </summary>  
