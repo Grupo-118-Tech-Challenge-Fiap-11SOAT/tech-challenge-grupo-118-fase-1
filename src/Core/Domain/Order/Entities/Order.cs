@@ -1,18 +1,16 @@
 ﻿using Domain.Employee.Exceptions;
 using Domain.Order.Dtos;
 using System;
+using Domain.Base.Entities;
 
 namespace Domain.Order.Entities;
 
-public class Order
+public class Order: BaseEntity
 {
-    public int Id { get; set; }
     public int OrderNumber { get; set; }
     public string Cpf { get; set; }
     public double Total { get; set; }
     public OrderStatus Status { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
-    public DateTimeOffset UpdatedAt { get; set; }
 
     private static readonly Dictionary<OrderStatus, OrderStatus?> NextStatus = new()
     {
