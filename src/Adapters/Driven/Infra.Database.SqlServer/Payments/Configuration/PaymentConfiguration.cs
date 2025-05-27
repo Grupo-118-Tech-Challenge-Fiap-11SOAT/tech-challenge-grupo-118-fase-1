@@ -8,7 +8,7 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 {
     public void Configure(EntityTypeBuilder<Payment> builder)
     {
-        builder.ToTable("Payments");
+        builder.ToTable("PAYMENT");
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
             .UseIdentityColumn();
