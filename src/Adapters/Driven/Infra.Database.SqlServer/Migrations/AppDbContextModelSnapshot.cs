@@ -132,7 +132,7 @@ namespace Infra.Database.SqlServer.Migrations
                     b.HasIndex("Uuid")
                         .IsUnique();
 
-                    b.ToTable("PAYMENT", (string)null);
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("Infra.Database.SqlServer.Products.Entities.ImageProduct", b =>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250524033103_CreatePaymentTable")]
+    [Migration("20250527030125_CreatePaymentTable")]
     partial class CreatePaymentTable
     {
         /// <inheritdoc />
@@ -135,7 +135,7 @@ namespace Infra.Database.SqlServer.Migrations
                     b.HasIndex("Uuid")
                         .IsUnique();
 
-                    b.ToTable("PAYMENT", (string)null);
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("Infra.Database.SqlServer.Products.Entities.ImageProduct", b =>

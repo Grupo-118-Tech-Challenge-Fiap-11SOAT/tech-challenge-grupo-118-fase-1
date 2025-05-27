@@ -21,6 +21,11 @@ public class PaymentManager(IPaymentProcessorFactory factory, IPaymentRepository
         return new PaymentResponse(payment);
     }
 
+    public async Task<PaymentCallbackResponse> ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default)
+    {
+        return await Task.FromResult<PaymentCallbackResponse>(null);
+    }
+ 
     private void UpdatePaymentData(Payment payment, ProcessedPaymentDto paymentData)
     {
         payment.SetExternalId(paymentData.ExternalId);
