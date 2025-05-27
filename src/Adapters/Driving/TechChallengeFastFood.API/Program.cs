@@ -107,7 +107,7 @@ public class Program
                 Description = "API para gerenciamento de pedidos para lanchonete.",
                 Contact = new OpenApiContact
                 {
-                    Name = "Grupo 118 (Inserir nomes e matricula aqui).",
+                    Name = "Grupo 118 - Sabrina Cardoso | Tiago Koch | Tiago Oliveira | Túlio Rezende | Vinícius Nunes",
                     Url = new Uri(
                         "https://github.com/Grupo-118-Tech-Challenge-Fiap-11SOAT/tech-challenge-grupo-118-fase-1")
                 }
