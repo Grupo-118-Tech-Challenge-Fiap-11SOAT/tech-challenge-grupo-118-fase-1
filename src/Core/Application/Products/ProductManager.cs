@@ -42,6 +42,9 @@ public class ProductManager : IProductManager
         if (products.Any(p => !p.IsActive))
             throw new DeactivatedProductException();
 
+        if (products.Count < ids.Length)
+            throw new InvalidProductException();
+
         return products.ConvertAll(p => new ProductDto(p));
     }
 
