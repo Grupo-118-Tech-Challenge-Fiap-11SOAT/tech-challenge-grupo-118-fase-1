@@ -3,6 +3,7 @@ using Domain.Products.Dtos;
 using Domain.Products.Entities;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
+using Domain.Products.ValueObjects;
 
 namespace Application.Products;
 
@@ -29,6 +30,21 @@ public class ProductManager : IProductManager
         var productDto = products.ConvertAll(p => new ProductDto(p));
 
         return productDto;
+    }
+
+
+    public async Task<List<ProductDto>?> GetProductsByTypeAsync(string type, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default)
+    {
+        if (!Enum.TryParse(type, ignoreCase: true, out ProductType productType))
+            throw new InvalidProductCategoryException();
+
+        var products = await _productRepository.GetProductsByTypeAsync(productType, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return null;
+
+        return products.Select(p => new ProductDto(p)).ToList();
     }
 
     public async Task<List<ProductDto>?> GetActiveProductsByIds(int[] ids,
