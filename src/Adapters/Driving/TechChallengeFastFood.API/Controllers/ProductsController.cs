@@ -48,6 +48,28 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves a list of products by their category (type).
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="category">The category/type of the products to retrieve.</param>
+    /// <param name="skip">The number of products to skip from the start of the list.</param>
+    /// <param name="take">The maximum number of products to retrieve.</param>
+    /// <returns>A list of products that match the specified category.</returns>
+    [HttpGet("type/{category}")]
+    [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByTypeAsync(CancellationToken cancellationToken, string category, int skip = 0, int take = 10)
+    {
+        var products = await _productManager.GetProductsByTypeAsync(category, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return NotFound();
+
+        return Ok(products);
+    }
+
+
+    /// <summary>
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to retrieve.</param>

@@ -14,7 +14,16 @@ public interface IProductManager
     /// <returns>A task representing an asynchronous operation that returns a list of ProductDto objects.</returns>
     Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false, CancellationToken cancellationToken = default);
 
-
+    /// <summary>
+    /// Retrieves a list of products by their type.
+    /// </summary>
+    /// <param name="type">The product type (category) to filter by.</param>
+    /// <param name="skip">Number of items to skip.</param>
+    /// <param name="take">Maximum number of items to return.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A list of products that match the specified type.</returns>
+    Task<List<ProductDto>?> GetProductsByTypeAsync(string type, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+    
     /// <summary>
     /// Retrieves a list of active products based on their IDs.
     /// </summary>

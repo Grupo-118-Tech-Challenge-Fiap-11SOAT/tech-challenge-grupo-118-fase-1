@@ -1,5 +1,6 @@
 using Domain.Products.Entities;
 using Domain.Products.Ports.Out;
+using Domain.Products.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer.Products.Repositories;
@@ -36,6 +37,23 @@ public class ProductRepository : IProductRepository
 
         return products;
     }
+    
+    public async Task<List<Product>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+    {
+        var productsEntities = await _dbContext.Products
+            .Where(p => p.Category == type)
+            .OrderBy(p => p.Id)
+            .Skip(skip)
+            .Take(take)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        if (productsEntities.Count == 0)
+            return null;
+
+        return productsEntities.ConvertAll(p => p.ToDomain());
+    }
+    
 
     public async Task<List<Product>?> GetProductsByIds(int[] ids, CancellationToken cancellationToken = default)
     {

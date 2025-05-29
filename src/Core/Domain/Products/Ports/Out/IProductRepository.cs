@@ -1,4 +1,5 @@
 using Domain.Products.Entities;
+using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Ports.Out;
 
@@ -13,6 +14,17 @@ public interface IProductRepository
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of products.</returns>
     Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a list of products filtered by the specified product type, with optional pagination.
+    /// </summary>
+    /// <param name="type">The type of the products to retrieve.</param>
+    /// <param name="skip">The number of items to skip.</param>
+    /// <param name="take">The number of items to retrieve.</param>
+    /// <param name="cancellationToken">The cancellation token to observe.</param>
+    /// <returns>A list of products filtered by the specified type, or null if no products match the criteria.</returns>
+    Task<List<Product>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default);
 
     /// <summary>
