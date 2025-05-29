@@ -3,6 +3,7 @@ using Domain.Order.Entities;
 using Domain.Order.Exceptions;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
+using Domain.Products.Ports.In;
 
 
 namespace Application.Order;
@@ -10,10 +11,12 @@ namespace Application.Order;
 public class OrderManager : IOrderManager
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IProductManager _productManager;
 
-    public OrderManager(IOrderRepository orderRepository)
+    public OrderManager(IOrderRepository orderRepository, IProductManager productManager)
     {
         _orderRepository = orderRepository;
+        _productManager = productManager;
     }
 
 
@@ -35,6 +38,9 @@ public class OrderManager : IOrderManager
     {
 
         var order = new Domain.Order.Entities.Order(orderDto);
+
+        if (!await ValidateOrderItemsAsync(orderDto, cancellationToken))
+            throw new Exception("Um ou mais produtos do pedido não existem ou estão inativos.");
 
         await _orderRepository.CreateAsync(order, cancellationToken);
 
@@ -64,5 +70,32 @@ public class OrderManager : IOrderManager
 
         return result;
     }
+
+    private async Task<bool> ValidateOrderItemsAsync(OrderDto orderDto, CancellationToken cancellationToken)
+    {
+        int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
+        var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
+
+        var activeProductIds = activeProducts.Select(p => p.Id).ToHashSet();
+
+        if (!productIds.All(id => activeProductIds.Contains(id)))
+            return false;
+
+        var productPriceById = activeProducts.ToDictionary(p => p.Id, p => p.Price);
+
+        decimal total = 0;
+        foreach (var item in orderDto.Items)
+        {
+            if (productPriceById.TryGetValue(item.ProductId, out var price))
+            {
+                total += item.Quantity * price;
+            }
+        }
+
+        orderDto.Total = total;
+
+        return true;
+    }
+
 }
 

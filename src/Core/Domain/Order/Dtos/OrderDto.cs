@@ -1,6 +1,5 @@
-using Domain.Employee.Dtos;
 using Domain.Order.Entities;
-using System;
+
 
 namespace Domain.Order.Dtos;
 
@@ -9,7 +8,7 @@ public class OrderDto
     public int Id { get; set; }
     public int OrderNumber { get; set; }
     public string Cpf { get; set; }
-    public double Total { get; set; }
+    public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
     public List<OrderItemDto> Items { get; set; }
 

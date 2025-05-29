@@ -1,6 +1,8 @@
 ﻿using Domain.Order.Dtos;
 using Domain.Base.Entities;
 using Domain.Order.Exceptions;
+using Domain.Products.Ports.In;
+using System.Threading;
 
 namespace Domain.Order.Entities;
 
@@ -8,7 +10,7 @@ public class Order : BaseEntity
 {
     public int OrderNumber { get; set; }
     public string Cpf { get; set; }
-    public double Total { get; set; }
+    public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }
 
@@ -25,6 +27,7 @@ public class Order : BaseEntity
     public Order()
     {
     }
+
 
     public Order(OrderDto orderDto)
     {
