@@ -8,10 +8,12 @@ namespace Application.Employee;
 public class EmployeeManager : IEmployeeManager
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPasswordManager _passwordManager;
 
-    public EmployeeManager(IEmployeeRepository employeeRepository)
+    public EmployeeManager(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
         _employeeRepository = employeeRepository;
+        _passwordManager = passwordManager;
     }
 
     /// <summary>
@@ -35,7 +37,8 @@ public class EmployeeManager : IEmployeeManager
             var employee = EmployeeDto.ToEntity(employeeDto);
 
             employee.ValidateEmployee();
-
+            _passwordManager.CreatePasswordHash(employeeDto.Password, out var passwordHash);
+            employee.Password = passwordHash.ToString();
             await _employeeRepository.CreateAsync(employee, cancellationToken);
 
             employeeDto.Id = employee.Id;
@@ -180,5 +183,31 @@ public class EmployeeManager : IEmployeeManager
                 Error = true
             };
         }
+    }
+
+    /// <summary>  
+    /// Authenticates an employee using their email and password.  
+    /// </summary>  
+    /// <param name="email">The email address of the employee.</param>  
+    /// <param name="password">The password of the employee.</param>  
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
+    /// <returns>  
+    /// A task that represents the asynchronous operation. The task result contains a JWT token if authentication is successful.  
+    /// </returns>  
+    /// <exception cref="Exception">Thrown when the employee is not found or the password is invalid.</exception>  
+    public async Task<string> Login(string email, string password, CancellationToken cancellationToken)
+    {
+        var employee = await _employeeRepository.GetByEmailAsync(email, cancellationToken);
+        if (employee == null)
+        {
+            throw new ArgumentNullException("Employee not found.");
+        }
+
+        if (!_passwordManager.VerifyPassword(password, employee.Password))
+        {
+            throw new Exception("Invalid password.");
+        }
+
+        return _passwordManager.CreateToken(EmployeeDto.ToDto(employee));
     }
 }

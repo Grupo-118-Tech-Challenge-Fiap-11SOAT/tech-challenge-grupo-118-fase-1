@@ -1,7 +1,9 @@
+using Application.Products.Exceptions;
 using Domain.Products.Dtos;
 using Domain.Products.Entities;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
+using Domain.Products.ValueObjects;
 
 namespace Application.Products;
 
@@ -28,6 +30,38 @@ public class ProductManager : IProductManager
         var productDto = products.ConvertAll(p => new ProductDto(p));
 
         return productDto;
+    }
+
+
+    public async Task<List<ProductDto>?> GetProductsByTypeAsync(string type, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default)
+    {
+        if (!Enum.TryParse(type, ignoreCase: true, out ProductType productType))
+            throw new InvalidProductCategoryException();
+
+        var products = await _productRepository.GetProductsByTypeAsync(productType, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return null;
+
+        return products.Select(p => new ProductDto(p)).ToList();
+    }
+
+    public async Task<List<ProductDto>?> GetActiveProductsByIds(int[] ids,
+        CancellationToken cancellationToken = default)
+    {
+        var products = await _productRepository.GetProductsByIds(ids, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return null;
+
+        if (products.Any(p => !p.IsActive))
+            throw new DeactivatedProductException();
+
+        if (products.Count < ids.Length)
+            throw new InvalidProductException();
+
+        return products.ConvertAll(p => new ProductDto(p));
     }
 
     public async Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
@@ -142,13 +176,14 @@ public class ProductManager : IProductManager
         return new ImageProductDto(updatedImageProduct);
     }
 
-    public async Task<ImageProductDto?> GetProductImageByIdAsync(int productId, int imageId, CancellationToken cancellationToken = default)
+    public async Task<ImageProductDto?> GetProductImageByIdAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default)
     {
         var imageProduct = await _productRepository.GetImageProductByIdAsync(productId, imageId, cancellationToken);
 
         if (imageProduct is null)
             return null;
-        
+
         var imageProductDto = new ImageProductDto(imageProduct);
         return imageProductDto;
     }
