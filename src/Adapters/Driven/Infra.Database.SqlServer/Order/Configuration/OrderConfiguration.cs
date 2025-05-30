@@ -8,39 +8,38 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domain.Order.Entities
     public void Configure(EntityTypeBuilder<Domain.Order.Entities.Order> builder)
     {
         builder.ToTable("Orders");
-        builder.HasKey(builder => builder.Id);
-        builder.Property(builder => builder.Id)
-            .UseIdentityColumn();
 
-        builder.Property(builder => builder.OrderNumber)
+        builder.HasKey(o => o.Id);
+
+        builder.Property(o => o.OrderNumber)
             .IsRequired();
 
-        builder.Property(builder => builder.Cpf)
-            .IsRequired()
+        builder.Property(o => o.Cpf)
             .HasMaxLength(11);
 
-        builder.Property(builder => builder.Total)
+        builder.Property(o => o.Total)
             .IsRequired();
 
-        builder.Property(builder => builder.Status)
+        builder.Property(o => o.Status)
             .IsRequired();
 
-        builder.Property(builder => builder.CreatedAt)
+        builder.Property(o => o.CreatedAt)
             .IsRequired()
             .HasColumnType("datetimeoffset")
             .HasDefaultValueSql("SYSDATETIMEOFFSET()")
             .ValueGeneratedOnAdd();
 
-        builder.Property(builder => builder.UpdatedAt)
+        builder.Property(o => o.UpdatedAt)
             .HasColumnType("datetimeoffset")
             .HasDefaultValueSql("SYSDATETIMEOFFSET()")
             .ValueGeneratedOnUpdate();
 
-        builder.Ignore(builder => builder.IsActive);
+        builder.Ignore(o => o.IsActive);
 
+        // Relationship (optional, but recommended for navigation)
         builder.HasMany(o => o.OrderItems)
-               .WithOne(oi => oi.Order)
-               .HasForeignKey(oi => oi.OrderId)
-               .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(oi => oi.Order)
+            .HasForeignKey(oi => oi.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -2,9 +2,9 @@
 
 public abstract class Person : BaseEntity
 {
-    public string Cpf { get; set; }
-    public string Name { get; set; }
-    public string Surname { get; set; }
-    public string Email { get; set; }
-    public DateTime BirthDay { get; set; }
+    public string Cpf { get; protected set; }
+    public string Name { get; protected set; }
+    public string Surname { get; protected set; }
+    public string Email { get; protected set; }
+    public DateTime BirthDay { get; protected set; }
 }

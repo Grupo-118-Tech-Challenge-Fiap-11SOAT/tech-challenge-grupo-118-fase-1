@@ -33,12 +33,11 @@ public class ProductRepository : IProductRepository
         if (productsEntities.Count == 0)
             return null;
 
-        var products = productsEntities.ConvertAll(p => p.ToDomain());
-
-        return products;
+        return productsEntities;
     }
-    
-    public async Task<List<Product>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10, CancellationToken cancellationToken = default)
+
+    public async Task<List<Product>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default)
     {
         var productsEntities = await _dbContext.Products
             .Where(p => p.Category == type)
@@ -51,9 +50,9 @@ public class ProductRepository : IProductRepository
         if (productsEntities.Count == 0)
             return null;
 
-        return productsEntities.ConvertAll(p => p.ToDomain());
+        return productsEntities;
     }
-    
+
 
     public async Task<List<Product>?> GetProductsByIds(int[] ids, CancellationToken cancellationToken = default)
     {
@@ -61,11 +60,11 @@ public class ProductRepository : IProductRepository
             .Where(p => ids.Contains(p.Id))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
-        
+
         if (productsEntities.Count == 0)
             return null;
-        
-        return productsEntities.ConvertAll(p => p.ToDomain());
+
+        return productsEntities;
     }
 
     public async Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
@@ -81,20 +80,15 @@ public class ProductRepository : IProductRepository
         if (productEntity is null)
             return null;
 
-        var product = productEntity.ToDomain();
-        return product;
+        return productEntity;
     }
 
     public async Task<Product> CreateProductAsync(Product product, CancellationToken cancellationToken = default)
     {
-        var productEntity = new Entities.Product();
-
-        productEntity.DomainToEntity(product);
-
-        await _dbContext.Products.AddAsync(productEntity, cancellationToken);
+        await _dbContext.Products.AddAsync(product, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return productEntity.ToDomain();
+        return product;
     }
 
     public async Task<Product?> UpdateProductAsync(int productId, Product product,
@@ -105,11 +99,11 @@ public class ProductRepository : IProductRepository
         if (productEntity is null)
             return null;
 
-        productEntity.DomainToEntity(product);
+        productEntity.UpdateProduct(product);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return productEntity.ToDomain();
+        return productEntity;
     }
 
     #endregion
@@ -119,14 +113,10 @@ public class ProductRepository : IProductRepository
     public async Task<ImageProduct> CreateImageProductAsync(ImageProduct imageProduct,
         CancellationToken cancellationToken = default)
     {
-        var imageProductEntity = new Entities.ImageProduct();
-
-        imageProductEntity.DomainToEntity(imageProduct);
-
-        await _dbContext.ImageProducts.AddAsync(imageProductEntity, cancellationToken);
+        await _dbContext.ImageProducts.AddAsync(imageProduct, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return imageProductEntity.ToDomain();
+        return imageProduct;
     }
 
     public async Task<int> DeleteImageProductAsync(int productId, int imageId,
@@ -155,13 +145,11 @@ public class ProductRepository : IProductRepository
         if (imageProductEntity is null)
             return null;
 
-        imageProductEntity.Position = imageProduct.Position;
-        imageProductEntity.Url = imageProduct.Url;
-        imageProductEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        imageProductEntity.UpdateImageProduct(imageProduct);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return imageProductEntity.ToDomain();
+        return imageProductEntity;
     }
 
     public async Task<ImageProduct?> GetImageProductByIdAsync(int productId, int imageId,
@@ -175,7 +163,7 @@ public class ProductRepository : IProductRepository
         if (imageProductEntity is null)
             return null;
 
-        return imageProductEntity.ToDomain();
+        return imageProductEntity;
     }
 
     #endregion

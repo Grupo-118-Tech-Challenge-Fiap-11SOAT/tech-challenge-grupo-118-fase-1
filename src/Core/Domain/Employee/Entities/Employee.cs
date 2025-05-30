@@ -8,10 +8,43 @@ namespace Domain.Employee.Entities;
 
 public class Employee : Person
 {
-    public string Password { get; set; }
-    public EmployeeRole Role { get; set; }
+    public string Password { get; protected set; }
+    public EmployeeRole Role { get; protected set; }
 
-    public void ValidateEmployee()
+    public Employee(string cpf,
+        string name,
+        string surname,
+        string email,
+        DateTime birthday,
+        string password,
+        EmployeeRole role,
+        bool isActive,
+        DateTimeOffset createdAt,
+        DateTimeOffset updatedAt,
+        int id = 0)
+    {
+        Cpf = cpf;
+        Name = name;
+        Surname = surname;
+        Email = email;
+        BirthDay = birthday;
+        Password = password;
+        Role = role;
+        IsActive = isActive;
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+
+        if (id != 0)
+            Id = id;
+
+        ValidateEmployee();
+    }
+
+    protected Employee()
+    {
+    }
+
+    private void ValidateEmployee()
     {
         if (string.IsNullOrEmpty(Cpf))
         {
@@ -52,5 +85,33 @@ public class Employee : Person
         {
             throw new PasswordNullOrEmptyException();
         }
+    }
+
+    public void SetPassword(string password)
+    {
+        this.Password = password;
+    }
+
+    public void UpdateEmployee(string cpf,
+        string name,
+        string surname,
+        string email,
+        DateTime birthday,
+        string password,
+        EmployeeRole role,
+        bool isActive,
+        DateTimeOffset updatedAt)
+    {
+        Cpf = cpf;
+        Name = name;
+        Surname = surname;
+        Email = email;
+        BirthDay = birthday;
+        Password = password;
+        Role = role;
+        IsActive = isActive;
+        UpdatedAt = updatedAt;
+
+        ValidateEmployee();
     }
 }
