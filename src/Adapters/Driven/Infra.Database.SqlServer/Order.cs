@@ -1,4 +1,4 @@
-namespace Infra.Database.SqlServer;
+namespace Infra.Database.SqlServer.Order.Entities;
 
 public class Order
 {
