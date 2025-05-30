@@ -3,15 +3,15 @@ using Domain.Products.Exceptions;
 
 namespace Domain.Products.Entities;
 
-public class ImageProduct : BaseDomain
+public class ImageProduct : Domain.Base.Entities.BaseEntity
 {
-    public int Id { get; set; }
-
     public int ProductId { get; set; }
 
     public int Position { get; set; }
 
     public string Url { get; set; }
+
+    public Product Product { get; set; }
 
     private readonly Regex _imageRegex = new Regex(@"(\W)(jpg|jpeg|png|gif|webp)", RegexOptions.Compiled);
 
@@ -28,6 +28,11 @@ public class ImageProduct : BaseDomain
         CheckIfIsAValidPosition();
     }
 
+    public ImageProduct()
+    {
+        
+    }
+    
     private void CheckImageUrlFormat()
     {
         if (!Uri.IsWellFormedUriString(this.Url, UriKind.Absolute))
