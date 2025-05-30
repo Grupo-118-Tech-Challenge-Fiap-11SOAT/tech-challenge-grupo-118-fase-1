@@ -16,9 +16,9 @@ public class Product : Domain.Base.Entities.BaseEntity
 
     public decimal Price { get; protected set; }
 
-    public ICollection<OrderItem> OrderItems { get; set; }
+    public ICollection<OrderItem> OrderItems { get; protected set; }
 
-    public List<ImageProduct> Images { get; set; }
+    public List<ImageProduct> Images { get; protected set; }
 
     public Product(string name,
         string description,
@@ -42,7 +42,7 @@ public class Product : Domain.Base.Entities.BaseEntity
         Images = images ?? new List<ImageProduct>();
     }
 
-    public Product()
+    protected Product()
     {
         
     }

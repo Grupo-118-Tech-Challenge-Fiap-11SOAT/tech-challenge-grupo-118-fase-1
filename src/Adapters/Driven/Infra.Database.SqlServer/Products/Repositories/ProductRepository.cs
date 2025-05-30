@@ -145,9 +145,7 @@ public class ProductRepository : IProductRepository
         if (imageProductEntity is null)
             return null;
 
-        imageProductEntity.Position = imageProduct.Position;
-        imageProductEntity.Url = imageProduct.Url;
-        imageProductEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        imageProductEntity.UpdateImageProduct(imageProduct);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
