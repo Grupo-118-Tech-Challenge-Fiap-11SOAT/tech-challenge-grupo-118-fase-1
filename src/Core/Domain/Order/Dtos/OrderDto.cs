@@ -1,4 +1,5 @@
 using Domain.Order.Entities;
+using System.Text.Json.Serialization;
 
 
 namespace Domain.Order.Dtos;
@@ -9,6 +10,7 @@ public class OrderDto
     public int OrderNumber { get; set; }
     public string Cpf { get; set; }
     public decimal Total { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public OrderStatus Status { get; set; }
     public List<OrderItemDto> Items { get; set; }
 

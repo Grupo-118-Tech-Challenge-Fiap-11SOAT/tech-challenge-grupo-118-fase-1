@@ -2,10 +2,10 @@
 {
     public enum OrderStatus
     {
-        Recebido = 0,
-        EmPreparacao = 1,
-        Pronto = 2,
-        Finalizado = 3,
-        Cancelado = 4
+        Received = 0,
+        InPreparation = 1,
+        Ready = 2,
+        Completed = 3,
+        Canceled = 4
     }
 }

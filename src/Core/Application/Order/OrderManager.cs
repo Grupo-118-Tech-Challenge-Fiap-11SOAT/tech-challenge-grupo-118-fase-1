@@ -41,9 +41,6 @@ public class OrderManager : IOrderManager
    
         var order = new Domain.Order.Entities.Order(orderDto, activeProducts);
 
-        if (!await ValidateOrderItemsAsync(orderDto, cancellationToken))
-            throw new Exception("Um ou mais produtos do pedido não existem ou estão inativos.");
-
         await _orderRepository.CreateAsync(order, cancellationToken);
 
         orderDto.Id = order.Id;
@@ -71,25 +68,6 @@ public class OrderManager : IOrderManager
         var result = new OrderDto(order);
 
         return result;
-    }
-
-    private async Task<bool> ValidateOrderItemsAsync(OrderDto orderDto, CancellationToken cancellationToken)
-    {
-        int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
-        var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
-
-        decimal total = 0;
-        foreach (var item in orderDto.Items)
-        {
-            if (productPriceById.TryGetValue(item.ProductId, out var price))
-            {
-                total += item.Quantity * price;
-            }
-        }
-
-        orderDto.Total = total;
-
-        return true;
     }
 
 }

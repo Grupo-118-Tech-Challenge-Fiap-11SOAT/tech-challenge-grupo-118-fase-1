@@ -18,11 +18,11 @@ public class Order : BaseEntity
 
     private static readonly Dictionary<OrderStatus, OrderStatus?> NextStatus = new()
     {
-        { OrderStatus.Recebido, OrderStatus.EmPreparacao },
-        { OrderStatus.EmPreparacao, OrderStatus.Pronto },
-        { OrderStatus.Pronto, OrderStatus.Finalizado },
-        { OrderStatus.Finalizado, null },
-        { OrderStatus.Cancelado, null }
+        { OrderStatus.Received, OrderStatus.InPreparation },
+        { OrderStatus.InPreparation, OrderStatus.Ready },
+        { OrderStatus.Ready, OrderStatus.Completed },
+        { OrderStatus.Completed, null },
+        { OrderStatus.Canceled, null }
     };
 
     public Order()
@@ -36,7 +36,7 @@ public class Order : BaseEntity
 
         OrderNumber = random.Next(100000, 1000000);
         Cpf = orderDto.Cpf;
-        Status = OrderStatus.Recebido;
+        Status = OrderStatus.Received;
         CreatedAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
 
