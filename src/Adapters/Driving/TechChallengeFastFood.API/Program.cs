@@ -12,6 +12,7 @@ using Application.Payments;
 using Infra.Database.SqlServer;
 using Infra.Database.SqlServer.Employee.Repositories;
 using Infra.Database.SqlServer.Products.Repositories;
+using Infra.Database.SqlServer.Order.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Infra.Api.MercadoPago.Payments.Options;
@@ -23,6 +24,9 @@ using Infra.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.API.Handlers;
+using Domain.Order.Ports.In;
+using Domain.Order.Ports.Out;
+using Application.Order;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Refit;
 
@@ -81,6 +85,9 @@ public class Program
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
+
+        builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+        builder.Services.AddTransient<IOrderManager, OrderManager>();
 
         builder.Services.AddTransient<IPaymentManager, PaymentManager>();
         builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();

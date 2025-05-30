@@ -91,7 +91,41 @@ namespace Infra.Database.SqlServer.Migrations
                     b.ToTable("Employees", (string)null);
                 });
 
+
+            modelBuilder.Entity("Domain.Order.Entities.Order", b =>
+            {
+                b.Property<string>("Cpf")
+                       .IsRequired()
+                       .HasMaxLength(11)
+                       .HasColumnType("nvarchar(11)");
+
+                b.Property<DateTimeOffset>("CreatedAt")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("datetimeoffset")
+                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                b.Property<int>("OrderNumber")
+                    .HasColumnType("int");
+
+                b.Property<int>("Status")
+                    .HasColumnType("int");
+
+                b.Property<double>("Total")
+                    .HasColumnType("float");
+
+                b.Property<DateTimeOffset>("UpdatedAt")
+                    .ValueGeneratedOnUpdate()
+                    .HasColumnType("datetimeoffset")
+                    .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                b.HasKey("Id");
+
+                b.ToTable("Orders", (string)null);
+            });
+
+
             modelBuilder.Entity("Domain.Payments.Entities.Payment", b =>
+
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
