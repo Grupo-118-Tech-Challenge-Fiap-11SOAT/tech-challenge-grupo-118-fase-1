@@ -17,13 +17,17 @@ namespace Application.Customer
         {
             try
             {
-                var customer = CustomerDto.ToEntity(customerDto);
+                var customer = new Domain.Customer.Entities.Customer(
+                    customerDto.Cpf,
+                    customerDto.Name,
+                    customerDto.IsActive,
+                    customerDto.BirthDay,
+                    customerDto.Email
+                    );
 
-                await _customerRepository.CreateAsync(customer, cancellationToken);
+                var createdCustomer = await _customerRepository.CreateAsync(customer, cancellationToken);
 
-                customerDto.Id = customer.Id;
-
-                return customerDto;
+                return new CustomerDto(createdCustomer);
             }
             catch (Exception ex) 
             {
@@ -42,7 +46,22 @@ namespace Application.Customer
             {
                 return new CustomerDto
                 {
-                    ErrorMessage = "Employee not found.",
+                    ErrorMessage = "Customer not found.",
+                    Error = true
+                };
+            }
+
+            return CustomerDto.ToDto(customer);
+        }
+        
+        public async Task<CustomerDto?> GetByCpfAsync(string cpf, CancellationToken cancellationToken)
+        {
+            var customer = await _customerRepository.GetByCpfAsync(cpf, cancellationToken);
+            if (customer == null)
+            {
+                return new CustomerDto
+                {
+                    ErrorMessage = "Customer not found.",
                     Error = true
                 };
             }
@@ -54,30 +73,18 @@ namespace Application.Customer
         {
             try
             {
-                var customer = await _customerRepository.GetByIdAsync(customerDto.Id, cancellationToken);
-
-                if (customer == null)
-                {
-                    return new CustomerDto
-                    {
-                        ErrorMessage = "Employee not found.",
-                        Error = true
-                    };
-                }
-
-                customer.Cpf = customerDto.Cpf;
-                customer.Name = customerDto.Name;
-                customer.Surname = customerDto.Surname;
-                customer.Email = customerDto.Email;
-                customer.BirthDay = customerDto.BirthDay;
-                customer.IsActive = customerDto.IsActive;
-                customer.UpdatedAt = DateTime.UtcNow;
-
+                var customer = new Domain.Customer.Entities.Customer(
+                    customerDto.Cpf,
+                    customerDto.Name,
+                    customerDto.IsActive,
+                    customerDto.BirthDay,
+                    customerDto.Email
+                );
                 var updatedCustomer = await _customerRepository.UpdateAsync(customer, cancellationToken);
 
                 return CustomerDto.ToDto(updatedCustomer);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return new CustomerDto
                 {

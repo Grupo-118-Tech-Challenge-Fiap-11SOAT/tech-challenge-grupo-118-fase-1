@@ -33,20 +33,5 @@ namespace Domain.Customer.Dtos
                 BirthDay = customer.BirthDay,
             };
         }
-
-        public static Entities.Customer ToEntity(CustomerDto customerDto)
-        {
-            return new Entities.Customer
-            {
-                Id = customerDto.Id,
-                CreatedAt = customerDto.CreatedAt,
-                UpdatedAt = customerDto.UpdatedAt,
-                IsActive = customerDto.IsActive,
-                Cpf = customerDto.Cpf,
-                Name = customerDto.Name,
-                Email = customerDto.Email,
-                BirthDay = customerDto.BirthDay
-            };
-        }
     }
 }

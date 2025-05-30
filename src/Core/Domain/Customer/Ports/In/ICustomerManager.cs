@@ -7,6 +7,6 @@ namespace Domain.Customer.Ports.In
         Task<CustomerDto> CreateAsync(CustomerDto customerDto, CancellationToken cancellationToken);
         Task<CustomerDto> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken);
         Task<CustomerDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
-
+        Task<CustomerDto?>  GetByCpfAsync(string Cpf, CancellationToken cancellationToken);
     }
 }
