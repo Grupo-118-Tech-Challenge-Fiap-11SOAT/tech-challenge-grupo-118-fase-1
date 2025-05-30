@@ -34,7 +34,6 @@ namespace Infra.Database.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Cpf")
-                        .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
