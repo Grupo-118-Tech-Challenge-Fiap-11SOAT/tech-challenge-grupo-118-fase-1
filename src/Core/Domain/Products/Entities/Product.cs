@@ -49,12 +49,12 @@ public class Product : Domain.Base.Entities.BaseEntity
     
     public void UpdateProduct(Product productToUpdate)
     {
-        this.Id = productToUpdate.Id;
         this.Name = productToUpdate.Name;
         this.Description = productToUpdate.Description;
         this.Category = productToUpdate.Category;
         this.Price = productToUpdate.Price;
         this.IsActive = productToUpdate.IsActive;
+        this.UpdatedAt = DateTimeOffset.Now;
     }
 
     public void AddImage(ImageProduct image)
