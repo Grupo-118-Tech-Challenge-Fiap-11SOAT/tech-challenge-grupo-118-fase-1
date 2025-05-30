@@ -1,5 +1,6 @@
 using Domain.Order.Entities;
 using System.Text.Json.Serialization;
+using Domain.Order.ValueObjects;
 
 
 namespace Domain.Order.Dtos;

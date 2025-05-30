@@ -3,6 +3,7 @@ using Domain.Order.Entities;
 using Domain.Order.Exceptions;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
+using Domain.Order.ValueObjects;
 using Domain.Products.Ports.In;
 
 

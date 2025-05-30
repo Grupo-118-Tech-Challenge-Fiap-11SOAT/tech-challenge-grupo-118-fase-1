@@ -1,5 +1,6 @@
 ﻿using Domain.Order.Entities;
 using Domain.Order.Ports.Out;
+using Domain.Order.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer.Order.Repositories;
