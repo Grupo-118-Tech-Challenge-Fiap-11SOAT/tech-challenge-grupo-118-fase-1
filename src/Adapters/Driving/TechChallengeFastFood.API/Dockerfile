@@ -17,6 +17,7 @@ COPY ["src/Adapters/Driven/Infra.Database.SqlServer/Infra.Database.SqlServer.csp
 
 COPY ["src/Adapters/Driven/Infra.Api.Memory/Infra.Api.Memory.csproj", "src/Adapters/Driven/Infra.Api.Memory/"]
 COPY ["src/Adapters/Driven/Infra.Api.MercadoPago/Infra.Api.MercadoPago.csproj", "src/Adapters/Driven/Infra.Api.MercadoPago/"]
+COPY ["src/Adapters/Driven/Infra.Password/Infra.Password.csproj", "src/Adapters/Driven/Infra.Password/"]
 
 RUN dotnet restore "src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.csproj"
 COPY . .

@@ -33,6 +33,7 @@ public class ProductsController : ControllerBase
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing a list of products if available, or a no-content response if no products are found.</returns>
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
     [HttpGet]
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10,
         bool searchActiveProducts = false)
@@ -48,6 +49,29 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves a list of products by their category (type).
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="category">The category/type of the products to retrieve.</param>
+    /// <param name="skip">The number of products to skip from the start of the list.</param>
+    /// <param name="take">The maximum number of products to retrieve.</param>
+    /// <returns>A list of products that match the specified category.</returns>
+    [HttpGet("type/{category}")]
+    [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetByTypeAsync(CancellationToken cancellationToken, string category, int skip = 0, int take = 10)
+    {
+        var products = await _productManager.GetProductsByTypeAsync(category, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return NotFound();
+
+        return Ok(products);
+    }
+
+
+    /// <summary>
     /// Retrieves a product by its unique identifier.
     /// </summary>
     /// <param name="productId">The unique identifier of the product to retrieve.</param>
@@ -55,6 +79,7 @@ public class ProductsController : ControllerBase
     /// <returns>A task representing an asynchronous operation that returns an IActionResult containing the product details if found, or a no-content response if not found.</returns>
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
     [HttpGet("{productId}"), ActionName("GetDetailedProduct")]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
@@ -73,7 +98,7 @@ public class ProductsController : ControllerBase
     /// <param name="productDto">The product data transfer object containing information about the product to create.</param>
     /// <returns>The created Product.</returns>
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
     [HttpPost]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, [FromBody] ProductDto productDto)
     {
@@ -91,6 +116,7 @@ public class ProductsController : ControllerBase
     [HttpPut("{productId}")]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]    
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ProductDto productDto)
     {
@@ -116,6 +142,7 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}/images")]
     [ProducesResponseType(typeof(List<ImageProductDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]    
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0,
         int take = 10)
     {
@@ -138,6 +165,7 @@ public class ProductsController : ControllerBase
     [HttpGet("{productId}/images/{imageId}"), ActionName("GetDetailedImageProduct")]
     [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]    
     public async Task<IActionResult> GetAsync(int productId, int imageId, CancellationToken cancellationToken)
     {
         var imageProduct = await _productManager.GetProductImageByIdAsync(productId, imageId, cancellationToken);
@@ -158,6 +186,7 @@ public class ProductsController : ControllerBase
     [HttpPost("{productId}/images")]
     [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]    
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ImageProductDto productImageDto)
     {
@@ -181,6 +210,7 @@ public class ProductsController : ControllerBase
     [HttpDelete("{productId}/images/{imageId}")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]    
     public async Task<IActionResult> DeleteAsync(CancellationToken cancellationToken, int productId, int imageId)
     {
         var affectedRows =
@@ -203,7 +233,7 @@ public class ProductsController : ControllerBase
     [HttpPut("{productId}/images/{imageId}")]
     [ProducesResponseType(typeof(ImageProductDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId, int imageId,
         [FromBody] ImageProductDto productImageDto)
     {

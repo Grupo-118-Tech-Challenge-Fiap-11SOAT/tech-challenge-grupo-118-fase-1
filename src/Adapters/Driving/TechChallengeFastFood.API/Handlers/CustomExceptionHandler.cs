@@ -37,7 +37,7 @@ public class CustomExceptionHandler : IExceptionHandler
 
         int statusCode = exception switch
         {
-            ApplicationException => StatusCodes.Status400BadRequest,
+          Application.ApplicationException => StatusCodes.Status400BadRequest,
             DomainException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
