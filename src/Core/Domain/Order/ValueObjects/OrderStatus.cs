@@ -1,4 +1,4 @@
-﻿namespace Domain.Order.Entities
+﻿namespace Domain.Order.ValueObjects
 {
     public enum OrderStatus
     {

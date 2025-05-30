@@ -35,10 +35,9 @@ public class EmployeeManager : IEmployeeManager
         try
         {
             var employee = EmployeeDto.ToEntity(employeeDto);
-
-            employee.ValidateEmployee();
+            
             _passwordManager.CreatePasswordHash(employeeDto.Password, out var passwordHash);
-            employee.Password = passwordHash.ToString();
+            employee.SetPassword(passwordHash.ToString());
             await _employeeRepository.CreateAsync(employee, cancellationToken);
 
             employeeDto.Id = employee.Id;
@@ -154,17 +153,25 @@ public class EmployeeManager : IEmployeeManager
                 };
             }
 
-            employee.Cpf = employeeDto.Cpf;
-            employee.Name = employeeDto.Name;
-            employee.Surname = employeeDto.Surname;
-            employee.Email = employeeDto.Email;
-            employee.BirthDay = employeeDto.BirthDay;
-            employee.Password = employeeDto.Password;
-            employee.Role = employeeDto.Role;
-            employee.IsActive = employeeDto.IsActive;
-            employee.UpdatedAt = DateTime.UtcNow;
+            // employee.Cpf = employeeDto.Cpf;
+            // employee.Name = employeeDto.Name;
+            // employee.Surname = employeeDto.Surname;
+            // employee.Email = employeeDto.Email;
+            // employee.BirthDay = employeeDto.BirthDay;
+            // employee.Password = employeeDto.Password;
+            // employee.Role = employeeDto.Role;
+            // employee.IsActive = employeeDto.IsActive;
+            // employee.UpdatedAt = DateTime.UtcNow;
 
-            employee.ValidateEmployee();
+            employee.UpdateEmployee(employeeDto.Cpf,
+                employeeDto.Name,
+                employeeDto.Surname,
+                employeeDto.Email,
+                employeeDto.BirthDay,
+                employeeDto.Password,
+                employeeDto.Role,
+                employeeDto.IsActive,
+                DateTime.Now);
 
             var updatedEmployee = await _employeeRepository.UpdateAsync(employee, cancellationToken);
 
