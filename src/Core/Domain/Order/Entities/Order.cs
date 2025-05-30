@@ -3,6 +3,7 @@ using Domain.Base.Entities;
 using Domain.Order.Exceptions;
 using Domain.Products.Ports.In;
 using System.Threading;
+using Domain.Products.Dtos;
 
 namespace Domain.Order.Entities;
 
@@ -29,22 +30,29 @@ public class Order : BaseEntity
     }
 
 
-    public Order(OrderDto orderDto)
+    public Order(OrderDto orderDto, List<ProductDto> products)
     {
         var random = new Random();
 
         OrderNumber = random.Next(100000, 1000000);
         Cpf = orderDto.Cpf;
-        Total = orderDto.Total;
         Status = OrderStatus.Recebido;
         CreatedAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
+
         OrderItems = orderDto.Items.Select(item => new OrderItem
         {
             OrderId = orderDto.Id,
             ProductId = item.ProductId,
             Quantity = item.Quantity
         }).ToList() ?? new List<OrderItem>();
+
+        Total = orderDto.Items.Sum(item =>
+        {
+            var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+            return product.Price * item.Quantity;
+        });
+
     }
 
     public void ChangeStatus()

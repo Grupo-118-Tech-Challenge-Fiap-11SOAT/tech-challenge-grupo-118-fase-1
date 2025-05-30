@@ -36,8 +36,10 @@ public class OrderManager : IOrderManager
 
     public async Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken)
     {
-
-        var order = new Domain.Order.Entities.Order(orderDto);
+        int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
+        var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
+   
+        var order = new Domain.Order.Entities.Order(orderDto, activeProducts);
 
         if (!await ValidateOrderItemsAsync(orderDto, cancellationToken))
             throw new Exception("Um ou mais produtos do pedido não existem ou estão inativos.");
@@ -75,13 +77,6 @@ public class OrderManager : IOrderManager
     {
         int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
         var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
-
-        var activeProductIds = activeProducts.Select(p => p.Id).ToHashSet();
-
-        if (!productIds.All(id => activeProductIds.Contains(id)))
-            return false;
-
-        var productPriceById = activeProducts.ToDictionary(p => p.Id, p => p.Price);
 
         decimal total = 0;
         foreach (var item in orderDto.Items)
