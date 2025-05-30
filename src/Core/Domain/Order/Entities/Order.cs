@@ -10,7 +10,7 @@ namespace Domain.Order.Entities;
 public class Order : BaseEntity
 {
     public int OrderNumber { get; set; }
-    public string Cpf { get; set; }
+    public string? Cpf { get; set; }
     public decimal Total { get; set; }
     public OrderStatus Status { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; }

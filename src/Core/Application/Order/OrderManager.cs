@@ -44,6 +44,7 @@ public class OrderManager : IOrderManager
         await _orderRepository.CreateAsync(order, cancellationToken);
 
         orderDto.Id = order.Id;
+        orderDto.Total = order.Total;
 
         return orderDto;
 

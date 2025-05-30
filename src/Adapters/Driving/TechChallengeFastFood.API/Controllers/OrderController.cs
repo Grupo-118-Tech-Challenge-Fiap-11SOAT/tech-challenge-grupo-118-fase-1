@@ -30,7 +30,7 @@ public class OrderController : ControllerBase
     /// <returns>An IActionResult containing the list of orders matching the specified criteria or appropriate status code if no orders are found.</returns>
     [HttpGet]
     public async Task<IActionResult> GetAllAsync(OrderStatus status, CancellationToken cancellationToken, int skip = 0,
-        int take = 0)
+        int take = 10)
     {
         var orders =
             await _orderManager.GetAllAsync(status, skip, take, cancellationToken);

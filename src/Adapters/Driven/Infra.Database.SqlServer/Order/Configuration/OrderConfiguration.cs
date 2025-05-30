@@ -15,7 +15,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domain.Order.Entities
             .IsRequired();
 
         builder.Property(o => o.Cpf)
-            .IsRequired()
             .HasMaxLength(11);
 
         builder.Property(o => o.Total)
