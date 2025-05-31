@@ -28,7 +28,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <param name="skip">The number of records to skip. Used for pagination.</param>
     /// <param name="take">The number of records to take. Used for pagination.</param>
-    /// <returns>An IActionResult containing the list of orders matching the specified criteria or appropriate status code if no orders are found.</returns>
+    /// <returns>The list of orders matching the specified criteria or appropriate status code if no orders are found.</returns>
     [HttpGet]
     public async Task<IActionResult> GetAllAsync(OrderStatus status, CancellationToken cancellationToken, int skip = 0,
         int take = 10)
@@ -47,9 +47,9 @@ public class OrderController : ControllerBase
     /// </summary>
     /// <param name="orderDto">The data transfer object containing the details of the order to create.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
-    /// <returns>A CreatedAtActionResult with the details of the created order, including its unique identifier.</returns>
+    /// <returns>The details of the created order, including its unique identifier.</returns>
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostAsync([FromBody] OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
         var result = await _orderManager.CreateAsync(orderDto, cancellationToken);
 
@@ -61,7 +61,7 @@ public class OrderController : ControllerBase
     /// </summary>
     /// <param name="id">The ID of the order whose status needs to be updated.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
-    /// <returns>An IActionResult containing the result of the operation or an appropriate status code.</returns>
+    /// <returns>The result of the operation or an appropriate status code.</returns>
     [HttpPatch("{id}/change-status")]
     public async Task<IActionResult> PatchStatus(int id, CancellationToken cancellationToken)
     {
@@ -75,11 +75,11 @@ public class OrderController : ControllerBase
     /// </summary>
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
-    /// <returns>An ActionResult containing the order details if found, or a NotFound status if the order does not exist.</returns>
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    /// <returns>The order details if found, or a NotFound status if the order does not exist.</returns>
+    [ProducesResponseType(typeof(OrderResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}"), ActionName("GetById")]
-    public async Task<ActionResult<OrderDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<OrderResponseDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await _orderManager.GetByIdAsync(id, cancellationToken);
 

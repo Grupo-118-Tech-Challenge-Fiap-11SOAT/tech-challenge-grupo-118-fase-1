@@ -20,21 +20,22 @@ public class OrderManager : IOrderManager
     }
 
 
-    public async Task<List<OrderDto>> GetAllAsync(OrderStatus status, int skip, int take, CancellationToken cancellationToken)
+    public async Task<List<OrderResponseDto>> GetAllAsync(OrderStatus status, int skip, int take,
+        CancellationToken cancellationToken)
     {
         var ordersList = await _orderRepository.GetAllAsync(status, cancellationToken, skip, take);
 
-        var result = new List<OrderDto>(ordersList.Count);
+        var result = new List<OrderResponseDto>(ordersList.Count);
 
         foreach (var order in ordersList)
         {
-            result.Add(new OrderDto(order));
+            result.Add(new OrderResponseDto(order));
         }
 
         return result;
     }
 
-    public async Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<OrderResponseDto> CreateAsync(OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
         int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
         var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
@@ -43,14 +44,20 @@ public class OrderManager : IOrderManager
 
         await _orderRepository.CreateAsync(order, cancellationToken);
 
-        orderDto.Id = order.Id;
-        orderDto.Total = order.Total;
+        var orderDtoResult = new OrderResponseDto
+        {
+            Cpf = orderDto.Cpf,
+            Items = orderDto.Items,
+            Total = order.Total,
+            Status = order.Status,
+            OrderNumber = order.OrderNumber,
+            Id = order.Id
+        };
 
-        return orderDto;
-
+        return orderDtoResult;
     }
 
-    public async Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
+    public async Task<OrderResponseDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(orderId, cancellationToken);
 
@@ -60,15 +67,16 @@ public class OrderManager : IOrderManager
         order.ChangeStatus();
         await _orderRepository.UpdateAsync(order, cancellationToken);
 
-        return new OrderDto(order);
+        return new OrderResponseDto(order);
     }
 
-    public async Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<OrderResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
-        var result = new OrderDto(order);
+        var result = new OrderResponseDto(order);
 
         return result;
     }
 }
+
 

@@ -5,7 +5,7 @@ using Domain.Order.ValueObjects;
 
 namespace Domain.Order.Dtos;
 
-public class OrderDto
+public class OrderResponseDto
 {
     public int Id { get; set; }
     public int OrderNumber { get; set; }
@@ -15,12 +15,12 @@ public class OrderDto
     public OrderStatus Status { get; set; }
     public List<OrderItemDto> Items { get; set; }
 
-    public OrderDto()
+    public OrderResponseDto()
     {
         
     }
 
-    public OrderDto(Entities.Order order)
+    public OrderResponseDto(Entities.Order order)
     {
         Id = order.Id;
         OrderNumber = order.OrderNumber;

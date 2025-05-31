@@ -30,7 +30,7 @@ public class Order : BaseEntity
     }
 
 
-    public Order(OrderDto orderDto, List<ProductDto> products)
+    public Order(OrderRequestDto orderDto, List<ProductDto> products)
     {
         var random = new Random();
 
@@ -41,7 +41,7 @@ public class Order : BaseEntity
         UpdatedAt = DateTime.Now;
 
         OrderItems =
-            orderDto.Items?.Select(item => new OrderItem(orderDto.Id, item.ProductId, item.Quantity)).ToList() ??
+            orderDto.Items?.Select(item => new OrderItem(Id, item.ProductId, item.Quantity)).ToList() ??
             new List<OrderItem>();
 
         Total = orderDto.Items?.Sum(item =>
