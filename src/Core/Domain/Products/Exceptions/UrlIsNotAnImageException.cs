@@ -1,3 +1,5 @@
+using Domain.Base.Exceptions;
+
 namespace Domain.Products.Exceptions;
 
 /// <summary>

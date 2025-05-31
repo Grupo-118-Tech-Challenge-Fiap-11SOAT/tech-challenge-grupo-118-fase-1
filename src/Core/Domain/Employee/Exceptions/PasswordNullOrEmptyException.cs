@@ -1,4 +1,6 @@
-﻿namespace Domain.Employee.Exceptions;
+﻿using Domain.Base.Exceptions;
+
+namespace Domain.Employee.Exceptions;
 
 /// <summary>
 /// Exception that is thrown when a password is null or empty.
