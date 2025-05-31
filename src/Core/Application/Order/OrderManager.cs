@@ -1,5 +1,4 @@
 ﻿using Domain.Order.Dtos;
-using Domain.Order.Entities;
 using Domain.Order.Exceptions;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
@@ -39,7 +38,7 @@ public class OrderManager : IOrderManager
     {
         int[] productIds = orderDto.Items.Select(i => i.ProductId).ToArray();
         var activeProducts = await _productManager.GetActiveProductsByIds(productIds, cancellationToken);
-   
+
         var order = new Domain.Order.Entities.Order(orderDto, activeProducts);
 
         await _orderRepository.CreateAsync(order, cancellationToken);
@@ -71,6 +70,5 @@ public class OrderManager : IOrderManager
 
         return result;
     }
-
 }
 

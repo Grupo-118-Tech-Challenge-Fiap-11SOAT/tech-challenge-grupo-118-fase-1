@@ -1,5 +1,4 @@
 using Domain.Order.Dtos;
-using Domain.Order.Entities;
 using Domain.Order.ValueObjects;
 
 namespace Domain.Order.Ports.In;

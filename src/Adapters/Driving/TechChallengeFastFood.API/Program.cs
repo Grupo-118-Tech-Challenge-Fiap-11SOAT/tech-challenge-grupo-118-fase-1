@@ -29,6 +29,10 @@ using Domain.Order.Ports.Out;
 using Application.Order;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Refit;
+using Domain.Order.Services.Interfaces;
+using Domain.Order.Services;
+using Domain.Payments.Services.Interfaces;
+using Domain.Payments.Services;
 
 namespace TechChallengeFastFood.API;
 
@@ -88,9 +92,11 @@ public class Program
 
         builder.Services.AddTransient<IOrderRepository, OrderRepository>();
         builder.Services.AddTransient<IOrderManager, OrderManager>();
+        builder.Services.AddTransient<IOrderService, OrderService>();
 
         builder.Services.AddTransient<IPaymentManager, PaymentManager>();
         builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+        builder.Services.AddTransient<IPaymentService, PaymentService>();
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
 
