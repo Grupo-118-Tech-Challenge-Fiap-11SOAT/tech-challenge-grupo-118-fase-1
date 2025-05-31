@@ -25,6 +25,6 @@ public interface IPaymentManager
     /// </summary>
     /// <param name="request">The callback content</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing an asynchronous operation that returns the generated payment.</returns>
-    Task<PaymentCallbackResponse> ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default);
+    /// <returns></returns>
+    Task ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default);
 }

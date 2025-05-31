@@ -33,7 +33,7 @@ public class PaymentManager(IPaymentProcessorFactory factory, IPaymentRepository
         return new PaymentResponse(payment);
     }
 
-    public async Task<PaymentCallbackResponse> ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default)
+    public async Task ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException("This method is not implemented yet.");
     }

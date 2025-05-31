@@ -52,9 +52,9 @@ public class PaymentsController(IPaymentManager paymentManager) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("webhooks/mercado-pago")]
-    public async Task<ActionResult<PaymentCallbackResponse>> ProcessCallbackAsync([FromBody] PaymentCallbackRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> ProcessCallbackAsync([FromBody] PaymentCallbackRequest request, CancellationToken cancellationToken)
     {
-        var response = await paymentManager.ProcessCallbackAsync(request, cancellationToken);
-        return Ok(response);
+        await paymentManager.ProcessCallbackAsync(request, cancellationToken);
+        return Ok();
     }
 }
