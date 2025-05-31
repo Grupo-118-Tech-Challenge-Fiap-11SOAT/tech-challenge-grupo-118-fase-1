@@ -49,7 +49,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The details of the created order, including its unique identifier.</returns>
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostAsync([FromBody] OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
         var result = await _orderManager.CreateAsync(orderDto, cancellationToken);
 
@@ -76,10 +76,10 @@ public class OrderController : ControllerBase
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The order details if found, or a NotFound status if the order does not exist.</returns>
-    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OrderResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}"), ActionName("GetById")]
-    public async Task<ActionResult<OrderDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<OrderResponseDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await _orderManager.GetByIdAsync(id, cancellationToken);
 

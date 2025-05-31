@@ -14,7 +14,7 @@ public interface IOrderManager
     /// <param name="take">The number of items to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of orders.</returns>
-    Task<List<OrderDto>> GetAllAsync(OrderStatus status, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+    Task<List<OrderResponseDto>> GetAllAsync(OrderStatus status, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new order in the system.
@@ -22,7 +22,7 @@ public interface IOrderManager
     /// <param name="orderDto">The order dto containing the details of the order to be created.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The unique identifier of the created order.</returns>
-    Task<OrderDto> CreateAsync(OrderDto orderDto, CancellationToken cancellationToken);
+    Task<OrderResponseDto> CreateAsync(OrderRequestDto orderDto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Updates an existing order with the provided details.
@@ -31,7 +31,7 @@ public interface IOrderManager
     /// <param name="orderId">The order id to be update.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The updated Order entity</returns>
-    Task<OrderDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken);
+    Task<OrderResponseDto> UpdateStatusAsync(int orderId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Retrieves a oder by its unique identifier.
@@ -39,5 +39,5 @@ public interface IOrderManager
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The order matching the specified identifier, or null if no such order exists.</returns>
-    Task<OrderDto> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<OrderResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken);
 }
