@@ -1,3 +1,4 @@
+using Domain.Base.Exceptions;
 using Domain.Payments.Entities;
 using Domain.Payments.Ports.Out;
 using Domain.Payments.Services.Interfaces;

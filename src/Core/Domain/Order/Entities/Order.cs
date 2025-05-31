@@ -3,6 +3,8 @@ using Domain.Base.Entities;
 using Domain.Order.Exceptions;
 using Domain.Products.Ports.In;
 using System.Threading;
+using Domain.Base.Exceptions;
+using Domain.Base.Extensions;
 using Domain.Order.ValueObjects;
 using Domain.Products.Dtos;
 
@@ -35,7 +37,10 @@ public class Order : BaseEntity
         var random = new Random();
 
         OrderNumber = random.Next(100000, 1000000);
+
+
         Cpf = orderDto.Cpf;
+
         Status = OrderStatus.Received;
         CreatedAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
@@ -49,6 +54,17 @@ public class Order : BaseEntity
             var product = products.FirstOrDefault(p => p.Id == item.ProductId);
             return product?.Price * item.Quantity;
         }) ?? 0;
+
+        ValidateOrder();
+    }
+
+    private void ValidateOrder()
+    {
+        if (!Cpf.IsValidCpf())
+            throw new InvalidCpfException();
+
+        if (OrderItems.Count == 0)
+            throw new EmptyOrderItemsException();
     }
 
     public void ChangeStatus()

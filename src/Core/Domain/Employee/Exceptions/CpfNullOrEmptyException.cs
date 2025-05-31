@@ -1,4 +1,6 @@
-﻿namespace Domain.Employee.Exceptions;
+﻿using Domain.Base.Exceptions;
+
+namespace Domain.Employee.Exceptions;
 
 /// <summary>
 /// Exception thrown when a CPF (Cadastro de Pessoas Físicas) is null or empty.
