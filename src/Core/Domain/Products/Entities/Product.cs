@@ -1,25 +1,24 @@
+using Domain.Order.Entities;
 using Domain.Products.Exceptions;
 using Domain.Products.ValueObjects;
 
 namespace Domain.Products.Entities;
 
-public class Product : BaseDomain
+public class Product : Domain.Base.Entities.BaseEntity
 {
     private const int MAX_IMAGES = 5;
 
-    public int Id { get; private set; }
-
     public string Name { get; set; }
 
-    public string Description { get; private set; }
+    public string Description { get; protected set; }
 
-    public ProductType Category { get; private set; }
+    public ProductType Category { get; protected set; }
 
-    public decimal Price { get; private set; }
+    public decimal Price { get; protected set; }
 
-    public bool IsActive { get; private set; }
+    public ICollection<OrderItem> OrderItems { get; protected set; }
 
-    public List<ImageProduct> Images { get; private set; }
+    public List<ImageProduct> Images { get; protected set; }
 
     public Product(string name,
         string description,
@@ -41,6 +40,21 @@ public class Product : BaseDomain
         CheckProductValue();
 
         Images = images ?? new List<ImageProduct>();
+    }
+
+    protected Product()
+    {
+        
+    }
+    
+    public void UpdateProduct(Product productToUpdate)
+    {
+        this.Name = productToUpdate.Name;
+        this.Description = productToUpdate.Description;
+        this.Category = productToUpdate.Category;
+        this.Price = productToUpdate.Price;
+        this.IsActive = productToUpdate.IsActive;
+        this.UpdatedAt = DateTimeOffset.Now;
     }
 
     public void AddImage(ImageProduct image)

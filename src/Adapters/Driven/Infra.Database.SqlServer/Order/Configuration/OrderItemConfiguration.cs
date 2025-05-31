@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Database.SqlServer.Order.Configuration;
@@ -18,5 +16,12 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<Domain.Order.Enti
             .IsRequired()
             .HasDefaultValue(1);
 
+        builder.HasOne(x => x.Order)
+            .WithMany(o => o.OrderItems)
+            .HasForeignKey(x => x.OrderId);
+
+        builder.HasOne(x => x.Product)
+            .WithMany(p => p.OrderItems)
+            .HasForeignKey(x => x.ProductId);
     }
 }

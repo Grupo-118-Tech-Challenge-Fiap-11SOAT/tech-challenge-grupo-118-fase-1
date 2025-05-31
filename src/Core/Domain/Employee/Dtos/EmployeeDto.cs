@@ -7,7 +7,6 @@ public class EmployeeDto : PersonDto
 {
     public EmployeeDto()
     {
-
     }
 
     public EmployeeDto(Entities.Employee employee)
@@ -48,19 +47,16 @@ public class EmployeeDto : PersonDto
 
     public static Entities.Employee ToEntity(EmployeeDto employeeDto)
     {
-        return new Entities.Employee
-        {
-            Id = employeeDto.Id,
-            CreatedAt = employeeDto.CreatedAt,
-            UpdatedAt = employeeDto.UpdatedAt,
-            IsActive = employeeDto.IsActive,
-            Cpf = employeeDto.Cpf,
-            Name = employeeDto.Name,
-            Surname = employeeDto.Surname,
-            Email = employeeDto.Email,
-            BirthDay = employeeDto.BirthDay,
-            Password = employeeDto.Password,
-            Role = employeeDto.Role
-        };
+        return new Entities.Employee(employeeDto.Cpf,
+            employeeDto.Name,
+            employeeDto.Surname,
+            employeeDto.Email,
+            employeeDto.BirthDay,
+            employeeDto.Password,
+            employeeDto.Role,
+            employeeDto.IsActive,
+            employeeDto.CreatedAt,
+            employeeDto.UpdatedAt,
+            employeeDto.Id);
     }
 }
