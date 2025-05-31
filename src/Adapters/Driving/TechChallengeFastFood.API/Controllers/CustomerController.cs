@@ -77,7 +77,7 @@ namespace TechChallengeFastFood.API.Controllers
         [ProducesResponseType(typeof(CustomerDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails),StatusCodes.Status400BadRequest)]
-        [HttpGet("{cpf}")]
+        [HttpGet("/cpf/{cpf}")]
         public async Task<ActionResult<CustomerDto>> GetByIdAsync(string cpf, CancellationToken cancellationToken)
         {
             var customer = await _customerManager.GetByCpfAsync(cpf, cancellationToken);

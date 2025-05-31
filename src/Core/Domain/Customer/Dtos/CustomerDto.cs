@@ -19,19 +19,13 @@ namespace Domain.Customer.Dtos
             BirthDay = customer.BirthDay;
         }
 
-        public static CustomerDto ToDto(Entities.Customer customer)
+        public CustomerDto(string name, string surName, string email, string cpf, bool isActive)
         {
-            return new CustomerDto
-            {
-                Id = customer.Id,
-                CreatedAt = customer.CreatedAt,
-                UpdatedAt = customer.UpdatedAt,
-                IsActive = customer.IsActive,
-                Cpf = customer.Cpf,
-                Name = customer.Name,
-                Email = customer.Email,
-                BirthDay = customer.BirthDay,
-            };
+            Name = name;
+            Surname = surName;
+            Email = email;
+            Cpf = cpf;
+            IsActive = isActive;
         }
     }
 }

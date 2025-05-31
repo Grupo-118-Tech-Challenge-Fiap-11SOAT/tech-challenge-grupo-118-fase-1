@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Database.SqlServer.Customers.Repositories
 {
-    public class CustomersRepository : ICustomerRepository
+    public class CustomerRepository : ICustomerRepository
     {
         private readonly AppDbContext _dbContext;
 
-        public CustomersRepository(AppDbContext dbContext)
+        public CustomerRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
         }

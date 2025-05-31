@@ -15,28 +15,18 @@ namespace Application.Customer
 
         public async Task<CustomerDto> CreateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
         {
-            try
-            {
-                var customer = new Domain.Customer.Entities.Customer(
-                    customerDto.Cpf,
-                    customerDto.Name,
-                    customerDto.IsActive,
-                    customerDto.BirthDay,
-                    customerDto.Email
-                    );
+            var customer = new Domain.Customer.Entities.Customer(
+                customerDto.Cpf,
+                customerDto.Name,
+                customerDto.Surname,
+                customerDto.Email,
+                customerDto.BirthDay,
+                customerDto.IsActive
+                );
 
-                var createdCustomer = await _customerRepository.CreateAsync(customer, cancellationToken);
+            var createdCustomer = await _customerRepository.CreateAsync(customer, cancellationToken);
 
-                return new CustomerDto(createdCustomer);
-            }
-            catch (Exception ex) 
-            {
-                return new CustomerDto
-                {
-                    ErrorMessage = $"Message: {ex.Message}",
-                    Error = true
-                };
-            }
+            return new CustomerDto(createdCustomer);
         }
 
         public async Task<CustomerDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
@@ -51,7 +41,7 @@ namespace Application.Customer
                 };
             }
 
-            return CustomerDto.ToDto(customer);
+            return new CustomerDto(customer);
         }
         
         public async Task<CustomerDto?> GetByCpfAsync(string cpf, CancellationToken cancellationToken)
@@ -66,32 +56,25 @@ namespace Application.Customer
                 };
             }
 
-            return CustomerDto.ToDto(customer);
+            return new CustomerDto(customer);
         }
 
-        public async Task<CustomerDto> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
+        public async Task<CustomerDto?> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
         {
-            try
-            {
-                var customer = new Domain.Customer.Entities.Customer(
-                    customerDto.Cpf,
-                    customerDto.Name,
-                    customerDto.IsActive,
-                    customerDto.BirthDay,
-                    customerDto.Email
-                );
-                var updatedCustomer = await _customerRepository.UpdateAsync(customer, cancellationToken);
-
-                return CustomerDto.ToDto(updatedCustomer);
-            }
-            catch (Exception ex)
-            {
-                return new CustomerDto
-                {
-                    ErrorMessage = $"Message: {ex.Message}",
-                    Error = true
-                };
-            }
+            var customer = new Domain.Customer.Entities.Customer(
+                customerDto.Cpf,
+                customerDto.Name,
+                customerDto.Surname,
+                customerDto.Email,
+                customerDto.BirthDay,
+                customerDto.IsActive
+            );
+            var updatedCustomer = await _customerRepository.UpdateAsync(customer, cancellationToken);
+            
+            if(updatedCustomer is null)
+                return null;
+            
+            return new CustomerDto(updatedCustomer);
         }
     }
 }
