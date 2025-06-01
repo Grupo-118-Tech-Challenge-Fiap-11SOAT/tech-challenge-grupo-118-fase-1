@@ -52,14 +52,11 @@ public class ProductManager : IProductManager
     {
         var products = await _productRepository.GetProductsByIds(ids, cancellationToken);
 
-        if (products is null || products.Count == 0)
-            return null;
+        if (products is null || products.Count == 0 || products.Count < ids.Length)
+            throw new InvalidProductException();
 
         if (products.Any(p => !p.IsActive))
             throw new DeactivatedProductException();
-
-        if (products.Count < ids.Length)
-            throw new InvalidProductException();
 
         return products.ConvertAll(p => new ProductDto(p));
     }
