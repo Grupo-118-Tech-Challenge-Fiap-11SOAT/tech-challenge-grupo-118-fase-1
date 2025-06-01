@@ -103,9 +103,10 @@ public class EmployeeManager : IEmployeeManager
     /// Retrieves an employee by their unique identifier.  
     /// </summary>  
     /// <param name="id">The unique identifier of the employee to retrieve.</param>  
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
     /// <returns>  
     /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeResponseDto"/> object  
-    /// representing the employee if found, or an empty <see cref="EmployeeResponseDto"/> if the employee does not exist.  
+    /// representing the employee if found, or <c>null</c> if the employee does not exist.  
     /// </returns>  
     public async Task<EmployeeResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
