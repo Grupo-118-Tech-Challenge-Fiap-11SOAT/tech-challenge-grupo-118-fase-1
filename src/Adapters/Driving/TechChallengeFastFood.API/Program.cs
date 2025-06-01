@@ -37,6 +37,7 @@ using Domain.Order.Services;
 using Domain.Payments.Services.Interfaces;
 using Domain.Payments.Services;
 using Infra.Database.SqlServer.Customers.Repositories;
+using TechChallengeFastFood.API.Filter;
 
 namespace TechChallengeFastFood.API;
 
@@ -148,23 +149,7 @@ public class Program
                 Scheme = "Bearer"
             });
 
-            s.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header
-                    },
-                    new List<string>()
-                }
-            });
+            s.OperationFilter<OAuthOperationsFilter>();
         });
 
         // Configuração JWT
