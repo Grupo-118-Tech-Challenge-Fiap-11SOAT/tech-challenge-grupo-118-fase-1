@@ -45,11 +45,7 @@ namespace Application.Customer
             var customer = await _customerRepository.GetByCpfAsync(cpf, cancellationToken);
             if (customer == null)
             {
-                return new CustomerResponseDto
-                {
-                    ErrorMessage = "Customer not found.",
-                    Error = true
-                };
+                return null;
             }
 
             return CustomerResponseDto.ToDto(customer);

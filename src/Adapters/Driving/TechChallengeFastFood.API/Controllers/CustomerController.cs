@@ -94,7 +94,12 @@ namespace TechChallengeFastFood.API.Controllers
         {
             var customer = await _customerManager.GetByCpfAsync(cpf, cancellationToken);
 
-            return customer is null ? NotFound() : Ok(customer);
+            if (customer == null)
+            {
+                return NotFound(CUSTOMER_NOT_FOUND);
+            }
+
+            return Ok(customer);
         }
     }
 }
