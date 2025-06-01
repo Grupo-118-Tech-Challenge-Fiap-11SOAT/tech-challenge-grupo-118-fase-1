@@ -1,7 +1,8 @@
-﻿namespace Domain.Order.Exceptions;
+﻿using Domain.Base.Exceptions;
+
+namespace Domain.Order.Exceptions;
 
 public class OrderNotFoundExpetion(int orderId) : DomainException
 {
-    public override string Message => $"Pedido {orderId} não encontrado.";
+    public override string Message => $"Order {orderId} not found.";
 }
-

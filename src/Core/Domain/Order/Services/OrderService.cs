@@ -1,3 +1,4 @@
+using Domain.Base.Exceptions;
 using Domain.Order.Ports.Out;
 using Domain.Order.Services.Interfaces;
 using Domain.Order.ValueObjects;
