@@ -50,6 +50,6 @@ public class AuthenticationController : Controller
         {
             return Unauthorized();
         }
-        return Ok(new { Token = $"{token}" });
+        return Ok(new { Token = token });
     }
 }
