@@ -13,6 +13,11 @@ public class CustomerRequestDto
         string email,
         DateTimeOffset birthDate)
     {
+        Cpf = cpf;
+        Name = name;
+        Surname = surname;
+        Email = email;
+        BirthDate = birthDate.DateTime;
     }
 
     public string Cpf { get; set; }
