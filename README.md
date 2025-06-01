@@ -66,7 +66,7 @@
 Escolhas efetuadas de acordo com a familiariade de todo o grupo para acelerarmos o tempo de desenvolvimento e focarmos nas atividades fundamentais
 
 # Utilizando a autenticação
-Inicialmente temos um usuario admin cadastrado, para validar as credenciais acesse no swagger o endpoint de Login, fornecendo as credenciais
+Inicialmente temos um usuário admin cadastrado, para validar as credenciais acesse no swagger o endpoint de Login, fornecendo as credenciais
 ```
 email: admin@admin.com
 password:  adminPass
