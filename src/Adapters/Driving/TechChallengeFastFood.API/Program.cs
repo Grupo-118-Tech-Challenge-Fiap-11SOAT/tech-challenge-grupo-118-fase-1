@@ -50,7 +50,11 @@ public class Program
         builder.Services.AddExceptionHandler<CustomExceptionHandler>();
         builder.Configuration.AddEnvironmentVariables();
         builder.Services.AddControllers().AddJsonOptions(options =>
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                }
+            )
             .ConfigureApiBehaviorOptions(setupAction =>
             {
                 setupAction.InvalidModelStateResponseFactory = context =>
@@ -103,7 +107,7 @@ public class Program
         builder.Services.AddTransient<IPaymentService, PaymentService>();
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
-        
+
         builder.Services.AddTransient<ICustomerManager, CustomerManager>();
         builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 
@@ -117,7 +121,7 @@ public class Program
         });
 
         builder.Services.AddTransient<IPasswordManager, PasswordManager>();
-        
+
         builder.Services.AddSwaggerGen(s =>
         {
             s.SwaggerDoc("v1", new OpenApiInfo
@@ -176,8 +180,8 @@ public class Program
                     ValidIssuer = builder.Configuration["Jwt:Issuer"],
                     ValidAudience = builder.Configuration["Jwt:Audience"],
                     IssuerSigningKey =
-                         new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-                             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
             });
 
