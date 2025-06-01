@@ -64,10 +64,10 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
             .IsUnique()
             .HasDatabaseName("IX_Employees_Cpf");
 
-        builder.HasData(GenarateEmployess());
+        builder.HasData(Generate());
     }
 
-    private IEnumerable<Domain.Employee.Entities.Employee> GenarateEmployess()
+    private IEnumerable<Domain.Employee.Entities.Employee> Generate()
     {
         return new List<Domain.Employee.Entities.Employee>
         {
