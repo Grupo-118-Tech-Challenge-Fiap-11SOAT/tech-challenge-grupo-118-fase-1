@@ -107,16 +107,12 @@ public class EmployeeManager : IEmployeeManager
     /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeResponseDto"/> object  
     /// representing the employee if found, or an empty <see cref="EmployeeResponseDto"/> if the employee does not exist.  
     /// </returns>  
-    public async Task<EmployeeResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<EmployeeResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
         if (employee == null)
         {
-            return new EmployeeResponseDto
-            {
-                ErrorMessage = "Employee not found.",
-                Error = true
-            };
+            return null;
         }
 
         return EmployeeResponseDto.ToDto(employee);

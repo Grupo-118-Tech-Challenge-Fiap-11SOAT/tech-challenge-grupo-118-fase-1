@@ -12,6 +12,13 @@ public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeManager _employeeManager;
 
+    private readonly ProblemDetails EMPLOYEE_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Employee not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "The requested employee could not be found."
+    };
+
     /// <summary>  
     /// Initializes a new instance of the <see cref="EmployeeController"/> class.  
     /// </summary>  
@@ -101,6 +108,11 @@ public class EmployeeController : ControllerBase
     {
         var employee = await _employeeManager.GetByIdAsync(id, cancellationToken);
 
-        return employee is null ? NotFound() : Ok(employee);
+        if (employee is null)
+        {
+            return NotFound(EMPLOYEE_NOT_FOUND);
+        }
+
+        return Ok(employee);
     }
 }
