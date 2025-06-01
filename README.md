@@ -72,7 +72,7 @@ email: admin@admin.com
 password:  adminPass
 ```
 
-Com isso deve ser gerado um token que deve ser fornecido no canto superior direito clicando no botão Authorize, colar o conteudo da resposta do endpoint Login, Ex: Bearer eyJhbGciOiJIUzI1NiIsI e clicar em Authorize. Após isso fechar clicar em close e seu usuário estara autenticado e com acesso a todos os endpoints da aplicação.
+Com isso deve ser gerado um token que deve ser fornecido no canto superior direito clicando no botão Authorize, colar o conteudo da resposta do endpoint Login, Ex: Bearer eyJhbGciOiJIUzI1NiIsI e clicar em Authorize. Após isso fechar clicar em close e seu usuário estará autenticado e com acesso a todos os endpoints da aplicação.
 
 # Migration
 Da raíz do projeto
