@@ -38,8 +38,7 @@ public class Order : BaseEntity
 
         OrderNumber = random.Next(100000, 1000000);
 
-
-        Cpf = orderDto.Cpf;
+        Cpf = orderDto.Cpf is null ? orderDto.Cpf : orderDto.Cpf.SanitizeCpf();
 
         Status = OrderStatus.Received;
         CreatedAt = DateTime.Now;
