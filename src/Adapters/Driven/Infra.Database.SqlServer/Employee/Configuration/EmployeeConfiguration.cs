@@ -80,7 +80,6 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
                 "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
                 Domain.Employee.ValueObjects.EmployeeRole.Admin,
                 true,
-                new DateTimeOffset(2025,4, 20, 10, 50, 5, TimeSpan.FromHours(-3)),
                 1)
         };
     }
