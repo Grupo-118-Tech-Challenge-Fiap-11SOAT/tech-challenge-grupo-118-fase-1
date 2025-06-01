@@ -38,5 +38,10 @@
 
             return cpf.EndsWith(digit);
         }
+        
+        public static string SanitizeCpf(this string cpf)
+        {
+            return new string(cpf.Where(char.IsDigit).ToArray());
+        }
     }
 }

@@ -18,7 +18,7 @@ public class Customer : Person
         bool isActive,
         int id = 0)
     {
-        Cpf = cpf;
+        Cpf = cpf.SanitizeCpf();
         Name = name;
         Surname = surname;
         Email = email;
