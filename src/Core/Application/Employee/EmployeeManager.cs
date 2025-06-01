@@ -17,12 +17,12 @@ public class EmployeeManager : IEmployeeManager
     }
 
     /// <summary>
-    /// Creates a new employee based on the provided <see cref="UpdateEmployeeDto"/>.
+    /// Creates a new employee based on the provided <see cref="EmployeeRequestDto"/>.
     /// </summary>
-    /// <param name="employeeDto">The data transfer object containing employee details.</param>
+    /// <param name="employeeRequestDto">The data transfer object containing employee details.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains the created <see cref="UpdateEmployeeDto"/>.
-    /// If an exception occurs, the returned <see cref="UpdateEmployeeDto"/> will contain error details.
+    /// A task that represents the asynchronous operation. The task result contains the created <see cref="EmployeeRequestDto"/>.
+    /// If an exception occurs, the returned <see cref="EmployeeRequestDto"/> will contain error details.
     /// </returns>
     /// <exception cref="CpfNullOrEmptyException">Thrown when the CPF is null or empty.</exception>
     /// <exception cref="NameNullOrEmptyException">Thrown when the name is null or empty.</exception>
@@ -83,7 +83,7 @@ public class EmployeeManager : IEmployeeManager
     /// Retrieves all employees from the repository.  
     /// </summary>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains a list of <see cref="UpdateEmployeeDto"/> objects.  
+    /// A task that represents the asynchronous operation. The task result contains a list of <see cref="EmployeeResponseDto"/> objects.  
     /// </returns>  
     public async Task<List<EmployeeResponseDto>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
@@ -104,8 +104,8 @@ public class EmployeeManager : IEmployeeManager
     /// </summary>  
     /// <param name="id">The unique identifier of the employee to retrieve.</param>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains the <see cref="UpdateEmployeeDto"/> object  
-    /// representing the employee if found, or an empty <see cref="UpdateEmployeeDto"/> if the employee does not exist.  
+    /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeResponseDto"/> object  
+    /// representing the employee if found, or an empty <see cref="EmployeeResponseDto"/> if the employee does not exist.  
     /// </returns>  
     public async Task<EmployeeResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
@@ -125,7 +125,7 @@ public class EmployeeManager : IEmployeeManager
     /// <summary>  
     /// Updates an existing employee based on the provided <see cref="UpdateEmployeeDto"/>.  
     /// </summary>  
-    /// <param name="employeeDto">The data transfer object containing updated employee details.</param>  
+    /// <param name="updateEmployeeDto">The data transfer object containing updated employee details.</param>  
     /// <returns>  
     /// A task that represents the asynchronous operation. The task result contains the updated <see cref="UpdateEmployeeDto"/>.  
     /// If an exception occurs, the returned <see cref="UpdateEmployeeDto"/> will contain error details.  
@@ -136,11 +136,11 @@ public class EmployeeManager : IEmployeeManager
     /// <exception cref="EmailNullOrEmptyException">Thrown when the email is null or empty.</exception>  
     /// <exception cref="BirthDayMinValueException">Thrown when the birth date is invalid.</exception>  
     /// <exception cref="PasswordNullOrEmptyException">Thrown when the password is null or empty.</exception>  
-    public async Task<EmployeeResponseDto> UpdateAsync(UpdateEmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<EmployeeResponseDto> UpdateAsync(UpdateEmployeeDto updateEmployeeDto, CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _employeeRepository.GetByIdAsync(employeeDto.Id, cancellationToken);
+            var employee = await _employeeRepository.GetByIdAsync(updateEmployeeDto.Id, cancellationToken);
 
             if (employee == null)
             {
@@ -151,14 +151,14 @@ public class EmployeeManager : IEmployeeManager
                 };
             }
 
-            employee.UpdateEmployee(employeeDto.Cpf,
-                employeeDto.Name,
-                employeeDto.Surname,
-                employeeDto.Email,
-                employeeDto.BirthDate,
-                employeeDto.Password,
-                employeeDto.Role,
-                employeeDto.IsActive);
+            employee.UpdateEmployee(updateEmployeeDto.Cpf,
+                updateEmployeeDto.Name,
+                updateEmployeeDto.Surname,
+                updateEmployeeDto.Email,
+                updateEmployeeDto.BirthDate,
+                updateEmployeeDto.Password,
+                updateEmployeeDto.Role,
+                updateEmployeeDto.IsActive);
 
             var updatedEmployee = await _employeeRepository.UpdateAsync(employee, cancellationToken);
 
