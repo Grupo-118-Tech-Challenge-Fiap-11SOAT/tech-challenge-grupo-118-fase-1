@@ -46,7 +46,7 @@ public class OrderManager : IOrderManager
 
         var orderDtoResult = new OrderResponseDto
         {
-            Cpf = orderDto.Cpf,
+            Cpf = order.Cpf,
             Items = orderDto.Items,
             Total = order.Total,
             Status = order.Status,
