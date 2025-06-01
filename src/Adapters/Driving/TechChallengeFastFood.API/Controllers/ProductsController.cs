@@ -15,6 +15,20 @@ public class ProductsController : ControllerBase
 {
     private readonly IProductManager _productManager;
 
+    private readonly ProblemDetails PRODUCT_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Product not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "The specified product was not found."
+    };
+    
+    private readonly ProblemDetails IMAGE_PRODUCT_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Image Product not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "The specified image product was not found."
+    };
+
     /// <summary>
     /// Product constructor
     /// </summary>
@@ -45,7 +59,7 @@ public class ProductsController : ControllerBase
                 cancellationToken: cancellationToken);
 
         if (products is null || products.Count == 0)
-            return NotFound();
+            return NotFound(PRODUCT_NOT_FOUND);
 
         return Ok(products);
     }
@@ -68,7 +82,7 @@ public class ProductsController : ControllerBase
         var products = await _productManager.GetProductsByTypeAsync(category, skip, take, cancellationToken);
 
         if (products is null || products.Count == 0)
-            return NotFound();
+            return NotFound(PRODUCT_NOT_FOUND);
 
         return Ok(products);
     }
@@ -90,7 +104,7 @@ public class ProductsController : ControllerBase
         var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
 
         if (product is null)
-            return NotFound();
+            return NotFound(PRODUCT_NOT_FOUND);
 
         return Ok(product);
     }
@@ -155,7 +169,7 @@ public class ProductsController : ControllerBase
             await _productManager.GetProductImagesAsync(productId, skip, take, cancellationToken: cancellationToken);
 
         if (images is null || images.Count == 0)
-            return NotFound();
+            return NotFound(IMAGE_PRODUCT_NOT_FOUND);
 
         return Ok(images);
     }
@@ -177,7 +191,7 @@ public class ProductsController : ControllerBase
         var imageProduct = await _productManager.GetProductImageByIdAsync(productId, imageId, cancellationToken);
 
         if (imageProduct is null)
-            return NotFound();
+            return NotFound(IMAGE_PRODUCT_NOT_FOUND);
 
         return Ok(imageProduct);
     }

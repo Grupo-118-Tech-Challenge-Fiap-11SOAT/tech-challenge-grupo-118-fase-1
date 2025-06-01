@@ -15,6 +15,13 @@ public class OrderController : ControllerBase
 {
     private readonly IOrderManager _orderManager;
 
+    private readonly ProblemDetails ORDER_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Order not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "The specified order was not found."
+    };
+    
     public OrderController(IOrderManager orderManager)
     {
         _orderManager = orderManager;
@@ -36,7 +43,7 @@ public class OrderController : ControllerBase
             await _orderManager.GetAllAsync(status, skip, take, cancellationToken);
 
         if (orders is null || orders.Count == 0)
-            return NotFound();
+            return NotFound(ORDER_NOT_FOUND);
 
         return Ok(orders);
     }
@@ -82,6 +89,6 @@ public class OrderController : ControllerBase
     {
         var order = await _orderManager.GetByIdAsync(id, cancellationToken);
 
-        return order is null ? NotFound() : Ok(order);
+        return order is null ? NotFound(ORDER_NOT_FOUND) : Ok(order);
     }
 }
