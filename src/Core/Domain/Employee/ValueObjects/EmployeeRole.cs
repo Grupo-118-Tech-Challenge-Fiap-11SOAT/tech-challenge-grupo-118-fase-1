@@ -2,6 +2,7 @@
 public enum EmployeeRole
 {
     Admin,
+    Manager,
     Cook,
     Waiter,
     Cleaner
