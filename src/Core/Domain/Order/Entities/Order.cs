@@ -59,7 +59,7 @@ public class Order : BaseEntity
 
     private void ValidateOrder()
     {
-        if (!Cpf.IsValidCpf())
+        if (Cpf is not null && !Cpf.IsValidCpf())
             throw new InvalidCpfException();
 
         if (OrderItems.Count == 0)
