@@ -21,7 +21,7 @@ public class Employee : Person
         bool isActive,
         int id = 0)
     {
-        Cpf = cpf;
+        Cpf = new string(cpf.Where(char.IsDigit).ToArray());
         Name = name;
         Surname = surname;
         Email = email;
