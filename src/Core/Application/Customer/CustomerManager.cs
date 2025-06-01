@@ -13,68 +13,68 @@ namespace Application.Customer
             _customerRepository = customerRepository;
         }
 
-        public async Task<CustomerDto> CreateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
+        public async Task<CustomerResponseDto> CreateAsync(CustomerRequestDto customerRequestDto, CancellationToken cancellationToken)
         {
             var customer = new Domain.Customer.Entities.Customer(
-                customerDto.Cpf,
-                customerDto.Name,
-                customerDto.Surname,
-                customerDto.Email,
-                customerDto.BirthDay,
-                customerDto.IsActive
+                customerRequestDto.Cpf,
+                customerRequestDto.Name,
+                customerRequestDto.Surname,
+                customerRequestDto.Email,
+                customerRequestDto.BirthDate,
+                true
                 );
 
             var createdCustomer = await _customerRepository.CreateAsync(customer, cancellationToken);
 
-            return new CustomerDto(createdCustomer);
+            return CustomerResponseDto.ToDto(createdCustomer);
         }
 
-        public async Task<CustomerDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<CustomerResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.GetByIdAsync(id, cancellationToken);
             if (customer == null)
             {
-                return new CustomerDto
-                {
-                    ErrorMessage = "Customer not found.",
-                    Error = true
-                };
+                return null;
             }
 
-            return new CustomerDto(customer);
+            return CustomerResponseDto.ToDto(customer);
         }
-        
-        public async Task<CustomerDto?> GetByCpfAsync(string cpf, CancellationToken cancellationToken)
+
+        public async Task<CustomerResponseDto?> GetByCpfAsync(string cpf, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.GetByCpfAsync(cpf, cancellationToken);
             if (customer == null)
             {
-                return new CustomerDto
+                return null;
+            }
+
+            return CustomerResponseDto.ToDto(customer);
+        }
+
+        public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
+        {
+            var customer = await _customerRepository.GetByIdAsync(customerUpdateDto.Id, cancellationToken);
+
+            if (customer == null)
+            {
+                return new CustomerResponseDto
                 {
                     ErrorMessage = "Customer not found.",
                     Error = true
                 };
             }
 
-            return new CustomerDto(customer);
-        }
+            customer.UpdateCustomer(
+                customerUpdateDto.Cpf,
+                customerUpdateDto.Name,
+                customerUpdateDto.Surname,
+                customerUpdateDto.Email,
+                customerUpdateDto.BirthDate,
+                customerUpdateDto.IsActive);
 
-        public async Task<CustomerDto?> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken)
-        {
-            var customer = new Domain.Customer.Entities.Customer(
-                customerDto.Cpf,
-                customerDto.Name,
-                customerDto.Surname,
-                customerDto.Email,
-                customerDto.BirthDay,
-                customerDto.IsActive
-            );
             var updatedCustomer = await _customerRepository.UpdateAsync(customer, cancellationToken);
-            
-            if(updatedCustomer is null)
-                return null;
-            
-            return new CustomerDto(updatedCustomer);
+
+            return CustomerResponseDto.ToDto(updatedCustomer);
         }
     }
 }

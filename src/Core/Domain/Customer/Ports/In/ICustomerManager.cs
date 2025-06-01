@@ -4,9 +4,9 @@ namespace Domain.Customer.Ports.In
 {
     public interface ICustomerManager
     {
-        Task<CustomerDto> CreateAsync(CustomerDto customerDto, CancellationToken cancellationToken);
-        Task<CustomerDto> UpdateAsync(CustomerDto customerDto, CancellationToken cancellationToken);
-        Task<CustomerDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
-        Task<CustomerDto?>  GetByCpfAsync(string Cpf, CancellationToken cancellationToken);
+        Task<CustomerResponseDto> CreateAsync(CustomerRequestDto customerRequestDto, CancellationToken cancellationToken);
+        Task<CustomerResponseDto> UpdateAsync(CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken);
+        Task<CustomerResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
+        Task<CustomerResponseDto?>  GetByCpfAsync(string Cpf, CancellationToken cancellationToken);
     }
 }

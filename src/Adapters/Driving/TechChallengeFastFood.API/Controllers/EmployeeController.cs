@@ -12,6 +12,13 @@ public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeManager _employeeManager;
 
+    private readonly ProblemDetails EMPLOYEE_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Employee not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "The requested employee could not be found."
+    };
+
     /// <summary>  
     /// Initializes a new instance of the <see cref="EmployeeController"/> class.  
     /// </summary>  
@@ -29,12 +36,12 @@ public class EmployeeController : ControllerBase
     /// <returns>An object representing the created employee, or a 400 status if the creation fails.</returns>  
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
-    [HttpPost("Post")]
+    [HttpPost]
     public async Task<ActionResult<EmployeeResponseDto>> PostAsync([FromBody] EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.CreateAsync(employeeRequestDto, cancellationToken);
 
-        return result.Error ? BadRequest(result) : CreatedAtAction("GetById", new { result.Id }, result);
+        return result.Error ? BadRequest(result) : CreatedAtAction("GetByIdAsync", new { result.Id }, result);
     }
 
     /// <summary>  
@@ -101,6 +108,11 @@ public class EmployeeController : ControllerBase
     {
         var employee = await _employeeManager.GetByIdAsync(id, cancellationToken);
 
-        return employee is null ? NotFound() : Ok(employee);
+        if (employee is null)
+        {
+            return NotFound(EMPLOYEE_NOT_FOUND);
+        }
+
+        return Ok(employee);
     }
 }

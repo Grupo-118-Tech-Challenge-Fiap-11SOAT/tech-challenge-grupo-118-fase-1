@@ -24,6 +24,7 @@ public class Customer : Person
         Email = email;
         BirthDay = birthday;
         IsActive = isActive;
+        CreatedAt = DateTimeOffset.Now;
 
         if (id != 0)
             Id = id;
