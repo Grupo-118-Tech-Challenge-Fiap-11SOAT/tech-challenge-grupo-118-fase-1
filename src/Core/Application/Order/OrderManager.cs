@@ -20,7 +20,7 @@ public class OrderManager : IOrderManager
     }
 
 
-    public async Task<List<OrderResponseDto>> GetAllAsync(OrderStatus status, int skip, int take,
+    public async Task<List<OrderResponseDto?>> GetAllAsync(OrderStatus status, int skip, int take,
         CancellationToken cancellationToken)
     {
         var ordersList = await _orderRepository.GetAllAsync(status, cancellationToken, skip, take);
@@ -70,9 +70,13 @@ public class OrderManager : IOrderManager
         return new OrderResponseDto(order);
     }
 
-    public async Task<OrderResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(id, cancellationToken);
+
+        if (order is null)
+            return null;
+        
         var result = new OrderResponseDto(order);
 
         return result;

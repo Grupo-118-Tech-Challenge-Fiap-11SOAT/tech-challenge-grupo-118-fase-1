@@ -13,7 +13,7 @@ public interface IOrderManager
     /// <param name="take">The number of items to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of orders.</returns>
-    Task<List<OrderResponseDto>> GetAllAsync(OrderStatus status, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
+    Task<List<OrderResponseDto?>> GetAllAsync(OrderStatus status, int skip = 0, int take = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new order in the system.
@@ -38,5 +38,5 @@ public interface IOrderManager
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The order matching the specified identifier, or null if no such order exists.</returns>
-    Task<OrderResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
 }
