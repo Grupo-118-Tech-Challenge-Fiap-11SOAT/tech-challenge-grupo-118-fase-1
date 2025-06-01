@@ -9,7 +9,7 @@ public interface IPasswordManager
     /// </summary>
     /// <param name="employee">The employee for whom the token is being created.</param>
     /// <returns>A string representing the generated token.</returns>
-    string CreateToken(EmployeeDto employee);
+    string CreateToken(EmployeeResponseDto employee);
     /// <summary>
     /// Verifies whether the provided password matches the stored hash.
     /// </summary>

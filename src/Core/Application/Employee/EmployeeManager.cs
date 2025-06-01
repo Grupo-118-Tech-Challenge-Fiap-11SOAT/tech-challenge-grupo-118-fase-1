@@ -17,12 +17,12 @@ public class EmployeeManager : IEmployeeManager
     }
 
     /// <summary>
-    /// Creates a new employee based on the provided <see cref="EmployeeDto"/>.
+    /// Creates a new employee based on the provided <see cref="EmployeeRequestDto"/>.
     /// </summary>
-    /// <param name="employeeDto">The data transfer object containing employee details.</param>
+    /// <param name="employeeRequestDto">The data transfer object containing employee details.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains the created <see cref="EmployeeDto"/>.
-    /// If an exception occurs, the returned <see cref="EmployeeDto"/> will contain error details.
+    /// A task that represents the asynchronous operation. The task result contains the created <see cref="EmployeeResponseDto"/>.
+    /// If an exception occurs, the returned <see cref="EmployeeResponseDto"/> will contain error details.
     /// </returns>
     /// <exception cref="CpfNullOrEmptyException">Thrown when the CPF is null or empty.</exception>
     /// <exception cref="NameNullOrEmptyException">Thrown when the name is null or empty.</exception>
@@ -30,19 +30,17 @@ public class EmployeeManager : IEmployeeManager
     /// <exception cref="EmailNullOrEmptyException">Thrown when the email is null or empty.</exception>
     /// <exception cref="BirthDayMinValueException">Thrown when the birth date is invalid.</exception>
     /// <exception cref="PasswordNullOrEmptyException">Thrown when the password is null or empty.</exception>
-    public async Task<EmployeeDto> CreateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken)
     {
         try
         {
-            var employee = EmployeeDto.ToEntity(employeeDto);
+            var employee = EmployeeRequestDto.ToEntity(employeeRequestDto);
             
-            _passwordManager.CreatePasswordHash(employeeDto.Password, out var passwordHash);
+            _passwordManager.CreatePasswordHash(employeeRequestDto.Password, out var passwordHash);
             employee.SetPassword(passwordHash.ToString());
             await _employeeRepository.CreateAsync(employee, cancellationToken);
 
-            employeeDto.Id = employee.Id;
-
-            return employeeDto;
+            return EmployeeResponseDto.ToDto(employee);
         }
         catch (Exception ex) when (ex is CpfNullOrEmptyException ||
                                    ex is NameNullOrEmptyException ||
@@ -51,7 +49,7 @@ public class EmployeeManager : IEmployeeManager
                                    ex is BirthDayMinValueException ||
                                    ex is PasswordNullOrEmptyException)
         {
-            return new EmployeeDto
+            return new EmployeeResponseDto
             {
                 ErrorMessage = $"Message: {ex.Message}",
                 Error = true
@@ -85,17 +83,17 @@ public class EmployeeManager : IEmployeeManager
     /// Retrieves all employees from the repository.  
     /// </summary>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains a list of <see cref="EmployeeDto"/> objects.  
+    /// A task that represents the asynchronous operation. The task result contains a list of <see cref="EmployeeResponseDto"/> objects.  
     /// </returns>  
-    public async Task<List<EmployeeDto>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
+    public async Task<List<EmployeeResponseDto>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
         var employeeList = await _employeeRepository.GetAllAsync(cancellationToken, skip, take);
 
-        var result = new List<EmployeeDto>(employeeList.Count);
+        var result = new List<EmployeeResponseDto>(employeeList.Count);
 
         foreach (var employee in employeeList)
         {
-            result.Add(new EmployeeDto(employee));
+            result.Add(new EmployeeResponseDto(employee.Id, employee.Cpf, employee.Name, employee.Surname, employee.Email, employee.BirthDay, employee.Role, employee.IsActive));
         }
 
         return result;
@@ -106,31 +104,31 @@ public class EmployeeManager : IEmployeeManager
     /// </summary>  
     /// <param name="id">The unique identifier of the employee to retrieve.</param>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeDto"/> object  
-    /// representing the employee if found, or an empty <see cref="EmployeeDto"/> if the employee does not exist.  
+    /// A task that represents the asynchronous operation. The task result contains the <see cref="EmployeeResponseDto"/> object  
+    /// representing the employee if found, or an empty <see cref="EmployeeResponseDto"/> if the employee does not exist.  
     /// </returns>  
-    public async Task<EmployeeDto> GetByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<EmployeeResponseDto> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
         if (employee == null)
         {
-            return new EmployeeDto
+            return new EmployeeResponseDto
             {
                 ErrorMessage = "Employee not found.",
                 Error = true
             };
         }
 
-        return EmployeeDto.ToDto(employee);
+        return EmployeeResponseDto.ToDto(employee);
     }
 
     /// <summary>  
-    /// Updates an existing employee based on the provided <see cref="EmployeeDto"/>.  
+    /// Updates an existing employee based on the provided <see cref="UpdateEmployeeDto"/>.  
     /// </summary>  
-    /// <param name="employeeDto">The data transfer object containing updated employee details.</param>  
+    /// <param name="updateEmployeeDto">The data transfer object containing updated employee details.</param>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains the updated <see cref="EmployeeDto"/>.  
-    /// If an exception occurs, the returned <see cref="EmployeeDto"/> will contain error details.  
+    /// A task that represents the asynchronous operation. The task result contains the updated <see cref="EmployeeResponseDto"/>.  
+    /// If an exception occurs, the returned <see cref="EmployeeResponseDto"/> will contain error details.  
     /// </returns>  
     /// <exception cref="CpfNullOrEmptyException">Thrown when the CPF is null or empty.</exception>  
     /// <exception cref="NameNullOrEmptyException">Thrown when the name is null or empty.</exception>  
@@ -138,44 +136,33 @@ public class EmployeeManager : IEmployeeManager
     /// <exception cref="EmailNullOrEmptyException">Thrown when the email is null or empty.</exception>  
     /// <exception cref="BirthDayMinValueException">Thrown when the birth date is invalid.</exception>  
     /// <exception cref="PasswordNullOrEmptyException">Thrown when the password is null or empty.</exception>  
-    public async Task<EmployeeDto> UpdateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<EmployeeResponseDto> UpdateAsync(UpdateEmployeeDto updateEmployeeDto, CancellationToken cancellationToken)
     {
         try
         {
-            var employee = await _employeeRepository.GetByIdAsync(employeeDto.Id, cancellationToken);
+            var employee = await _employeeRepository.GetByIdAsync(updateEmployeeDto.Id, cancellationToken);
 
             if (employee == null)
             {
-                return new EmployeeDto
+                return new EmployeeResponseDto
                 {
                     ErrorMessage = "Employee not found.",
                     Error = true
                 };
             }
 
-            // employee.Cpf = employeeDto.Cpf;
-            // employee.Name = employeeDto.Name;
-            // employee.Surname = employeeDto.Surname;
-            // employee.Email = employeeDto.Email;
-            // employee.BirthDay = employeeDto.BirthDay;
-            // employee.Password = employeeDto.Password;
-            // employee.Role = employeeDto.Role;
-            // employee.IsActive = employeeDto.IsActive;
-            // employee.UpdatedAt = DateTime.UtcNow;
-
-            employee.UpdateEmployee(employeeDto.Cpf,
-                employeeDto.Name,
-                employeeDto.Surname,
-                employeeDto.Email,
-                employeeDto.BirthDay,
-                employeeDto.Password,
-                employeeDto.Role,
-                employeeDto.IsActive,
-                DateTime.Now);
+            employee.UpdateEmployee(updateEmployeeDto.Cpf,
+                updateEmployeeDto.Name,
+                updateEmployeeDto.Surname,
+                updateEmployeeDto.Email,
+                updateEmployeeDto.BirthDate,
+                updateEmployeeDto.Password,
+                updateEmployeeDto.Role,
+                updateEmployeeDto.IsActive);
 
             var updatedEmployee = await _employeeRepository.UpdateAsync(employee, cancellationToken);
 
-            return EmployeeDto.ToDto(updatedEmployee);
+            return EmployeeResponseDto.ToDto(updatedEmployee);
         }
         catch (Exception ex) when (ex is CpfNullOrEmptyException ||
                                    ex is NameNullOrEmptyException ||
@@ -184,7 +171,7 @@ public class EmployeeManager : IEmployeeManager
                                    ex is BirthDayMinValueException ||
                                    ex is PasswordNullOrEmptyException)
         {
-            return new EmployeeDto
+            return new EmployeeResponseDto
             {
                 ErrorMessage = $"Message: {ex.Message}",
                 Error = true
@@ -215,6 +202,6 @@ public class EmployeeManager : IEmployeeManager
             throw new Exception("Invalid password.");
         }
 
-        return _passwordManager.CreateToken(EmployeeDto.ToDto(employee));
+        return _passwordManager.CreateToken(EmployeeResponseDto.ToDto(employee));
     }
 }

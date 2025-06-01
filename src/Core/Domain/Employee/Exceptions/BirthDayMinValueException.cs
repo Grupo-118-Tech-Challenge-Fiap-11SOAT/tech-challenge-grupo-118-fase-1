@@ -1,4 +1,6 @@
-﻿namespace Domain.Employee.Exceptions;
+﻿using Domain.Base.Exceptions;
+
+namespace Domain.Employee.Exceptions;
 
 /// <summary>
 /// Exception thrown when a birth date is less than the minimum allowed value of January 1, 1900.

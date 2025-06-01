@@ -19,7 +19,6 @@ public class Employee : Person
         string password,
         EmployeeRole role,
         bool isActive,
-        DateTimeOffset createdAt,
         int id = 0)
     {
         Cpf = cpf;
@@ -30,7 +29,6 @@ public class Employee : Person
         Password = password;
         Role = role;
         IsActive = isActive;
-        CreatedAt = createdAt;
 
         if (id != 0)
             Id = id;
@@ -97,8 +95,7 @@ public class Employee : Person
         DateTime birthday,
         string password,
         EmployeeRole role,
-        bool isActive,
-        DateTimeOffset updatedAt)
+        bool isActive)
     {
         Cpf = cpf;
         Name = name;
@@ -108,7 +105,7 @@ public class Employee : Person
         Password = password;
         Role = role;
         IsActive = isActive;
-        UpdatedAt = updatedAt;
+        UpdatedAt = DateTimeOffset.Now;
 
         ValidateEmployee();
     }

@@ -4,11 +4,11 @@ namespace Domain.Employee.Ports.In;
 
 public interface IEmployeeManager
 {
-    Task<EmployeeDto> CreateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken);
-    Task<EmployeeDto> UpdateAsync(EmployeeDto employeeDto, CancellationToken cancellationToken);
+    Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken);
+    Task<EmployeeResponseDto> UpdateAsync(UpdateEmployeeDto employeeDto, CancellationToken cancellationToken);
     Task<int> DeleteAsync(int id, CancellationToken cancellationToken);
-    Task<EmployeeDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
-    Task<List<EmployeeDto?>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10);
+    Task<EmployeeResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<List<EmployeeResponseDto?>> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10);
     Task<string> Login(string email, string password, CancellationToken cancellationToken);
 }
 

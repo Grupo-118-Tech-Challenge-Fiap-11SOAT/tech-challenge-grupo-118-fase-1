@@ -1,4 +1,6 @@
-﻿namespace Domain.Employee.Exceptions;
+﻿using Domain.Base.Exceptions;
+
+namespace Domain.Employee.Exceptions;
 
 /// <summary>
 /// Exception thrown when the name is null or empty.

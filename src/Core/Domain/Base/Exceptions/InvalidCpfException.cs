@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an exception that is thrown when an invalid CPF is encountered.
     /// </summary>
-    public class InvalidCpfException : Exception
+    public class InvalidCpfException : DomainException
     {
         /// <summary>
         /// Gets the error message that explains the reason for the exception.
