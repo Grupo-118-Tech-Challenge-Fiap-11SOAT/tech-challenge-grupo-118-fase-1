@@ -34,7 +34,7 @@ namespace Infra.Password
         /// </summary>
         /// <param name="employee">The employee for whom the token is being created.</param>
         /// <returns>A string representing the generated JWT token.</returns>
-        public string CreateToken(EmployeeDto employee)
+        public string CreateToken(EmployeeResponseDto employee)
         {
             var claims = new List<Claim>
            {
