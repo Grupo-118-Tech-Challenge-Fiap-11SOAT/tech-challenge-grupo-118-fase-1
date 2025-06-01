@@ -3,6 +3,7 @@ using Domain.Employee.Ports.In;
 using Domain.Employee.Ports.Out;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Application.Customer;
 using Application.Products;
 using Domain.Products.Ports.In;
 using Domain.Products.Ports.Out;
@@ -27,12 +28,15 @@ using TechChallengeFastFood.API.Handlers;
 using Domain.Order.Ports.In;
 using Domain.Order.Ports.Out;
 using Application.Order;
+using Domain.Customer.Ports.In;
+using Domain.Customer.Ports.Out;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 using Refit;
 using Domain.Order.Services.Interfaces;
 using Domain.Order.Services;
 using Domain.Payments.Services.Interfaces;
 using Domain.Payments.Services;
+using Infra.Database.SqlServer.Customers.Repositories;
 
 namespace TechChallengeFastFood.API;
 
@@ -99,6 +103,9 @@ public class Program
         builder.Services.AddTransient<IPaymentService, PaymentService>();
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
+        
+        builder.Services.AddTransient<ICustomerManager, CustomerManager>();
+        builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
         {
