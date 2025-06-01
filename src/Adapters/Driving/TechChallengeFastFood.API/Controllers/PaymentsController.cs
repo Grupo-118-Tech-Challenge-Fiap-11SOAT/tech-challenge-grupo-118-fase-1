@@ -1,6 +1,5 @@
 using Domain.Payments.Dtos;
 using Domain.Payments.Ports.In;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API.Controllers;
@@ -10,7 +9,6 @@ namespace TechChallengeFastFood.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("payments")]
-[Authorize]
 public class PaymentsController(IPaymentManager paymentManager) : ControllerBase
 {
     /// <summary>

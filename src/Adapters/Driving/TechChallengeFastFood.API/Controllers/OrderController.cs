@@ -11,7 +11,6 @@ namespace TechChallengeFastFood.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-
 public class OrderController : ControllerBase
 {
     private readonly IOrderManager _orderManager;
