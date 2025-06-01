@@ -3,11 +3,21 @@
 [Projeto base para estudos](https://github.com/tuliorezende/practice-hexagon-architecture)
 
 # Membros do Grupo
-- Sabrina Cardoso
-- Tiago Koch
-- Tiago Oliveira
-- Túlio Rezende
-- Vinícius Nunes
+- Sabrina Cardoso de Oliveira
+  - **Matrícula**: RM363507
+  - **Usuário Discord**: sah.mdo
+- Tiago Cristiano Koch
+  - **Matrícula**: RM361415
+  - **Usuário Discord**: tiagokoch0076
+- Tiago Victor de Oliveira
+  - **Matrícula**: RM364588
+  - **Usuário Discord**: oliveirad.tiago
+- Túlio Henrique de Paula Rezende
+  - **Matrícula**: RM360982
+  - **Usuário Discord**: tuliomamute
+- Vinícius Rossmann Nunes
+  - **Matrícula**: RM362963
+  - **Usuário Discord**: _viniciusnunes
 
 # Miro
 - [Clique aqui para acessar o Miro do Projeto](https://miro.com/app/board/uXjVIDgIqTM=/?share_link_id=224738363095)
