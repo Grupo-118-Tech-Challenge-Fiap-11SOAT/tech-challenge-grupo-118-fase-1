@@ -21,8 +21,8 @@ public class EmployeeManager : IEmployeeManager
     /// </summary>
     /// <param name="employeeRequestDto">The data transfer object containing employee details.</param>
     /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains the created <see cref="EmployeeRequestDto"/>.
-    /// If an exception occurs, the returned <see cref="EmployeeRequestDto"/> will contain error details.
+    /// A task that represents the asynchronous operation. The task result contains the created <see cref="EmployeeResponseDto"/>.
+    /// If an exception occurs, the returned <see cref="EmployeeResponseDto"/> will contain error details.
     /// </returns>
     /// <exception cref="CpfNullOrEmptyException">Thrown when the CPF is null or empty.</exception>
     /// <exception cref="NameNullOrEmptyException">Thrown when the name is null or empty.</exception>
@@ -127,8 +127,8 @@ public class EmployeeManager : IEmployeeManager
     /// </summary>  
     /// <param name="updateEmployeeDto">The data transfer object containing updated employee details.</param>  
     /// <returns>  
-    /// A task that represents the asynchronous operation. The task result contains the updated <see cref="UpdateEmployeeDto"/>.  
-    /// If an exception occurs, the returned <see cref="UpdateEmployeeDto"/> will contain error details.  
+    /// A task that represents the asynchronous operation. The task result contains the updated <see cref="EmployeeResponseDto"/>.  
+    /// If an exception occurs, the returned <see cref="EmployeeResponseDto"/> will contain error details.  
     /// </returns>  
     /// <exception cref="CpfNullOrEmptyException">Thrown when the CPF is null or empty.</exception>  
     /// <exception cref="NameNullOrEmptyException">Thrown when the name is null or empty.</exception>  

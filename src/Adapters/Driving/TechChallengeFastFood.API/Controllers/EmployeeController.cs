@@ -58,7 +58,7 @@ public class EmployeeController : ControllerBase
     /// </summary>  
     /// <param name="id">The unique identifier of the employee to delete.</param>  
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>  
-    /// <returns>The number of rows deleted employee if successful.</returns>  
+    /// <returns>The number of records deleted if successful.</returns>  
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("id")]
