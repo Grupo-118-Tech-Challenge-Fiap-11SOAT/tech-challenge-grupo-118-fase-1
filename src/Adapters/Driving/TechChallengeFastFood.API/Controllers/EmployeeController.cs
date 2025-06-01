@@ -36,12 +36,12 @@ public class EmployeeController : ControllerBase
     /// <returns>An object representing the created employee, or a 400 status if the creation fails.</returns>  
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
-    [HttpPost("Post")]
+    [HttpPost]
     public async Task<ActionResult<EmployeeResponseDto>> PostAsync([FromBody] EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.CreateAsync(employeeRequestDto, cancellationToken);
 
-        return result.Error ? BadRequest(result) : CreatedAtAction("GetById", new { result.Id }, result);
+        return result.Error ? BadRequest(result) : CreatedAtAction("GetByIdAsync", new { result.Id }, result);
     }
 
     /// <summary>  
