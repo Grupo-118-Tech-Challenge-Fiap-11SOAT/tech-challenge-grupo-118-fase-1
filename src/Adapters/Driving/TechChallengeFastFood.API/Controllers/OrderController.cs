@@ -2,6 +2,7 @@ using Domain.Order.Dtos;
 using Domain.Order.Entities;
 using Domain.Order.Ports.In;
 using Domain.Order.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API.Controllers;
@@ -12,6 +13,7 @@ namespace TechChallengeFastFood.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class OrderController : ControllerBase
 {
     private readonly IOrderManager _orderManager;
