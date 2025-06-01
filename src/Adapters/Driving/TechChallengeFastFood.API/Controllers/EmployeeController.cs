@@ -1,11 +1,13 @@
 ﻿using Domain.Employee.Dtos;
 using Domain.Employee.Ports.In;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeManager _employeeManager;

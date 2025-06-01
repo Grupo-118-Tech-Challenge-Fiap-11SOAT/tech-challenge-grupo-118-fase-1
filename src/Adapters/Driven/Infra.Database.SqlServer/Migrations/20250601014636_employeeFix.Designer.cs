@@ -4,6 +4,7 @@ using Infra.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250601014636_employeeFix")]
+    partial class employeeFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,64 +24,6 @@ namespace Infra.Database.SqlServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Customer.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("BirthDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Cpf")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Employees_Cpf");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Employees_Email");
-
-                    b.ToTable("Customers", (string)null);
-                });
 
             modelBuilder.Entity("Domain.Employee.Entities.Employee", b =>
                 {
@@ -154,12 +99,54 @@ namespace Infra.Database.SqlServer.Migrations
                             Id = 1,
                             BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Cpf = "98659502000",
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
                             Email = "admin@admin.com",
                             IsActive = true,
                             Name = "Admin",
-                            Password = "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
+                            Password = "adminPass",
                             Role = "Admin",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "46002306048",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "cook@cook.com",
+                            IsActive = true,
+                            Name = "Cook",
+                            Password = "cookPass",
+                            Role = "Cook",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "75186057088",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "waiter@waiter.com",
+                            IsActive = true,
+                            Name = "Waiter",
+                            Password = "waiterPass",
+                            Role = "Waiter",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "90643516000",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "cleaner@cleaner.com",
+                            IsActive = true,
+                            Name = "Cleaner",
+                            Password = "cleanerPass",
+                            Role = "Cleaner",
                             Surname = "Doe",
                             UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });

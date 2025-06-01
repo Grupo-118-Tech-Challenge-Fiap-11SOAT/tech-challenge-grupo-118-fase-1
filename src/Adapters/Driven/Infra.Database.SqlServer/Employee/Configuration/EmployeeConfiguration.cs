@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Employee.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infra.Database.SqlServer.Employee.Configuration;
@@ -62,5 +63,24 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
         builder.HasIndex(builder => builder.Cpf)
             .IsUnique()
             .HasDatabaseName("IX_Employees_Cpf");
+
+        builder.HasData(Generate());
+    }
+
+    private IEnumerable<Domain.Employee.Entities.Employee> Generate()
+    {
+        return new List<Domain.Employee.Entities.Employee>
+        {
+            new(
+                "98659502000",
+                "Admin",
+                "Doe",
+                "admin@admin.com",
+                new DateTime(1990, 1, 1),
+                "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
+                Domain.Employee.ValueObjects.EmployeeRole.Admin,
+                true,
+                1)
+        };
     }
 }

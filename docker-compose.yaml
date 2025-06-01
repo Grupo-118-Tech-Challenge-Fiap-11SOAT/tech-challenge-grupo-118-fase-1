@@ -8,6 +8,10 @@
       - sqldatabasetechchallenge118
     environment:
       ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFood;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
+      Jwt__Key: "08fa1d833b85a776166dd0a30ec21687"
+      Jwt__Issuer: "http://localhost:8080"
+      Jwt__Audience: "http://localhost:8080"
+      Jwt__ExpirationMinutes: "60"
     restart: on-failure:5
     deploy:
       resources:
