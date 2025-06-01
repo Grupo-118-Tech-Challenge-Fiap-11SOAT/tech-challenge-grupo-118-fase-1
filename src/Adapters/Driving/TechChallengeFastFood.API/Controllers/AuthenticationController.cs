@@ -22,7 +22,7 @@ public class AuthenticationController : Controller
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>An <see cref="IActionResult"/> containing the registered employee's details.</returns>
     [HttpPost("register")]
-    public async Task<IActionResult> Register(EmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> Register(EmployeeRequestDto employeeDto, CancellationToken cancellationToken)
     {
         var employee = await _employeeManager.CreateAsync(employeeDto, cancellationToken);
         return Ok(new LoginResponseDto
