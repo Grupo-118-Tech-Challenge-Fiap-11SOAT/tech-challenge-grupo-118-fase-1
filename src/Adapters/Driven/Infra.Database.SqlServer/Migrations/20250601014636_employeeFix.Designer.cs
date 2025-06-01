@@ -4,6 +4,7 @@ using Infra.Database.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Database.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250601014636_employeeFix")]
+    partial class employeeFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +103,50 @@ namespace Infra.Database.SqlServer.Migrations
                             Email = "admin@admin.com",
                             IsActive = true,
                             Name = "Admin",
-                            Password = "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
+                            Password = "adminPass",
                             Role = "Admin",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "46002306048",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "cook@cook.com",
+                            IsActive = true,
+                            Name = "Cook",
+                            Password = "cookPass",
+                            Role = "Cook",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "75186057088",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "waiter@waiter.com",
+                            IsActive = true,
+                            Name = "Waiter",
+                            Password = "waiterPass",
+                            Role = "Waiter",
+                            Surname = "Doe",
+                            UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BirthDay = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Cpf = "90643516000",
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 4, 20, 10, 50, 5, 0, DateTimeKind.Unspecified), new TimeSpan(0, -3, 0, 0, 0)),
+                            Email = "cleaner@cleaner.com",
+                            IsActive = true,
+                            Name = "Cleaner",
+                            Password = "cleanerPass",
+                            Role = "Cleaner",
                             Surname = "Doe",
                             UpdatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });

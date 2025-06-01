@@ -56,7 +56,6 @@ public class EmployeeDto : PersonDto
             employeeDto.Role,
             employeeDto.IsActive,
             employeeDto.CreatedAt,
-            employeeDto.UpdatedAt,
             employeeDto.Id);
     }
 }

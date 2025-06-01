@@ -20,7 +20,6 @@ public class Employee : Person
         EmployeeRole role,
         bool isActive,
         DateTimeOffset createdAt,
-        DateTimeOffset updatedAt,
         int id = 0)
     {
         Cpf = cpf;
@@ -32,7 +31,6 @@ public class Employee : Person
         Role = role;
         IsActive = isActive;
         CreatedAt = createdAt;
-        UpdatedAt = updatedAt;
 
         if (id != 0)
             Id = id;

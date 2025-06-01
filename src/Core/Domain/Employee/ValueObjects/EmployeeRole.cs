@@ -1,7 +1,7 @@
 ﻿namespace Domain.Employee.ValueObjects;
 public enum EmployeeRole
 {
-    Manager,
+    Admin,
     Cook,
     Waiter,
     Cleaner
