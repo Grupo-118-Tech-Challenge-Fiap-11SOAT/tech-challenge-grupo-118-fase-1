@@ -12,6 +12,12 @@
       Jwt__Issuer: "http://localhost:8080"
       Jwt__Audience: "http://localhost:8080"
       Jwt__ExpirationMinutes: "60"
+      MercadoPago__BaseUrl: "https://api.mercadopago.com"
+      MercadoPago__AccessToken: "TEST-5682763374989417-050719-e82307aaf8e2a1218fedc910c6e75726-407780263"
+      MercadoPago__UserId: "407780263"
+      MercadoPago__PosId: "POS01"
+      MercadoPago__SponsorId: 1726345772
+      MercadoPago__NotificationUrl: "https://webhook.site/13d12356-257d-4668-83db-1eb7e99498d7"
     restart: on-failure:5
     deploy:
       resources:
