@@ -74,11 +74,24 @@ password:  adminPass
 
 Com isso deve ser gerado um token que deve ser fornecido no canto superior direito clicando no botão Authorize, adicionar a palavra Bearer e colar o conteúdo da resposta do endpoint Login, Ex: Bearer eyJhbGciOiJIUzI1NiIsI e clicar em Authorize. Após isso fechar clicar em close e seu usuário estará autenticado e com acesso a todos os endpoints da aplicação.
 
-# Migration
-Da raíz do projeto
+# Estrutura do Banco de Dados
 
-```shell
-dotnet ef migrations add --project src/Adapters/Driven/Infra.Database.SqlServer/Infra.Database.SqlServer.csproj --startup-project src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.csproj --context Infra.Database.SqlServer.AppDbContext --configuration Debug <MIGRATION_NAME> --output-dir Migrations
-```
+Abaixo segue a modelagem do nosso banco de dados, contendo como as entidades se relacionam.
 
-Alterar o <MIGRATION_NAME> por um nome significativo
+![Diagrama do Banco de Dados](TechChallengeFastFoodDatabaseDiagram-V1.png)
+
+# Como executar a aplicação
+De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para permitir que a partir de 2 comandos (ou até um, se apenas considerado a execução), a aplicação aparece online
+
+- Navegue até o diretório raíz do repositório
+  - Execute o comando `docker compose build`
+    - Esse comando irá disparar o build multi-stage da nossa aplicação, em modo Release, possibilitando assim uma melhor performance no uso
+  - Após o build, execute o comando `docker compose up -d`
+    - Esse comando irá subir a nossa infraestrutura de:
+      - Banco de Dados SQL Server
+      - Aplicação
+      - Volume para o banco de dados
+      - Rede interna entre API e banco para acesso aos dados
+      - HealthCheck do container
+    - Após a inicialização, a aplicação estará acessível na seguinte URL: http://localhost:8080
+      - A própria API cria e aplica as migrations, melhorando assim a experiência de uso do projeto
