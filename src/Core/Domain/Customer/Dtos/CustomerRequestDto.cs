@@ -11,20 +11,20 @@ public class CustomerRequestDto
         string name,
         string surname,
         string email,
-        DateTimeOffset birthDate)
+        DateOnly birthDate)
     {
         Cpf = cpf;
         Name = name;
         Surname = surname;
         Email = email;
-        BirthDate = birthDate.DateTime;
+        BirthDate = birthDate;
     }
 
     public string Cpf { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
     public static CustomerRequestDto ToDto(Entities.Customer customer)
     {

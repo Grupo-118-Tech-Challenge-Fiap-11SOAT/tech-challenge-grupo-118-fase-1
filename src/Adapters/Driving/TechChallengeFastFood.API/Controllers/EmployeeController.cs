@@ -70,7 +70,7 @@ public class EmployeeController : ControllerBase
     /// <returns>The number of records deleted if successful.</returns>  
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult<int>> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var result = await _employeeManager.DeleteAsync(id, cancellationToken);

@@ -15,7 +15,7 @@ public class Employee : Person
         string name,
         string surname,
         string email,
-        DateTime birthday,
+        DateOnly birthday,
         string password,
         EmployeeRole role,
         bool isActive,
@@ -72,7 +72,7 @@ public class Employee : Person
             throw new InvalidEmailException();
         }
 
-        if (BirthDay == DateTime.MinValue)
+        if (BirthDay == DateOnly.MinValue)
         {
             throw new BirthDayMinValueException();
         }
@@ -92,7 +92,7 @@ public class Employee : Person
         string name,
         string surname,
         string email,
-        DateTime birthday,
+        DateOnly birthday,
         string password,
         EmployeeRole role,
         bool isActive)

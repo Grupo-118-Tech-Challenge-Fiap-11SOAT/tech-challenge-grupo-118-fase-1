@@ -16,7 +16,7 @@ namespace Domain.Employee.Dtos
             string name,
             string surname,
             string email,
-            DateTimeOffset birthdate,
+            DateOnly birthdate,
             EmployeeRole role,
             bool isActive)
         {
@@ -35,7 +35,7 @@ namespace Domain.Employee.Dtos
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public DateTimeOffset BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
         public EmployeeRole Role { get; set; }
         public bool IsActive { get; set; }
         public bool Error { get; set; }

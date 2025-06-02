@@ -24,7 +24,7 @@ namespace Domain.Customer.Dtos
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
         public bool IsActive { get; set; }
 
         public static CustomerUpdateDto ToDto(Entities.Customer customer)

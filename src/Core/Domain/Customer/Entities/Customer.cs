@@ -14,7 +14,7 @@ public class Customer : Person
         string name,
         string surname,
         string email,
-        DateTime birthday,
+        DateOnly birthday,
         bool isActive,
         int id = 0)
     {
@@ -24,7 +24,7 @@ public class Customer : Person
         Email = email;
         BirthDay = birthday;
         IsActive = isActive;
-        CreatedAt = DateTimeOffset.Now;
+        UpdatedAt = DateTimeOffset.Now;
 
         if (id != 0)
             Id = id;
@@ -36,7 +36,7 @@ public class Customer : Person
         string name,
         string surname,
         string email,
-        DateTime birthday,
+        DateOnly birthday,
         bool isActive)
     {
         Cpf = cpf;

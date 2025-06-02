@@ -34,8 +34,7 @@ namespace Infra.Database.SqlServer.Customers.Configuration
 
             builder.Property(builder => builder.UpdatedAt)
                 .HasColumnType("datetimeoffset")
-                .HasDefaultValueSql("SYSDATETIMEOFFSET()")
-                .ValueGeneratedOnUpdate();
+                .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder.Property(builder => builder.IsActive)
                 .IsRequired()
