@@ -80,6 +80,12 @@ Abaixo segue a modelagem do nosso banco de dados, contendo como as entidades se 
 
 ![Diagrama do Banco de Dados](TechChallengeFastFoodDatabaseDiagram-V1.png)
 
+# Configuração
+Para geração do qr code com o mercado pago, estão sendo utilizadas credenciais de sandbox. Para utilizar sua própria conta, basta atualizar
+as variáveis de ambiemte com o prefixo "MercadoPago__" no docker-compose.yaml.
+
+Por ainda não ser possível confirmar um pagamento pix em ambiente de sandbox, a simulação de confirmação pode ser feita através do endpoint /payment/{id}, informando o código do pagamento a ser confirmado.
+
 # Como executar a aplicação
 De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para permitir que a partir de 2 comandos (ou até um, se apenas considerado a execução), a aplicação aparece online
 
