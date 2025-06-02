@@ -34,10 +34,10 @@ namespace TechChallengeFastFood.API.Controllers
         [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [HttpPut]
-        public async Task<ActionResult<CustomerResponseDto>> PutAsync([FromBody] CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CustomerResponseDto>> PutAsync(int id, [FromBody] CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
         {
-            var result = await _customerManager.UpdateAsync(customerUpdateDto, cancellationToken);
+            var result = await _customerManager.UpdateAsync(id, customerUpdateDto, cancellationToken);
 
             return result.Error ? BadRequest(result) : Ok(result);
         }

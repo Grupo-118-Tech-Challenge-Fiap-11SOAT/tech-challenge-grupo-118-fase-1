@@ -26,7 +26,7 @@ public class UpdateEmployeeDto
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     public string Password { get; set; }
     public EmployeeRole Role { get; set; }
     public bool IsActive { get; set; }

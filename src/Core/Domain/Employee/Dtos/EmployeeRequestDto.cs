@@ -13,7 +13,7 @@ namespace Domain.Employee.Dtos
             string name,
             string surname,
             string email,
-            DateTimeOffset birthDay,
+            DateOnly birthDay,
             string password,
             EmployeeRole role)
         {
@@ -30,7 +30,7 @@ namespace Domain.Employee.Dtos
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public DateTimeOffset BirthDay { get; set; }
+        public DateOnly BirthDay { get; set; }
         public string Password { get; set; }
         public EmployeeRole Role { get; set; }
 
@@ -55,7 +55,7 @@ namespace Domain.Employee.Dtos
                 employeeRequestDto.Name,
                 employeeRequestDto.Surname,
                 employeeRequestDto.Email,
-                employeeRequestDto.BirthDay.DateTime,
+                employeeRequestDto.BirthDay,
                 employeeRequestDto.Password,
                 employeeRequestDto.Role,
                 true);

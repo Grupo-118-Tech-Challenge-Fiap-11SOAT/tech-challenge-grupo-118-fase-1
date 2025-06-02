@@ -51,9 +51,9 @@ namespace Application.Customer
             return CustomerResponseDto.ToDto(customer);
         }
 
-        public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
+        public async Task<CustomerResponseDto?> UpdateAsync(int id, CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
         {
-            var customer = await _customerRepository.GetByIdAsync(customerUpdateDto.Id, cancellationToken);
+            var customer = await _customerRepository.GetByIdAsync(id, cancellationToken);
 
             if (customer == null)
             {

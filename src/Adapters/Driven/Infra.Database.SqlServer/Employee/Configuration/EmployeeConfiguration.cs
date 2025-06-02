@@ -76,7 +76,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Domain.Employee.En
                 "Admin",
                 "Doe",
                 "admin@admin.com",
-                new DateTime(1990, 1, 1),
+                new DateOnly(1990, 1, 1),
                 "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
                 Domain.Employee.ValueObjects.EmployeeRole.Admin,
                 true,

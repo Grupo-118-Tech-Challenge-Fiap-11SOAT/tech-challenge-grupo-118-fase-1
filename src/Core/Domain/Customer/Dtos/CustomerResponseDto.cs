@@ -12,7 +12,7 @@ public class CustomerResponseDto
         string name,
         string surname,
         string email,
-        DateTime birthDate,
+        DateOnly birthDate,
         bool isActive
         )
     {
@@ -30,7 +30,7 @@ public class CustomerResponseDto
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     public bool IsActive { get; set; }
     public bool Error { get; set; }
     public string ErrorMessage { get; set; }
