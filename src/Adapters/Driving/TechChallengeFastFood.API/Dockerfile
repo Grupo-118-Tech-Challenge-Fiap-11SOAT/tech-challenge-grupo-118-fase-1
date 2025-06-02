@@ -12,11 +12,9 @@ COPY ["src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.
 COPY ["src/Core/Application/Application.csproj", "src/Core/Application/"]
 COPY ["src/Core/Domain/Domain.csproj", "src/Core/Domain/"]
 
-COPY ["src/Adapters/Driven/Infra.Database.Memory/Infra.Database.Memory.csproj", "src/Adapters/Driven/Infra.Database.Memory/"]
 COPY ["src/Adapters/Driven/Infra.Database.SqlServer/Infra.Database.SqlServer.csproj", "src/Adapters/Driven/Infra.Database.SqlServer/"]
-
-COPY ["src/Adapters/Driven/Infra.Api.Memory/Infra.Api.Memory.csproj", "src/Adapters/Driven/Infra.Api.Memory/"]
 COPY ["src/Adapters/Driven/Infra.Api.MercadoPago/Infra.Api.MercadoPago.csproj", "src/Adapters/Driven/Infra.Api.MercadoPago/"]
+COPY ["src/Adapters/Driven/Infra.Password/Infra.Password.csproj", "src/Adapters/Driven/Infra.Password/"]
 
 RUN dotnet restore "src/Adapters/Driving/TechChallengeFastFood.API/TechChallengeFastFood.API.csproj"
 COPY . .
