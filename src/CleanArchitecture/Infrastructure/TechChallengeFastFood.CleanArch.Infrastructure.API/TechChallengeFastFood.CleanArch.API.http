@@ -1,0 +1,6 @@
+@TechChallengeFastFood.CleanArch.API_HostAddress = http://localhost:5157
+
+GET {{TechChallengeFastFood.CleanArch.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
