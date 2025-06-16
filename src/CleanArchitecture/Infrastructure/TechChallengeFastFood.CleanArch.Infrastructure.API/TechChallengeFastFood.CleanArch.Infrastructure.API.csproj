@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Presentation\TechChallengeFastFood.CleanArch.Presentation.Controllers\TechChallengeFastFood.CleanArch.Presentation.Controllers.csproj" />
+      <ProjectReference Include="..\..\Presentation\Controllers\Controllers.csproj" />
     </ItemGroup>
 
 </Project>

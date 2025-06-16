@@ -1,0 +1,15 @@
+# Project Structure
+- Application
+  - UseCases
+- Domain
+  - Entities
+- Infrastructure
+  - Database
+    - Project that will contains the database models and migrations
+  - External
+  - API
+- Presentation
+    - Controllers
+    - Gateway
+      - This project will contain the database queries and commands to context
+    - Presenters
