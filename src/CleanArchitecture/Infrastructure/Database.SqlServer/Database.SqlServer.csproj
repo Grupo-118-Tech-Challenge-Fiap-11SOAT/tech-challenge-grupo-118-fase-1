@@ -7,4 +7,12 @@
         <RootNamespace>TechChallengeFastFood.CleanArch.Infrastructure.Database</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Customers\" />
+      <Folder Include="Employee\" />
+      <Folder Include="Order\" />
+      <Folder Include="Payments\" />
+      <Folder Include="Products\" />
+    </ItemGroup>
+
 </Project>
