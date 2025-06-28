@@ -1,6 +1,6 @@
 ﻿services:
   techchallengefastfoodapi118:
-    image: techchallengefastfoodapi118
+    image: techchallengefastfoodapi118fase2
     ports:
       - '8080:8080'
       - '8081:8081'
