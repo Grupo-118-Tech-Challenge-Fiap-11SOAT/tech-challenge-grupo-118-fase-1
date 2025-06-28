@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B229D73D-61FC-4DA2-8491-829BAE83B63B}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yaml = docker-compose.yaml
+		docker-compose-fase2.yaml = docker-compose-fase2.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Database.SqlServer", "src\Adapters\Driven\Infra.Database.SqlServer\Infra.Database.SqlServer.csproj", "{B4CF5FEA-BB09-4E17-BF7B-F698F096276E}"

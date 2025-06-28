@@ -1,0 +1,54 @@
+﻿services:
+  techchallengefastfoodapi118:
+    image: techchallengefastfoodapi118
+    ports:
+      - '8080:8080'
+      - '8081:8081'
+    depends_on:
+      - sqldatabasetechchallenge118
+    environment:
+      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
+      Jwt__Key: "08fa1d833b85a776166dd0a30ec21687"
+      Jwt__Issuer: "http://localhost:8080"
+      Jwt__Audience: "http://localhost:8080"
+      Jwt__ExpirationMinutes: "60"
+      MercadoPago__BaseUrl: "https://api.mercadopago.com"
+      MercadoPago__AccessToken: "TEST-5682763374989417-050719-e82307aaf8e2a1218fedc910c6e75726-407780263"
+      MercadoPago__UserId: "407780263"
+      MercadoPago__PosId: "POS01"
+      MercadoPago__SponsorId: 1726345772
+      MercadoPago__NotificationUrl: "https://webhook.site/13d12356-257d-4668-83db-1eb7e99498d7"
+    restart: on-failure:5
+    deploy:
+      resources:
+        limits:
+          memory: 300MB
+          cpus: 0.4
+    healthcheck:
+      test: curl --fail http://localhost:8080/healthz || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    build:
+      context: .
+      dockerfile: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile
+  
+  sqldatabasetechchallenge118:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqldatabasetechchallenge118
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Mssql!Passw0rd'
+    restart: unless-stopped
+    volumes:
+      - mssql_data:/var/opt/mssql
+    deploy:
+      resources:
+        limits:
+          memory: 1GB
+
+volumes:
+  mssql_data: { }
