@@ -1,13 +1,13 @@
 ﻿services:
-  techchallengefastfoodapi118:
+  techchallengefastfoodapi118fase2:
     image: techchallengefastfoodapi118fase2
     ports:
       - '8080:8080'
       - '8081:8081'
     depends_on:
-      - sqldatabasetechchallenge118
+      - sqldatabasetechchallenge118fase2
     environment:
-      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
+      ConnectionStrings__DefaultConnection: "Data Source=sqldatabasetechchallenge118fase2, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
       Jwt__Key: "08fa1d833b85a776166dd0a30ec21687"
       Jwt__Issuer: "http://localhost:8080"
       Jwt__Audience: "http://localhost:8080"
@@ -34,9 +34,9 @@
       context: .
       dockerfile: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile
   
-  sqldatabasetechchallenge118:
+  sqldatabasetechchallenge118fase2:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqldatabasetechchallenge118
+    container_name: sqldatabasetechchallenge118fase2
     ports:
       - "1433:1433"
     environment:

@@ -6,6 +6,10 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entit
 
 public class Product : BaseEntity
 {
+    protected Product()
+    {
+    }
+
     public string Name { get; set; }
 
     public string Description { get; protected set; }

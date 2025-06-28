@@ -9,11 +9,11 @@
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DocumentationFile>bin\Debug\net8.0\TechChallengeFastFood.API.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\net8.0\TechChallengeFastFood.CleanArch.Infrastructure.API.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-        <DocumentationFile>bin\Release\net8.0\TechChallengeFastFood.API.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\net8.0\TechChallengeFastFood.CleanArch.Infrastructure.API.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup>

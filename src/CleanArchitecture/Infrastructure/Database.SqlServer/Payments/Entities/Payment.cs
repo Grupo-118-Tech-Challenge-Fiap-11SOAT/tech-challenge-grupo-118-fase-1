@@ -2,6 +2,10 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Entit
 
 public class Payment
 {
+    protected Payment()
+    {
+    }
+
     public int Id { get; protected set; }
     public Guid Uuid { get; protected set; } = Guid.NewGuid();
     public int OrderId { get; protected set; }

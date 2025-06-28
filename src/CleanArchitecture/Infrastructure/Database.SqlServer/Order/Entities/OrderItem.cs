@@ -4,6 +4,10 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities
 
 public class OrderItem
 {
+    protected OrderItem()
+    {
+    }
+
     public int ProductId { get; protected set; }
     public int OrderId { get; protected set; }
     public int Quantity { get; protected set; }

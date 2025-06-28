@@ -4,6 +4,10 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entit
 
 public class ImageProduct : BaseEntity
 {
+    protected ImageProduct()
+    {
+    }
+
     public int ProductId { get; protected set; }
 
     public int Position { get; protected set; }

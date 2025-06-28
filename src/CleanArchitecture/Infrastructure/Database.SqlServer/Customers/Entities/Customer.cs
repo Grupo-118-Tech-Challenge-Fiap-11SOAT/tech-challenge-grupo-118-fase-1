@@ -4,4 +4,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Enti
 
 public class Customer : Person
 {
+    protected Customer()
+    {
+    }
 }

@@ -7,6 +7,10 @@ public class Employee : Person
     public string Password { get; protected set; }
     public string Role { get; protected set; }
 
+    protected Employee()
+    {
+    }
+
     public Employee(string cpf,
         string name,
         string surname,
@@ -25,7 +29,7 @@ public class Employee : Person
         this.Password = password;
         this.Role = role;
         this.IsActive = isActive;
-        
+
         if (id != 0)
             Id = id;
     }
