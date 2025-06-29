@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 
 namespace TechChallengeFastFood.CleanArch.API.Handlers;
 
@@ -39,7 +40,7 @@ public class CustomExceptionHandler : IExceptionHandler
         {
             //TODO: Add specific exception types and their corresponding status codes
           // MediaTypeNames.Application.ApplicationException => StatusCodes.Status400BadRequest,
-          //   DomainException => StatusCodes.Status400BadRequest,
+             DomainException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
 
