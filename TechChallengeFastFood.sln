@@ -22,6 +22,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B229D73D-61FC-4DA2-8491-829BAE83B63B}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yaml = docker-compose.yaml
+		docker-compose-fase2.yaml = docker-compose-fase2.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Database.SqlServer", "src\Adapters\Driven\Infra.Database.SqlServer\Infra.Database.SqlServer.csproj", "{B4CF5FEA-BB09-4E17-BF7B-F698F096276E}"
@@ -63,6 +64,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Interfaces", "src\CleanArchitecture\Common\Common.Interfaces\Common.Interfaces.csproj", "{E11FA27B-106D-4D89-A79B-D2800FFD3FB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Dto", "src\CleanArchitecture\Common\Common.Dto\Common.Dto.csproj", "{190480F2-FAE4-4B1D-9471-03D351261E7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Password", "src\CleanArchitecture\Infrastructure\Infra.Password\Infra.Password.csproj", "{4174F6FC-D357-44C6-B86E-7E400F408803}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,6 +137,10 @@ Global
 		{190480F2-FAE4-4B1D-9471-03D351261E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{190480F2-FAE4-4B1D-9471-03D351261E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{190480F2-FAE4-4B1D-9471-03D351261E7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4174F6FC-D357-44C6-B86E-7E400F408803}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4174F6FC-D357-44C6-B86E-7E400F408803}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4174F6FC-D357-44C6-B86E-7E400F408803}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4174F6FC-D357-44C6-B86E-7E400F408803}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,5 +173,6 @@ Global
 		{CA3DB2FA-27D1-44E5-A2A4-A3D4025ADB43} = {C7748FC2-041B-4DCF-A330-33405B911A74}
 		{E11FA27B-106D-4D89-A79B-D2800FFD3FB4} = {CA3DB2FA-27D1-44E5-A2A4-A3D4025ADB43}
 		{190480F2-FAE4-4B1D-9471-03D351261E7D} = {CA3DB2FA-27D1-44E5-A2A4-A3D4025ADB43}
+		{4174F6FC-D357-44C6-B86E-7E400F408803} = {F2B8A819-1472-457E-9871-A25122F081AF}
 	EndGlobalSection
 EndGlobal

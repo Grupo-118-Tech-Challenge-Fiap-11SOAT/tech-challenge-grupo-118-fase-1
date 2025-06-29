@@ -7,4 +7,13 @@
         <RootNamespace>TechChallengeFastFood.CleanArch.Domain.Entities</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Customer\Exceptions\" />
+      <Folder Include="Payments\Exceptions\" />
+    </ItemGroup>
+
 </Project>
