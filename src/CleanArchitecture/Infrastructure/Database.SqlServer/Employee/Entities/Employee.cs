@@ -1,3 +1,4 @@
+using Common.Dto.Employee;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Entities;
@@ -5,7 +6,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Entit
 public class Employee : Person
 {
     public string Password { get; protected set; }
-    public string Role { get; protected set; }
+    public EmployeeRole Role { get; protected set; }
 
     protected Employee()
     {
@@ -17,7 +18,7 @@ public class Employee : Person
         string email,
         DateOnly birthday,
         string password,
-        string role,
+        EmployeeRole role,
         bool isActive,
         int id = 0)
     {

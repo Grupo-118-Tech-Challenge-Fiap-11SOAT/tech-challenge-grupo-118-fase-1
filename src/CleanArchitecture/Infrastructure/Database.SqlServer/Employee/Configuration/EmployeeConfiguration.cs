@@ -77,7 +77,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Entities.Employee>
                 "admin@admin.com",
                 new DateOnly(1990, 1, 1),
                 "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
-                "Admin",
+                Common.Dto.Employee.EmployeeRole.Admin,
                 true,
                 1)
         };

@@ -1,3 +1,4 @@
+using Common.Dto.Products;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities;
@@ -14,7 +15,7 @@ public class Product : BaseEntity
 
     public string Description { get; protected set; }
 
-    public string Category { get; protected set; }
+    public ProductType Category { get; protected set; }
 
     public decimal Price { get; protected set; }
 
@@ -24,7 +25,7 @@ public class Product : BaseEntity
 
     public Product(string name,
         string description,
-        string productType,
+        ProductType productType,
         decimal price,
         bool isActive,
         int id = 0)

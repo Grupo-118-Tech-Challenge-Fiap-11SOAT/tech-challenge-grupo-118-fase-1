@@ -1,3 +1,4 @@
+using Common.Dto.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
@@ -63,14 +64,14 @@ public class ProductsConfiguration : IEntityTypeConfiguration<Product>
         {
             new Product("Hamburguer 2 carnes",
                 "Hamburguer de 2 carnes com queijo e presunto. Acompanha de frango e bacon.",
-                "Snack",
+                ProductType.Snack,
                 35.95M,
                 true,
                 1),
 
             new Product("Hamburguer 4 carnes",
                 "Hamburguer de 4 carnes com queijo, presunto e molho da casa. Acompanha de frango e bacon.",
-                "Snack",
+                ProductType.Snack,
                 50.95M,
                 true,
                 2),
@@ -83,14 +84,14 @@ public class ProductsConfiguration : IEntityTypeConfiguration<Product>
         {
             new Product("Salada Ceasar",
                 "Uma salada ceasar bem temperada.",
-                "Accompaniment",
+                ProductType.Accompaniment,
                 15.95M,
                 true,
                 3),
 
             new Product("Onion Rings",
                 "Deliciosos onion rings com cebola e tomate.",
-                "Accompaniment",
+                ProductType.Accompaniment,
                 20.95M,
                 true,
                 4),
@@ -103,14 +104,14 @@ public class ProductsConfiguration : IEntityTypeConfiguration<Product>
         {
             new Product("Coca-Cola Lata",
                 "Coca-Cola Lata de 350ML para matar a sua sede!",
-                "Drink",
+                ProductType.Drink,
                 4.50M,
                 true,
                 5),
 
             new Product("Heineken Longneck",
                 "Heineken Longneck bem gelada.",
-                "Drink",
+                ProductType.Drink,
                 5.50M,
                 true,
                 6),
@@ -123,14 +124,14 @@ public class ProductsConfiguration : IEntityTypeConfiguration<Product>
         {
             new Product("Sorvete de casquinha - chocolate",
                 "Uma deliciosa casquinha de chocolate com sorvete de leite.",
-                "Dessert",
+                ProductType.Dessert,
                 3.34M,
                 true,
                 7),
 
             new Product("Milkshake de morango e chocolate",
                 "Um incrível milkshake de morango com leite e chocolate.",
-                "Dessert",
+                ProductType.Dessert,
                 10.0M,
                 true,
                 8),
