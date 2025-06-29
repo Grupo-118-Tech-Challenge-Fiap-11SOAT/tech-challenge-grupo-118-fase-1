@@ -31,8 +31,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Adapters\Driven\Infra.Database.SqlServer\Infra.Database.SqlServer.csproj" />
       <ProjectReference Include="..\..\Presentation\Controllers\Controllers.csproj" />
       <ProjectReference Include="..\Database.SqlServer\Database.SqlServer.csproj" />
+      <ProjectReference Include="..\External.Api.MercadoPago\External.Api.MercadoPago.csproj" />
     </ItemGroup>
 
     <ItemGroup>
