@@ -1,9 +1,11 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Common.Interfaces.Employee;
 using Common.Interfaces.Payments;
 using External.Factories;
 using External.Processors;
 using External.Repositories.Interfaces;
+using Infra.Password;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -87,7 +89,7 @@ public class Program
         //
         // builder.Services.AddTransient<ICustomerManager, CustomerManager>();
         // builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
-        
+
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
         {
             c.BaseAddress = new Uri(
@@ -97,8 +99,7 @@ public class Program
                 $"Bearer {builder.Configuration.GetSection("MercadoPago:AccessToken").Value}");
         });
 
-        //TODO: Insert PasswordManager implementation
-        // builder.Services.AddTransient<IPasswordManager, PasswordManager>();
+        builder.Services.AddTransient<IPasswordManager, PasswordManager>();
 
         builder.Services.AddSwaggerGen(s =>
         {
@@ -106,7 +107,8 @@ public class Program
             {
                 Title = "Tech Challenge - Fast Food API - Fase 2",
                 Version = "v1",
-                Description = "API para gerenciamento de pedidos para lanchonete usando conceitos de Clean Architecture.",
+                Description =
+                    "API para gerenciamento de pedidos para lanchonete usando conceitos de Clean Architecture.",
                 Contact = new OpenApiContact
                 {
                     Name = "Grupo 118 - Sabrina Cardoso | Tiago Koch | Tiago Oliveira | Túlio Rezende | Vinícius Nunes",
