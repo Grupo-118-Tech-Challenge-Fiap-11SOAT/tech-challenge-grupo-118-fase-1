@@ -1,5 +1,9 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Common.Interfaces.Payments;
+using External.Factories;
+using External.Processors;
+using External.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using Refit;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace TechChallengeFastFood.CleanArch.API;
 
@@ -76,21 +82,20 @@ public class Program
         // builder.Services.AddTransient<IPaymentManager, PaymentManager>();
         // builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
         // builder.Services.AddTransient<IPaymentService, PaymentService>();
-        // builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
-        // builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
+        builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
+        builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
         //
         // builder.Services.AddTransient<ICustomerManager, CustomerManager>();
         // builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
-
-        //TODO: Insert Refit implementation
-        // builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
-        // {
-        //     c.BaseAddress = new Uri(
-        //         builder.Configuration.GetSection("MercadoPago:BaseUrl").Value
-        //         ?? throw new ArgumentNullException("BaseUrl"));
-        //     c.DefaultRequestHeaders.Add("Authorization",
-        //         $"Bearer {builder.Configuration.GetSection("MercadoPago:AccessToken").Value}");
-        // });
+        
+        builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
+        {
+            c.BaseAddress = new Uri(
+                builder.Configuration.GetSection("MercadoPago:BaseUrl").Value
+                ?? throw new ArgumentNullException("BaseUrl"));
+            c.DefaultRequestHeaders.Add("Authorization",
+                $"Bearer {builder.Configuration.GetSection("MercadoPago:AccessToken").Value}");
+        });
 
         //TODO: Insert PasswordManager implementation
         // builder.Services.AddTransient<IPasswordManager, PasswordManager>();
