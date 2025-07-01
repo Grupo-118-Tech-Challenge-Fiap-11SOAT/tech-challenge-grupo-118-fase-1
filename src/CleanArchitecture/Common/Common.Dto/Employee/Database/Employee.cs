@@ -1,4 +1,5 @@
 using Common.Dto.Base.Database;
+using Common.Enums;
 
 namespace Common.Dto.Employee.Database;
 

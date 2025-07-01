@@ -1,5 +1,6 @@
 using Common.Dto.Base.Database;
 using Common.Dto.Order.Database;
+using Common.Enums;
 
 namespace Common.Dto.Products.Database;
 

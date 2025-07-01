@@ -1,3 +1,4 @@
+using Common.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -77,7 +78,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Common.Dto.Employe
                 "admin@admin.com",
                 new DateOnly(1990, 1, 1),
                 "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
-                Common.Dto.Employee.EmployeeRole.Admin,
+                EmployeeRole.Admin,
                 true,
                 1)
         };

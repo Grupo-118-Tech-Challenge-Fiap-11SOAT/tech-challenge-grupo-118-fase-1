@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Common.Dto.Payments;
+namespace Common.Enums;
 
 public enum PaymentProvider
 {

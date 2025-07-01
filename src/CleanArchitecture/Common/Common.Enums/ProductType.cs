@@ -1,4 +1,4 @@
-namespace Common.Dto.Products;
+namespace Common.Enums;
 
 public enum ProductType
 {

@@ -1,4 +1,4 @@
-using Common.Dto.Order;
+using Common.Enums;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 
 namespace TechChallengeFastFood.CleanArch.Domain.Entities.Order.Exceptions;

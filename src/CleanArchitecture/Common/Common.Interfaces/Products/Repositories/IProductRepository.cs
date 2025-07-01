@@ -1,5 +1,6 @@
 using Common.Dto.Products;
 using Common.Dto.Products.Database;
+using Common.Enums;
 
 namespace Common.Interfaces.Products.Repositories;
 

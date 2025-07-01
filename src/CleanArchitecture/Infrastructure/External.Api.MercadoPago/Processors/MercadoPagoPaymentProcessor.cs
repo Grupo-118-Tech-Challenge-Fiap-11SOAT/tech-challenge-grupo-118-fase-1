@@ -1,5 +1,6 @@
 using Common.Dto.MercadoPago;
 using Common.Dto.Payments;
+using Common.Enums;
 using Common.Interfaces.Payments;
 using External.Repositories.Interfaces;
 using Microsoft.Extensions.Options;

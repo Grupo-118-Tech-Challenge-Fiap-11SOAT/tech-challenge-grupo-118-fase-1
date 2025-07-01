@@ -1,4 +1,4 @@
-namespace Common.Dto.Employee;
+namespace Common.Enums;
 
 public enum EmployeeRole
 {

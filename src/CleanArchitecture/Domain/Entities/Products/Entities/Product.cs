@@ -1,4 +1,4 @@
-using Common.Dto.Products;
+using Common.Enums;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Products.Exceptions;
@@ -45,9 +45,8 @@ public class Product : BaseEntity
 
     protected Product()
     {
-        
     }
-    
+
     public void UpdateProduct(Product productToUpdate)
     {
         this.Name = productToUpdate.Name;

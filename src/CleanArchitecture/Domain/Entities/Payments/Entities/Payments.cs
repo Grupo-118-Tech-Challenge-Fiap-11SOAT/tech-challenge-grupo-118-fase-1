@@ -1,4 +1,4 @@
-using Common.Dto.Payments;
+using Common.Enums;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 
 namespace TechChallengeFastFood.CleanArch.Domain.Entities.Payments.Entities;

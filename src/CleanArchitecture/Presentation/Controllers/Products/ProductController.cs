@@ -1,6 +1,7 @@
 using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Gateway;
+using Common.Interfaces.Products.Presenter;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
@@ -8,10 +9,12 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 public class ProductController : IProductController
 {
     private readonly GetProductsUseCase _getProductsUseCase;
+    private readonly IProductPresenter _productPresenter;
 
-    public ProductController(IProductGateway productGateway)
+    public ProductController(IProductGateway productGateway, IProductPresenter productPresenter)
     {
         _getProductsUseCase = new GetProductsUseCase(productGateway);
+        _productPresenter = productPresenter;
     }
 
     public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,
@@ -20,8 +23,9 @@ public class ProductController : IProductController
     {
         var products = await _getProductsUseCase.ExecuteAsync(skip, take, searchActiveProducts, cancellationToken);
 
-        //TODO: Implement presenter logic to convert domain entities to DTOs
-        return null;
+        return products is not null
+            ? _productPresenter.Convert(products)
+            : null;
     }
 
     public async Task<List<ProductDto>?> GetProductsByTypeAsync(string type, int skip = 0, int take = 10,

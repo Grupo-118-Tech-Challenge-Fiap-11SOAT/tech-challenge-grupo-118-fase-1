@@ -1,4 +1,5 @@
 using Common.Dto.Payments;
+using Common.Enums;
 
 namespace Common.Interfaces.Payments;
 

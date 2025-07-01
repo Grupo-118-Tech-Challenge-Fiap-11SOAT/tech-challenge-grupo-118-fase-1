@@ -1,4 +1,4 @@
-namespace Common.Dto.Order;
+namespace Common.Enums;
 
 public enum OrderStatus
 {

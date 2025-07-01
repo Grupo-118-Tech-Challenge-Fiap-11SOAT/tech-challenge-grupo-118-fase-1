@@ -1,4 +1,4 @@
-namespace Common.Dto.Payments;
+namespace Common.Enums;
 
 public enum PaymentStatus
 {

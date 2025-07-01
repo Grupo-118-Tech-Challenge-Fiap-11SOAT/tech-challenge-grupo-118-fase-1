@@ -1,5 +1,6 @@
 using Common.Dto.Products;
 using Common.Dto.Products.Database;
+using Common.Enums;
 using Common.Interfaces.Products.Repositories;
 using Microsoft.EntityFrameworkCore;
 
