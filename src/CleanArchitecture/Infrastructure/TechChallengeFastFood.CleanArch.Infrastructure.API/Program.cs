@@ -2,6 +2,9 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using Common.Interfaces.Employee;
 using Common.Interfaces.Payments;
+using Common.Interfaces.Products.Controller;
+using Common.Interfaces.Products.Gateway;
+using Common.Interfaces.Products.Repositories;
 using External.Factories;
 using External.Processors;
 using External.Repositories.Interfaces;
@@ -14,6 +17,9 @@ using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using Refit;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace TechChallengeFastFood.CleanArch.API;
@@ -71,6 +77,11 @@ public class Program
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         //TODO: Insert Dependency Injections implementation
+
+        builder.Services.AddTransient<IProductController, ProductController>();
+        builder.Services.AddTransient<IProductGateway, ProductGateway>();
+        builder.Services.AddTransient<IProductRepository, ProductRepository>();
+
         // builder.Services.AddTransient<IProductManager, ProductManager>();
         // builder.Services.AddTransient<IProductRepository, ProductRepository>();
         //

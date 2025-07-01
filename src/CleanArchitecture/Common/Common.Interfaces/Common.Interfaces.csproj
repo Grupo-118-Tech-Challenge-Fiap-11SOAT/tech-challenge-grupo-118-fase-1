@@ -7,7 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Domain\Entities\Entities.csproj" />
       <ProjectReference Include="..\Common.Dto\Common.Dto.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Products\Presenter\" />
     </ItemGroup>
 
 </Project>

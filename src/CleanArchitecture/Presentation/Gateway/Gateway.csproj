@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Core\Domain\Domain.csproj" />
       <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
       <ProjectReference Include="..\..\Common\Common.Interfaces\Common.Interfaces.csproj" />
       <ProjectReference Include="..\..\Domain\Entities\Entities.csproj" />

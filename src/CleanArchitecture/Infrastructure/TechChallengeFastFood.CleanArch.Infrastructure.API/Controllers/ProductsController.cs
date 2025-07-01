@@ -1,4 +1,5 @@
 using Common.Dto.Products;
+using Common.Interfaces.Products.Controller;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 public class ProductsController : ControllerBase
 {
     // private readonly IProductManager _productManager;
+    private readonly IProductController _productController;
 
     private readonly ProblemDetails PRODUCT_NOT_FOUND = new ProblemDetails
     {
@@ -36,6 +38,10 @@ public class ProductsController : ControllerBase
     // {
     //     _productManager = productManager;
     // }
+    public ProductsController(IProductController productController)
+    {
+        _productController = productController;
+    }
 
     /// <summary>
     /// Retrieves a paginated list of products.
@@ -53,15 +59,17 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10,
         bool searchActiveProducts = false)
     {
-        // var products =
-        //     await _productManager.GetProductsAsync(skip, take, searchActiveProducts,
-        //         cancellationToken: cancellationToken);
-        //
-        // if (products is null || products.Count == 0)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(products);
-        return Ok();
+        var products = await _productController.GetProductsAsync(skip,
+            take,
+            searchActiveProducts,
+            cancellationToken);
+
+        if (products is null || products.Count == 0)
+        {
+            return NotFound(PRODUCT_NOT_FOUND);
+        }
+
+        return Ok(products);
     }
 
     /// <summary>
