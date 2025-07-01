@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Configuration;
 
-public class OrderConfiguration : IEntityTypeConfiguration<Entities.Order>
+public class OrderConfiguration : IEntityTypeConfiguration<Common.Dto.Order.Database.Order>
 {
-    public void Configure(EntityTypeBuilder<Entities.Order> builder)
+    public void Configure(EntityTypeBuilder<Common.Dto.Order.Database.Order> builder)
     {
         builder.ToTable("Orders");
 

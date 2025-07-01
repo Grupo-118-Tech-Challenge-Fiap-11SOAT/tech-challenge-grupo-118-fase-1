@@ -1,4 +1,4 @@
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
+namespace Common.Dto.Base.Database;
 
 public abstract class Person : BaseEntity
 {

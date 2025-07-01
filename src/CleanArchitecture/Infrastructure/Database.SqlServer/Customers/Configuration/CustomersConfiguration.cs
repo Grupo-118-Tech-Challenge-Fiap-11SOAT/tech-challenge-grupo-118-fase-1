@@ -1,6 +1,6 @@
+using Common.Dto.Customers.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Configuration;
 

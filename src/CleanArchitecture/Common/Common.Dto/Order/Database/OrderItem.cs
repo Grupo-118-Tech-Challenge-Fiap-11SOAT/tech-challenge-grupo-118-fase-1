@@ -1,6 +1,6 @@
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
+using Common.Dto.Products.Database;
 
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities;
+namespace Common.Dto.Order.Database;
 
 public class OrderItem
 {
@@ -11,6 +11,6 @@ public class OrderItem
     public int ProductId { get; protected set; }
     public int OrderId { get; protected set; }
     public int Quantity { get; protected set; }
-    public Order Order { get; protected set; }
+    public Common.Dto.Order.Database.Order Order { get; protected set; }
     public Product Product { get; protected set; }
 }

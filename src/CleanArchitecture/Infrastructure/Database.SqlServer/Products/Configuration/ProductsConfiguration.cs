@@ -1,7 +1,7 @@
 using Common.Dto.Products;
+using Common.Dto.Products.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Configuration;
 
@@ -12,7 +12,7 @@ public class ProductsConfiguration : IEntityTypeConfiguration<Product>
 
     private readonly DateTimeOffset DefaultDateTimeOffset = new DateTimeOffset(2025, 5, 26, 0, 0, 0, TimeSpan.Zero);
 
-    public void Configure(EntityTypeBuilder<Entities.Product> builder)
+    public void Configure(EntityTypeBuilder<Product> builder)
     {
         builder.Property(p => p.Name)
             .HasMaxLength(50)

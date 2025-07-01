@@ -1,9 +1,7 @@
-using Common.Dto.Products;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities;
+using Common.Dto.Base.Database;
+using Common.Dto.Order.Database;
 
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
+namespace Common.Dto.Products.Database;
 
 public class Product : BaseEntity
 {
@@ -40,7 +38,7 @@ public class Product : BaseEntity
         this.Price = price;
     }
     
-    public void UpdateProduct(ProductPersistence productToUpdate)
+    public void UpdateProduct(Product productToUpdate)
     {
         this.Name = productToUpdate.Name;
         this.Description = productToUpdate.Description;

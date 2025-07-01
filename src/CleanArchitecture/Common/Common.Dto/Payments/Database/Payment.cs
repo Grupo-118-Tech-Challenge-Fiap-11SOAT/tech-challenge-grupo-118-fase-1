@@ -1,6 +1,4 @@
-using Common.Dto.Payments;
-
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Entities;
+namespace Common.Dto.Payments.Database;
 
 public class Payment
 {

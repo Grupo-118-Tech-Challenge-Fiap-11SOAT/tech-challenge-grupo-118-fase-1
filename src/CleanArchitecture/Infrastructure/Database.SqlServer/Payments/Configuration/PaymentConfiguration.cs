@@ -1,6 +1,6 @@
+using Common.Dto.Payments.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Configuration;
 

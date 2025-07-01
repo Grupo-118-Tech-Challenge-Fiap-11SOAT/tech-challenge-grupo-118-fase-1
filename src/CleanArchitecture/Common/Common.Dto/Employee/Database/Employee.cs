@@ -1,7 +1,6 @@
-using Common.Dto.Employee;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
+using Common.Dto.Base.Database;
 
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Entities;
+namespace Common.Dto.Employee.Database;
 
 public class Employee : Person
 {

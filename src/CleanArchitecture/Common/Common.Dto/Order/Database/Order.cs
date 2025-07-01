@@ -1,7 +1,6 @@
-using Common.Dto.Order;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
+using Common.Dto.Base.Database;
 
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities;
+namespace Common.Dto.Order.Database;
 
 public class Order : BaseEntity
 {

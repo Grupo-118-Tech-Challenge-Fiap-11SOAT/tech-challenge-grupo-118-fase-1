@@ -1,4 +1,5 @@
 using Common.Dto.Products;
+using Common.Dto.Products.Database;
 
 namespace Common.Interfaces.Products.Repositories;
 
@@ -12,7 +13,7 @@ public interface IProductRepository
     /// <param name="searchActiveProducts">A flag indicating whether to include only active products in the result.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of products.</returns>
-    Task<List<ProductPersistence>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false,
+    Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10, bool searchActiveProducts = false,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -23,7 +24,7 @@ public interface IProductRepository
     /// <param name="take">The number of items to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token to observe.</param>
     /// <returns>A list of products filtered by the specified type, or null if no products match the criteria.</returns>
-    Task<List<ProductPersistence>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10,
+    Task<List<Product>?> GetProductsByTypeAsync(ProductType type, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default);
 
 
@@ -33,7 +34,7 @@ public interface IProductRepository
     /// <param name="ids">An array of product IDs to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns a list of active Product objects, or null if no products are found.</returns>
-    Task<List<ProductPersistence>?> GetProductsByIdsAsync(int[] ids,
+    Task<List<Product>?> GetProductsByIdsAsync(int[] ids,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -45,7 +46,7 @@ public interface IProductRepository
     /// <param name="take">The number of image product items to retrieve.</param>   
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The product matching the specified identifier, or null if no such product exists.</returns>
-    Task<ProductPersistence?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
+    Task<Product?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -54,7 +55,7 @@ public interface IProductRepository
     /// <param name="product">The product entity containing the details of the product to be created.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The unique identifier of the created product.</returns>
-    Task<ProductPersistence> CreateProductAsync(ProductPersistence product,
+    Task<Product> CreateProductAsync(Product product,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -64,6 +65,6 @@ public interface IProductRepository
     /// <param name="product">The updated product data.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The updated Product entity</returns>
-    Task<ProductPersistence?> UpdateProductAsync(int productId, ProductPersistence product,
+    Task<Product?> UpdateProductAsync(int productId, Product product,
         CancellationToken cancellationToken = default);
 }

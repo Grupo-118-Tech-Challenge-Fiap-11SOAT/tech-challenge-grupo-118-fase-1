@@ -1,6 +1,6 @@
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Base;
+using Common.Dto.Base.Database;
 
-namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
+namespace Common.Dto.Products.Database;
 
 public class ImageProduct : BaseEntity
 {

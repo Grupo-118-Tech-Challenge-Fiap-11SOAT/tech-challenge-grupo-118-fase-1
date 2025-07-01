@@ -1,11 +1,12 @@
+using Common.Dto.Order.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Configuration;
 
-public class OrderItemConfiguration : IEntityTypeConfiguration<Entities.OrderItem>
+public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
 {
-    public void Configure(EntityTypeBuilder<Entities.OrderItem> builder)
+    public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
         builder.ToTable("OrderItems");
         builder.HasKey(x => new { x.OrderId, x.ProductId });
