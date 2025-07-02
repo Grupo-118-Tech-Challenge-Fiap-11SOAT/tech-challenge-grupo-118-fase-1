@@ -9,11 +9,15 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 public class ProductController : IProductController
 {
     private readonly GetProductsUseCase _getProductsUseCase;
+    private readonly CreateProductUseCase _createProductUseCase;
+
     private readonly IProductPresenter _productPresenter;
 
     public ProductController(IProductGateway productGateway, IProductPresenter productPresenter)
     {
-        _getProductsUseCase = new GetProductsUseCase(productGateway);
+        _getProductsUseCase = GetProductsUseCase.Create(productGateway);
+        _createProductUseCase = CreateProductUseCase.Create(productGateway);
+
         _productPresenter = productPresenter;
     }
 
@@ -49,7 +53,9 @@ public class ProductController : IProductController
     public async Task<ProductDto> CreateProductAsync(ProductDto productDto,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var product = await _createProductUseCase.ExecuteAsync(productDto, cancellationToken);
+
+        return _productPresenter.Convert(product);
     }
 
     public async Task<ProductDto?> UpdateProductAsync(int productId, ProductDto productDto,

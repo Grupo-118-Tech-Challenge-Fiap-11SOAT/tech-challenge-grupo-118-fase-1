@@ -10,10 +10,9 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+// [Authorize]
 public class ProductsController : ControllerBase
 {
-    // private readonly IProductManager _productManager;
     private readonly IProductController _productController;
 
     private readonly ProblemDetails PRODUCT_NOT_FOUND = new ProblemDetails
@@ -33,11 +32,7 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Product constructor
     /// </summary>
-    /// <param name="productManager"></param>
-    // public ProductsController(IProductManager productManager)
-    // {
-    //     _productManager = productManager;
-    // }
+    /// <param name="productController"></param>
     public ProductsController(IProductController productController)
     {
         _productController = productController;
@@ -131,9 +126,13 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, [FromBody] ProductDto productDto)
     {
+        var product = await _productController.CreateProductAsync(productDto, cancellationToken);
+        return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
         // var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
         // return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
-        return Created();
+
+
+        // return Created();
     }
 
     /// <summary>

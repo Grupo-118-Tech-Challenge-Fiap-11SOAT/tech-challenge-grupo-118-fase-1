@@ -1,4 +1,3 @@
-using Common.Dto.Products;
 using Common.Dto.Products.Database;
 using Common.Enums;
 using Common.Interfaces.Products.Repositories;
@@ -87,13 +86,10 @@ public class ProductRepository : IProductRepository
     public async Task<Product> CreateProductAsync(Product product,
         CancellationToken cancellationToken = default)
     {
-        var productEntity = new Product(product.Name, product.Description, product.Category, product.Price,
-            product.IsActive);
-
-        await _dbContext.Products.AddAsync(productEntity, cancellationToken);
+        await _dbContext.Products.AddAsync(product, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return productEntity;
+        return product;
     }
 
     public async Task<Product?> UpdateProductAsync(int productId, Product product,
