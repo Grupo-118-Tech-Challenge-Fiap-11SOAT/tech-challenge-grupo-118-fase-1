@@ -1,11 +1,12 @@
+using Common.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Configuration;
 
-public class EmployeeConfiguration : IEntityTypeConfiguration<Entities.Employee>
+public class EmployeeConfiguration : IEntityTypeConfiguration<Common.Dto.Employee.Database.Employee>
 {
-    public void Configure(EntityTypeBuilder<Entities.Employee> builder)
+    public void Configure(EntityTypeBuilder<Common.Dto.Employee.Database.Employee> builder)
     {
         builder.ToTable("Employees");
         builder.HasKey(builder => builder.Id);
@@ -66,9 +67,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Entities.Employee>
         builder.HasData(Generate());
     }
 
-    private IEnumerable<Entities.Employee> Generate()
+    private IEnumerable<Common.Dto.Employee.Database.Employee> Generate()
     {
-        return new List<Entities.Employee>
+        return new List<Common.Dto.Employee.Database.Employee>
         {
             new(
                 "98659502000",
@@ -77,7 +78,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Entities.Employee>
                 "admin@admin.com",
                 new DateOnly(1990, 1, 1),
                 "QBYnGddxOZ/VOBgUr1koYDLMawbe/D8NaYYxOXQ0LHN8TO/ysQ5UvBZc70kbQkfXarxn+KobEuH7KpXkiElivg==",
-                Common.Dto.Employee.EmployeeRole.Admin,
+                EmployeeRole.Admin,
                 true,
                 1)
         };

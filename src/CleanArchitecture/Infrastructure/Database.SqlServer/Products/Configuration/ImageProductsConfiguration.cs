@@ -1,17 +1,17 @@
+using Common.Dto.Products.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Configuration;
 
-public class ImageProductsConfiguration : IEntityTypeConfiguration<Entities.ImageProduct>
+public class ImageProductsConfiguration : IEntityTypeConfiguration<ImageProduct>
 {
     private const string DEFAULT_DATETIMEOFFSET_COLUMN_TYPE = "datetimeoffset";
     private const string DEFAULT_DATETIMEOFFSET_COLUMN_DEFAULT_VALUE = "SYSDATETIMEOFFSET()";
 
     private readonly DateTimeOffset DefaultDateTimeOffset = new DateTimeOffset(2025, 5, 26, 0, 0, 0, TimeSpan.Zero);
 
-    public void Configure(EntityTypeBuilder<Entities.ImageProduct> builder)
+    public void Configure(EntityTypeBuilder<ImageProduct> builder)
     {
         builder.Property(p => p.CreatedAt)
             .IsRequired()

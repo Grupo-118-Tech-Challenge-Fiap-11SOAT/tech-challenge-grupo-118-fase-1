@@ -1,6 +1,4 @@
-using Common.Dto.Order;
-using Common.Dto.Products;
-using TechChallengeFastFood.CleanArch.Domain.Entities.Base;
+using Common.Enums;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Extensions;
@@ -30,30 +28,30 @@ public class Order : BaseEntity
     }
 
 
-    public Order(OrderRequestDto orderDto, List<ProductDto> products)
-    {
-        var random = new Random();
-
-        OrderNumber = random.Next(100000, 1000000);
-
-        Cpf = orderDto.Cpf is null ? orderDto.Cpf : orderDto.Cpf.SanitizeCpf();
-
-        Status = OrderStatus.Received;
-        CreatedAt = DateTime.Now;
-        UpdatedAt = DateTime.Now;
-
-        OrderItems =
-            orderDto.Items?.Select(item => new OrderItem(Id, item.ProductId, item.Quantity)).ToList() ??
-            new List<OrderItem>();
-
-        Total = orderDto.Items?.Sum(item =>
-        {
-            var product = products.FirstOrDefault(p => p.Id == item.ProductId);
-            return product?.Price * item.Quantity;
-        }) ?? 0;
-
-        ValidateOrder();
-    }
+    // public Order(OrderRequestDto orderDto, List<ProductDto> products)
+    // {
+    //     var random = new Random();
+    //
+    //     OrderNumber = random.Next(100000, 1000000);
+    //
+    //     Cpf = orderDto.Cpf is null ? orderDto.Cpf : orderDto.Cpf.SanitizeCpf();
+    //
+    //     Status = OrderStatus.Received;
+    //     CreatedAt = DateTime.Now;
+    //     UpdatedAt = DateTime.Now;
+    //
+    //     OrderItems =
+    //         orderDto.Items?.Select(item => new OrderItem(Id, item.ProductId, item.Quantity)).ToList() ??
+    //         new List<OrderItem>();
+    //
+    //     Total = orderDto.Items?.Sum(item =>
+    //     {
+    //         var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+    //         return product?.Price * item.Quantity;
+    //     }) ?? 0;
+    //
+    //     ValidateOrder();
+    // }
 
     private void ValidateOrder()
     {

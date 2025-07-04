@@ -1,4 +1,5 @@
 using Common.Dto.Products;
+using Common.Interfaces.Products.Controller;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,10 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+// [Authorize]
 public class ProductsController : ControllerBase
 {
-    // private readonly IProductManager _productManager;
+    private readonly IProductController _productController;
 
     private readonly ProblemDetails PRODUCT_NOT_FOUND = new ProblemDetails
     {
@@ -31,11 +32,11 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Product constructor
     /// </summary>
-    /// <param name="productManager"></param>
-    // public ProductsController(IProductManager productManager)
-    // {
-    //     _productManager = productManager;
-    // }
+    /// <param name="productController"></param>
+    public ProductsController(IProductController productController)
+    {
+        _productController = productController;
+    }
 
     /// <summary>
     /// Retrieves a paginated list of products.
@@ -53,15 +54,17 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int skip = 0, int take = 10,
         bool searchActiveProducts = false)
     {
-        // var products =
-        //     await _productManager.GetProductsAsync(skip, take, searchActiveProducts,
-        //         cancellationToken: cancellationToken);
-        //
-        // if (products is null || products.Count == 0)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(products);
-        return Ok();
+        var products = await _productController.GetProductsAsync(skip,
+            take,
+            searchActiveProducts,
+            cancellationToken);
+
+        if (products is null || products.Count == 0)
+        {
+            return NotFound(PRODUCT_NOT_FOUND);
+        }
+
+        return Ok(products);
     }
 
     /// <summary>
@@ -80,13 +83,12 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetByTypeAsync(CancellationToken cancellationToken, string category, int skip = 0,
         int take = 10)
     {
-        // var products = await _productManager.GetProductsByTypeAsync(category, skip, take, cancellationToken);
-        //
-        // if (products is null || products.Count == 0)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(products);
-        return Ok();
+        var products = await _productController.GetProductsByTypeAsync(category, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return NotFound(PRODUCT_NOT_FOUND);
+
+        return Ok(products);
     }
 
 
@@ -103,13 +105,12 @@ public class ProductsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
-        // var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
-        //
-        // if (product is null)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(product);
-        return Ok();
+        var products = await _productController.GetProductByIdAsync(productId, cancellationToken);
+
+        if (products is null)
+            return NotFound(PRODUCT_NOT_FOUND);
+
+        return Ok(products);
     }
 
     /// <summary>
@@ -123,9 +124,8 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, [FromBody] ProductDto productDto)
     {
-        // var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
-        // return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
-        return Created();
+        var product = await _productController.CreateProductAsync(productDto, cancellationToken);
+        return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
     }
 
     /// <summary>
@@ -142,14 +142,12 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ProductDto productDto)
     {
-        // var product =
-        //     await _productManager.UpdateProductAsync(productId, productDto, cancellationToken: cancellationToken);
-        //
-        // if (product is null)
-        //     return Accepted();
-        //
-        // return Ok(product);
-        return Ok();
+        var product = await _productController.UpdateProductAsync(productId, productDto, cancellationToken);
+
+        if (product is null)
+            return Accepted();
+
+        return Ok(product);
     }
 
     #region Image Products Methods

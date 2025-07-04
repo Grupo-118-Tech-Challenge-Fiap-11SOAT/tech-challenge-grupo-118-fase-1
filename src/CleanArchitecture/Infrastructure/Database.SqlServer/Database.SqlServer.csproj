@@ -18,9 +18,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Interfaces\Common.Interfaces.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Base\" />
       <Folder Include="Migrations\" />
     </ItemGroup>
 

@@ -1,3 +1,5 @@
+using Common.Enums;
+
 namespace Common.Dto.Payments;
 
 public class PaymentExternalDto

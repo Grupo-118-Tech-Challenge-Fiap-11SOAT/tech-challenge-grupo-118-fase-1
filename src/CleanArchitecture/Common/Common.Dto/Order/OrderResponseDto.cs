@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Common.Enums;
 
 namespace Common.Dto.Order;
 
