@@ -27,24 +27,12 @@ public interface IProductController
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves a list of active products by their IDs.
-    /// </summary>
-    /// <param name="ids">Array of product IDs to retrieve.</param>
-    /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
-    /// <returns>A list of <see cref="ProductDto"/> or null.</returns>
-    Task<List<ProductDto>?> GetActiveProductsByIdsAsync(int[] ids, CancellationToken cancellationToken = default);
-
-    /// <summary>
     /// Retrieves a product by its ID, with options to include images and pagination for related data.
     /// </summary>
     /// <param name="id">The ID of the product to retrieve.</param>
-    /// <param name="includeImages">If true, includes product images in the result.</param>
-    /// <param name="skip">The number of related items to skip for pagination.</param>
-    /// <param name="take">The number of related items to take for pagination.</param>
     /// <param name="cancellationToken">Token to cancel the asynchronous operation.</param>
     /// <returns>A <see cref="ProductDto"/> or null.</returns>
-    Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
-        CancellationToken cancellationToken = default);
+    Task<ProductDto?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Creates a new product.

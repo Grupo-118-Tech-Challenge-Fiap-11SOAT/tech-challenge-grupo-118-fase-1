@@ -1,4 +1,5 @@
 using Common.Dto.Products.Database;
+using Common.Enums;
 using Common.Interfaces.Products.Gateway;
 using Common.Interfaces.Products.Repositories;
 using ProductDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Products.Entities.Product;
@@ -43,7 +44,27 @@ public class ProductGateway : IProductGateway
         return productsDto;
     }
 
-    public async Task<ProductDomain> CreateProductAsync(ProductDomain product, CancellationToken cancellationToken = default)
+    public async Task<ProductDomain?> GetProductByIdAsync(int productId, bool includeImage = false,
+        CancellationToken cancellationToken = default)
+    {
+        var persistedProduct =
+            await _productRepository.GetProductByIdAsync(productId, includeImage, cancellationToken: cancellationToken);
+
+        if (persistedProduct == null)
+            return null;
+
+        return new ProductDomain(
+            persistedProduct.Name,
+            persistedProduct.Description,
+            persistedProduct.Category,
+            persistedProduct.Price,
+            persistedProduct.IsActive,
+            persistedProduct.Id
+        );
+    }
+
+    public async Task<ProductDomain> CreateProductAsync(ProductDomain product,
+        CancellationToken cancellationToken = default)
     {
         var productEntity = new ProductEntity(
             product.Name,
@@ -56,7 +77,78 @@ public class ProductGateway : IProductGateway
         var persistedProduct = await _productRepository.CreateProductAsync(productEntity, cancellationToken);
 
         product.Id = persistedProduct.Id;
-        
+
         return product;
+    }
+
+    public async Task<ProductDomain?> UpdateProductAsync(int productId, ProductDomain product,
+        CancellationToken cancellationToken = default)
+    {
+        var productEntity = new ProductEntity(
+            product.Name,
+            product.Description,
+            product.Category,
+            product.Price,
+            product.IsActive,
+            product.Id
+        );
+
+        await _productRepository.UpdateProductAsync(productEntity.Id, productEntity, cancellationToken);
+
+        return product;
+    }
+
+    public async Task<List<ProductDomain>?> GetProductsByTypeAsync(ProductType productType, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var persistedProducts =
+            await _productRepository.GetProductsByTypeAsync(productType, skip, take, cancellationToken);
+
+        if (persistedProducts == null)
+            return null;
+
+        var productsDto = new List<ProductDomain>();
+
+        persistedProducts.ForEach(productEntity =>
+        {
+            productsDto.Add(
+                new ProductDomain(
+                    productEntity.Name,
+                    productEntity.Description,
+                    productEntity.Category,
+                    productEntity.Price,
+                    productEntity.IsActive,
+                    productEntity.Id
+                ));
+        });
+
+        return productsDto;
+    }
+
+    public async Task<List<ProductDomain>?> GetProductsByIdsAsync(int[] productIds,
+        CancellationToken cancellationToken = default)
+    {
+        var persistedProducts =
+            await _productRepository.GetProductsByIdsAsync(productIds, cancellationToken);
+
+        if (persistedProducts == null)
+            return null;
+
+        var productsDto = new List<ProductDomain>();
+
+        persistedProducts.ForEach(productEntity =>
+        {
+            productsDto.Add(
+                new ProductDomain(
+                    productEntity.Name,
+                    productEntity.Description,
+                    productEntity.Category,
+                    productEntity.Price,
+                    productEntity.IsActive,
+                    productEntity.Id
+                ));
+        });
+
+        return productsDto;
     }
 }

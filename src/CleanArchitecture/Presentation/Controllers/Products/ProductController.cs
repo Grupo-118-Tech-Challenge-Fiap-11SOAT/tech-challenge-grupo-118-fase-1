@@ -10,6 +10,9 @@ public class ProductController : IProductController
 {
     private readonly GetProductsUseCase _getProductsUseCase;
     private readonly CreateProductUseCase _createProductUseCase;
+    private readonly UpdateProductUseCase _updateProductUseCase;
+    private readonly GetProductByTypeUseCase _getProductByTypeUseCase;
+    private readonly GetProductByIdUseCase _getProductByIdUseCase;
 
     private readonly IProductPresenter _productPresenter;
 
@@ -17,6 +20,9 @@ public class ProductController : IProductController
     {
         _getProductsUseCase = GetProductsUseCase.Create(productGateway);
         _createProductUseCase = CreateProductUseCase.Create(productGateway);
+        _updateProductUseCase = UpdateProductUseCase.Create(productGateway);
+        _getProductByTypeUseCase = GetProductByTypeUseCase.Create(productGateway);
+        _getProductByIdUseCase = GetProductByIdUseCase.Create(productGateway);
 
         _productPresenter = productPresenter;
     }
@@ -35,19 +41,17 @@ public class ProductController : IProductController
     public async Task<List<ProductDto>?> GetProductsByTypeAsync(string type, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var products = await _getProductByTypeUseCase.ExecuteAsync(type, skip, take, cancellationToken);
+        return products is not null
+            ? _productPresenter.Convert(products)
+            : null;
     }
 
-    public async Task<List<ProductDto>?> GetActiveProductsByIdsAsync(int[] ids,
-        CancellationToken cancellationToken = default)
+    public async Task<ProductDto?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
+        var product = await _getProductByIdUseCase.ExecuteAsync(id, false, cancellationToken);
 
-    public async Task<ProductDto?> GetProductByIdAsync(int id, bool includeImages = false, int skip = 0, int take = 10,
-        CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
+        return product is not null ? _productPresenter.Convert(product) : null;
     }
 
     public async Task<ProductDto> CreateProductAsync(ProductDto productDto,
@@ -61,6 +65,8 @@ public class ProductController : IProductController
     public async Task<ProductDto?> UpdateProductAsync(int productId, ProductDto productDto,
         CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var product = await _updateProductUseCase.ExecuteAsync(productId, productDto, cancellationToken);
+
+        return product is null ? null : _productPresenter.Convert(product);
     }
 }

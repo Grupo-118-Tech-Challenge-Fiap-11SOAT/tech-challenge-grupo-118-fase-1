@@ -83,13 +83,12 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetByTypeAsync(CancellationToken cancellationToken, string category, int skip = 0,
         int take = 10)
     {
-        // var products = await _productManager.GetProductsByTypeAsync(category, skip, take, cancellationToken);
-        //
-        // if (products is null || products.Count == 0)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(products);
-        return Ok();
+        var products = await _productController.GetProductsByTypeAsync(category, skip, take, cancellationToken);
+
+        if (products is null || products.Count == 0)
+            return NotFound(PRODUCT_NOT_FOUND);
+
+        return Ok(products);
     }
 
 
@@ -106,13 +105,12 @@ public class ProductsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetAsync(int productId, CancellationToken cancellationToken)
     {
-        // var product = await _productManager.GetProductByIdAsync(productId, cancellationToken: cancellationToken);
-        //
-        // if (product is null)
-        //     return NotFound(PRODUCT_NOT_FOUND);
-        //
-        // return Ok(product);
-        return Ok();
+        var products = await _productController.GetProductByIdAsync(productId, cancellationToken);
+
+        if (products is null)
+            return NotFound(PRODUCT_NOT_FOUND);
+
+        return Ok(products);
     }
 
     /// <summary>
@@ -128,11 +126,6 @@ public class ProductsController : ControllerBase
     {
         var product = await _productController.CreateProductAsync(productDto, cancellationToken);
         return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
-        // var product = await _productManager.CreateProductAsync(productDto, cancellationToken: cancellationToken);
-        // return CreatedAtAction("GetDetailedProduct", new { productId = product.Id }, product);
-
-
-        // return Created();
     }
 
     /// <summary>
@@ -149,14 +142,12 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ProductDto productDto)
     {
-        // var product =
-        //     await _productManager.UpdateProductAsync(productId, productDto, cancellationToken: cancellationToken);
-        //
-        // if (product is null)
-        //     return Accepted();
-        //
-        // return Ok(product);
-        return Ok();
+        var product = await _productController.UpdateProductAsync(productId, productDto, cancellationToken);
+
+        if (product is null)
+            return Accepted();
+
+        return Ok(product);
     }
 
     #region Image Products Methods
