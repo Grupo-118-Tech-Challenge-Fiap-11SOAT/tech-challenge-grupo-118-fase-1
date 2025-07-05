@@ -84,6 +84,12 @@ public class Program
         builder.Services.AddTransient<IProductGateway, ProductGateway>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
         builder.Services.AddTransient<IProductPresenter, ProductPresenter>();
+
+        builder.Services.AddTransient<IImageProductController, ImageProductController>();
+        builder.Services.AddTransient<IImageProductGateway, ImageProductGateway>();
+        builder.Services.AddTransient<IImageProductRepository, ImageProductRepository>();
+        builder.Services.AddTransient<IImageProductPresenter, ImageProductPresenter>();
+
         // builder.Services.AddTransient<IProductManager, ProductManager>();
         // builder.Services.AddTransient<IProductRepository, ProductRepository>();
         //

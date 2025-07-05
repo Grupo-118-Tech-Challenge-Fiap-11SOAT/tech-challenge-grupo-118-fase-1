@@ -1,6 +1,7 @@
 using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -14,6 +15,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductController _productController;
+    private readonly IImageProductController _imageProductController;
 
     private readonly ProblemDetails PRODUCT_NOT_FOUND = new ProblemDetails
     {
@@ -33,10 +35,14 @@ public class ProductsController : ControllerBase
     /// Product constructor
     /// </summary>
     /// <param name="productController"></param>
-    public ProductsController(IProductController productController)
+    /// <param name="imageProductController"></param>
+    public ProductsController(IProductController productController, IImageProductController imageProductController)
     {
         _productController = productController;
+        _imageProductController = imageProductController;
     }
+
+    #region Products Methods
 
     /// <summary>
     /// Retrieves a paginated list of products.
@@ -150,6 +156,8 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
+    #endregion
+
     #region Image Products Methods
 
     /// <summary>
@@ -168,14 +176,12 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> GetAsync(CancellationToken cancellationToken, int productId, int skip = 0,
         int take = 10)
     {
-        // var images =
-        //     await _productManager.GetProductImagesAsync(productId, skip, take, cancellationToken: cancellationToken);
-        //
-        // if (images is null || images.Count == 0)
-        //     return NotFound(IMAGE_PRODUCT_NOT_FOUND);
-        //
-        // return Ok(images);
-        return Ok();
+        var images = await _imageProductController.GetProductImagesAsync(productId, skip, take, cancellationToken);
+
+        if (images is null || images.Count == 0)
+            return NotFound(IMAGE_PRODUCT_NOT_FOUND);
+
+        return Ok(images);
     }
 
     /// <summary>
@@ -192,13 +198,13 @@ public class ProductsController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetAsync(int productId, int imageId, CancellationToken cancellationToken)
     {
-        // var imageProduct = await _productManager.GetProductImageByIdAsync(productId, imageId, cancellationToken);
-        //
-        // if (imageProduct is null)
-        //     return NotFound(IMAGE_PRODUCT_NOT_FOUND);
-        //
-        // return Ok(imageProduct);
-        return Ok();
+        var imageProduct =
+            await _imageProductController.GetProductImageByIdAsync(productId, imageId, cancellationToken);
+
+        if (imageProduct is null)
+            return NotFound(IMAGE_PRODUCT_NOT_FOUND);
+
+        return Ok(imageProduct);
     }
 
     /// <summary>
@@ -215,15 +221,14 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PostAsync(CancellationToken cancellationToken, int productId,
         [FromBody] ImageProductDto productImageDto)
     {
-        // var createdImageProduct = await _productManager.CreateImageProductAsync(productId, productImageDto,
-        //     cancellationToken: cancellationToken);
-        //
-        // if (createdImageProduct is null)
-        //     return Accepted();
-        //
-        // return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId = createdImageProduct.Id },
-        //     createdImageProduct);
-        return Created();
+        var createImageProduct =
+            await _imageProductController.CreateImageProductAsync(productId, productImageDto, cancellationToken);
+
+        if (createImageProduct is null)
+            return Accepted();
+
+        return CreatedAtAction("GetDetailedImageProduct", new { productId, imageId = createImageProduct.Id },
+            createImageProduct);
     }
 
     /// <summary>
@@ -239,14 +244,13 @@ public class ProductsController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteAsync(CancellationToken cancellationToken, int productId, int imageId)
     {
-        // var affectedRows =
-        //     await _productManager.DeleteImageProductAsync(productId, imageId, cancellationToken: cancellationToken);
-        //
-        // if (affectedRows > 0)
-        //     return Ok();
-        //
-        // return NoContent();
-        return Ok();
+        var affectedRows =
+            await _imageProductController.DeleteImageProductAsync(productId, imageId, cancellationToken);
+
+        if (affectedRows > 0)
+            return Ok();
+
+        return NoContent();
     }
 
     /// <summary>
@@ -264,14 +268,14 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> PutAsync(CancellationToken cancellationToken, int productId, int imageId,
         [FromBody] ImageProductDto productImageDto)
     {
-        // var updatedImageProduct = await _productManager.UpdateImageProductAsync(productId, imageId, productImageDto,
-        //     cancellationToken: cancellationToken);
-        //
-        // if (updatedImageProduct is null)
-        //     return Accepted();
-        //
-        // return Ok(updatedImageProduct);
-        return Ok();
+        var updatedImageProduct =
+            await _imageProductController.UpdateImageProductAsync(productId, imageId, productImageDto,
+                cancellationToken);
+
+        if (updatedImageProduct is null)
+            return Accepted();
+
+        return Ok(updatedImageProduct);
     }
 
     #endregion

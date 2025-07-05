@@ -1,15 +1,16 @@
+using Common.Dto.Products.Database;
+
 namespace Common.Interfaces.Products.Repositories;
 
 public interface IImageProductRepository
 {
-
     /// <summary>
     /// Adds a new image associated with a specific product.
     /// </summary>
     /// <param name="imageProduct">The image product entity containing the image details to be created.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The unique identifier of the created image product.</returns>
-    Task<object> CreateImageProductAsync(object imageProduct,
+    Task<ImageProduct> CreateImageProductAsync(ImageProduct imageProduct,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -19,7 +20,8 @@ public interface IImageProductRepository
     /// <param name="imageId">The unique identifier of the image to be deleted.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing an asynchronous operation that returns the number of records affected.</returns>
-    Task<int> DeleteImageProductAsync(int productId, int imageId, CancellationToken cancellationToken = default);
+    Task<int> DeleteImageProductAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing product image with the provided details.
@@ -29,7 +31,7 @@ public interface IImageProductRepository
     /// <param name="imageProduct">The updated details of the image, including position and URL.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The updated Image Product entity</returns>
-    Task<object?> UpdateImageProductAsync(int productId, int imageId, object imageProduct,
+    Task<ImageProduct?> UpdateImageProductAsync(int productId, int imageId, ImageProduct imageProduct,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -39,6 +41,17 @@ public interface IImageProductRepository
     /// <param name="imageId">The identifier of the image product to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The requested image product if found, otherwise null.</returns>
-    Task<object?> GetImageProductByIdAsync(int productId, int imageId,
-        CancellationToken cancellationToken = default);    
+    Task<ImageProduct?> GetImageProductByIdAsync(int productId, int imageId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a paginated list of images associated with a specific product.
+    /// </summary>
+    /// <param name="productId">The unique identifier of the product whose images are to be retrieved.</param>
+    /// <param name="skip">The number of images to skip for pagination. Default is 0.</param>
+    /// <param name="take">The maximum number of images to return. Default is 10.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of image products associated with the specified product, or null if none are found.</returns>
+    Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
+        CancellationToken cancellationToken = default);
 }
