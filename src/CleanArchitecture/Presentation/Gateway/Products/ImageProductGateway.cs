@@ -34,7 +34,9 @@ public class ImageProductGateway : IImageProductGateway
                 imageProductEntity.ProductId,
                 imageProductEntity.Position,
                 imageProductEntity.Url,
-                imageProductEntity.Id));
+                imageProductEntity.Id,
+                imageProductEntity.CreatedAt,
+                imageProductEntity.UpdatedAt));
         });
 
         return imageProductsDto;
@@ -52,7 +54,9 @@ public class ImageProductGateway : IImageProductGateway
             imageProduct.ProductId,
             imageProduct.Position,
             imageProduct.Url,
-            imageProduct.Id);
+            imageProduct.Id,
+            imageProduct.CreatedAt,
+            imageProduct.UpdatedAt);
     }
 
     public async Task<ImageProduct?> UpdateImageAsync(int productId, int imageId, ImageProduct imageProduct,
@@ -63,6 +67,9 @@ public class ImageProductGateway : IImageProductGateway
                 imageProduct.Position,
                 imageProduct.Url,
                 imageId);
+
+        imageProductEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        imageProductEntity.CreatedAt = imageProduct.CreatedAt;
 
         await _imageProductRepository.UpdateImageProductAsync(productId, imageId, imageProductEntity,
             cancellationToken);

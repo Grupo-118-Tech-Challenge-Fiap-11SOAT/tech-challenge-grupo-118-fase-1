@@ -37,7 +37,9 @@ public class ProductGateway : IProductGateway
                     productEntity.Category,
                     productEntity.Price,
                     productEntity.IsActive,
-                    productEntity.Id
+                    productEntity.Id,
+                    createdAt: productEntity.CreatedAt,
+                    updatedAt: productEntity.UpdatedAt
                 ));
         });
 
@@ -59,7 +61,9 @@ public class ProductGateway : IProductGateway
             persistedProduct.Category,
             persistedProduct.Price,
             persistedProduct.IsActive,
-            persistedProduct.Id
+            persistedProduct.Id,
+            createdAt: persistedProduct.CreatedAt,
+            updatedAt: persistedProduct.UpdatedAt
         );
     }
 
@@ -92,6 +96,9 @@ public class ProductGateway : IProductGateway
             product.IsActive,
             product.Id
         );
+
+        productEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        productEntity.CreatedAt = product.CreatedAt;
 
         await _productRepository.UpdateProductAsync(productEntity, cancellationToken);
 
@@ -135,7 +142,10 @@ public class ProductGateway : IProductGateway
                     productEntity.Category,
                     productEntity.Price,
                     productEntity.IsActive,
-                    productEntity.Id
+                    productEntity.Id,
+                    createdAt: productEntity.CreatedAt,
+                    updatedAt: productEntity.UpdatedAt
+                    
                 ));
         });
 

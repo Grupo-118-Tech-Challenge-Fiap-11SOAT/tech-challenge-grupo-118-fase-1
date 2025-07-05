@@ -16,7 +16,12 @@ public class ImageProduct : BaseEntity
 
     private readonly Regex _imageRegex = new Regex(@"(\W)(jpg|jpeg|png|gif|webp)", RegexOptions.Compiled);
 
-    public ImageProduct(int productId, int position, string url, int id = 0)
+    public ImageProduct(int productId,
+        int position,
+        string url,
+        int id = 0,
+        DateTimeOffset? createdAt = null,
+        DateTimeOffset? updatedAt = null)
     {
         if (id != 0)
             this.Id = id;
@@ -24,6 +29,12 @@ public class ImageProduct : BaseEntity
         this.ProductId = productId;
         this.Position = position;
         this.Url = url;
+
+        if (createdAt is not null)
+            this.CreatedAt = createdAt.Value;
+
+        if (updatedAt is not null)
+            this.UpdatedAt = updatedAt.Value;
 
         CheckImageUrlFormat();
         CheckIfIsAValidPosition();
@@ -33,13 +44,6 @@ public class ImageProduct : BaseEntity
     {
     }
 
-    public void UpdateImageProduct(ImageProduct imageToUpdate)
-    {
-        this.Position = imageToUpdate.Position;
-        this.Url = imageToUpdate.Url;
-        this.UpdatedAt = DateTimeOffset.Now;
-    }
-    
     private void CheckImageUrlFormat()
     {
         if (!Uri.IsWellFormedUriString(this.Url, UriKind.Absolute))

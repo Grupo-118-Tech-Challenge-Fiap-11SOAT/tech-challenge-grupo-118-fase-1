@@ -27,7 +27,9 @@ public class Product : BaseEntity
         decimal price,
         bool isActive,
         int id = 0,
-        List<ImageProduct>? images = null)
+        List<ImageProduct>? images = null,
+        DateTimeOffset? createdAt = null,
+        DateTimeOffset? updatedAt = null)
     {
         if (id != 0)
             this.Id = id;
@@ -38,6 +40,12 @@ public class Product : BaseEntity
         this.IsActive = isActive;
         this.Price = price;
 
+        if (createdAt is not null)
+            this.CreatedAt = createdAt.Value;
+
+        if (updatedAt is not null)
+            this.UpdatedAt = updatedAt.Value;
+
         CheckProductValue();
 
         Images = images ?? new List<ImageProduct>();
@@ -46,7 +54,7 @@ public class Product : BaseEntity
     protected Product()
     {
     }
-    
+
     public void UpdateProduct(string name, string description, ProductType category, decimal price, bool isActive)
     {
         this.Name = name;
@@ -55,7 +63,7 @@ public class Product : BaseEntity
         this.Price = price;
         this.IsActive = isActive;
         this.UpdatedAt = DateTimeOffset.Now;
-        
+
         CheckProductValue();
     }
 

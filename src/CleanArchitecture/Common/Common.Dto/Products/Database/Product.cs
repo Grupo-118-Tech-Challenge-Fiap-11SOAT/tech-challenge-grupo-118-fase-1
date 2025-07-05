@@ -39,14 +39,4 @@ public class Product : BaseEntity
         this.Category = productType;
         this.Price = price;
     }
-
-    public void UpdateProduct(Product productToUpdate)
-    {
-        this.Name = productToUpdate.Name;
-        this.Description = productToUpdate.Description;
-        this.Category = productToUpdate.Category;
-        this.Price = productToUpdate.Price;
-        this.IsActive = productToUpdate.IsActive;
-        this.UpdatedAt = DateTimeOffset.Now;
-    }
 }
