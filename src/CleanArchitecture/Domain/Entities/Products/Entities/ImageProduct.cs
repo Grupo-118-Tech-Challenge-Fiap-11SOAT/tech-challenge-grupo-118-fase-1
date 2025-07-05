@@ -21,20 +21,11 @@ public class ImageProduct : BaseEntity
         string url,
         int id = 0,
         DateTimeOffset? createdAt = null,
-        DateTimeOffset? updatedAt = null)
+        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
     {
-        if (id != 0)
-            this.Id = id;
-
         this.ProductId = productId;
         this.Position = position;
         this.Url = url;
-
-        if (createdAt is not null)
-            this.CreatedAt = createdAt.Value;
-
-        if (updatedAt is not null)
-            this.UpdatedAt = updatedAt.Value;
 
         CheckImageUrlFormat();
         CheckIfIsAValidPosition();

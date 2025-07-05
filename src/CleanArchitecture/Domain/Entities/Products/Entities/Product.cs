@@ -29,22 +29,13 @@ public class Product : BaseEntity
         int id = 0,
         List<ImageProduct>? images = null,
         DateTimeOffset? createdAt = null,
-        DateTimeOffset? updatedAt = null)
+        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
     {
-        if (id != 0)
-            this.Id = id;
-
         this.Name = name;
         this.Description = description;
         this.Category = productType;
         this.IsActive = isActive;
         this.Price = price;
-
-        if (createdAt is not null)
-            this.CreatedAt = createdAt.Value;
-
-        if (updatedAt is not null)
-            this.UpdatedAt = updatedAt.Value;
 
         CheckProductValue();
 

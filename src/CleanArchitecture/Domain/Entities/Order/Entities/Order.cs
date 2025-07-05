@@ -34,11 +34,8 @@ public class Order : BaseEntity
         List<OrderItem>? orderItems,
         int id = 0,
         DateTimeOffset? createdAt = null,
-        DateTimeOffset? updatedAt = null)
+        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
     {
-        if (id != 0)
-            this.Id = id;
-
         this.OrderNumber = orderNumber;
 
         this.Cpf = cpf;
@@ -47,12 +44,6 @@ public class Order : BaseEntity
         this.IsActive = isActive;
 
         this.OrderItems = orderItems ?? new List<OrderItem>();
-
-        if (createdAt is not null)
-            this.CreatedAt = createdAt.Value;
-
-        if (updatedAt is not null)
-            this.UpdatedAt = updatedAt.Value;
     }
 
     public Order(string? cpf, List<OrderItem> orderItems, List<Product>? products)
