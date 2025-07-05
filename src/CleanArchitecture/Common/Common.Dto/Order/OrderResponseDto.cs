@@ -6,17 +6,29 @@ namespace Common.Dto.Order;
 public class OrderResponseDto
 {
     public int Id { get; set; }
+
     public int OrderNumber { get; set; }
+
     public string? Cpf { get; set; }
+
     public decimal Total { get; set; }
+
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public OrderStatus Status { get; set; }
+
     public List<OrderItemDto> Items { get; set; }
 
-    public OrderResponseDto()
+    public OrderResponseDto(int id, int orderNumber, string? cpf, decimal total, OrderStatus status,
+        List<OrderItemDto> items)
     {
-        
+        Id = id;
+        OrderNumber = orderNumber;
+        Cpf = cpf;
+        Total = total;
+        Status = status;
+        Items = items ?? new List<OrderItemDto>();
     }
+
 
     // public OrderResponseDto(Entities.Order order)
     // {

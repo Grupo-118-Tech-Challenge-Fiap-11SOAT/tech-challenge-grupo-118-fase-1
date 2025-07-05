@@ -3,11 +3,14 @@ using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Extensions;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Order.Exceptions;
+using TechChallengeFastFood.CleanArch.Domain.Entities.Products.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities;
 
 public class Order : BaseEntity
 {
+    private readonly Random _random = new();
+
     public int OrderNumber { get; protected set; }
     public string? Cpf { get; protected set; }
     public decimal Total { get; protected set; }
@@ -23,35 +26,49 @@ public class Order : BaseEntity
         { OrderStatus.Canceled, null }
     };
 
-    public Order()
+    public Order(int orderNumber,
+        string? cpf,
+        decimal total,
+        OrderStatus status,
+        bool isActive,
+        List<OrderItem>? orderItems,
+        int id = 0)
     {
+        if (id != 0)
+            this.Id = id;
+
+        this.OrderNumber = orderNumber;
+
+        this.Cpf = cpf;
+        this.Total = total;
+        this.Status = status;
+        this.IsActive = isActive;
+
+        this.OrderItems = orderItems ?? new List<OrderItem>();
     }
 
+    public Order(string? cpf, List<OrderItem> orderItems, List<Product>? products)
+    {
+        this.OrderNumber = _random.Next(100000, 1000000);
 
-    // public Order(OrderRequestDto orderDto, List<ProductDto> products)
-    // {
-    //     var random = new Random();
-    //
-    //     OrderNumber = random.Next(100000, 1000000);
-    //
-    //     Cpf = orderDto.Cpf is null ? orderDto.Cpf : orderDto.Cpf.SanitizeCpf();
-    //
-    //     Status = OrderStatus.Received;
-    //     CreatedAt = DateTime.Now;
-    //     UpdatedAt = DateTime.Now;
-    //
-    //     OrderItems =
-    //         orderDto.Items?.Select(item => new OrderItem(Id, item.ProductId, item.Quantity)).ToList() ??
-    //         new List<OrderItem>();
-    //
-    //     Total = orderDto.Items?.Sum(item =>
-    //     {
-    //         var product = products.FirstOrDefault(p => p.Id == item.ProductId);
-    //         return product?.Price * item.Quantity;
-    //     }) ?? 0;
-    //
-    //     ValidateOrder();
-    // }
+        this.Cpf = cpf is null ? cpf : cpf.SanitizeCpf();
+
+        this.Status = OrderStatus.Received;
+        this.CreatedAt = DateTimeOffset.Now;
+        this.UpdatedAt = DateTimeOffset.Now;
+
+        this.OrderItems = orderItems?
+                              .Select(item => new OrderItem(item.ProductId, item.Quantity, item.OrderId)).ToList() ??
+                          new List<OrderItem>();
+
+        this.Total = orderItems?.Sum(item =>
+        {
+            var product = products?.FirstOrDefault(p => p.Id == item.ProductId);
+            return product?.Price * item.Quantity ?? 0;
+        }) ?? 0;
+
+        ValidateOrder();
+    }
 
     private void ValidateOrder()
     {

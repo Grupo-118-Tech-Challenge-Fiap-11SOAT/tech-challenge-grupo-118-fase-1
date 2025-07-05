@@ -32,13 +32,14 @@ public class Product : BaseEntity
         if (id != 0)
             this.Id = id;
 
+        this.IsActive = isActive;
+
         this.Name = name;
         this.Description = description;
         this.Category = productType;
-        this.IsActive = isActive;
         this.Price = price;
     }
-    
+
     public void UpdateProduct(Product productToUpdate)
     {
         this.Name = productToUpdate.Name;

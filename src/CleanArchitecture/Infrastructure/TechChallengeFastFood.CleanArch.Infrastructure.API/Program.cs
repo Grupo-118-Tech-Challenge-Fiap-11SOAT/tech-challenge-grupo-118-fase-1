@@ -1,6 +1,10 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Common.Interfaces.Employee;
+using Common.Interfaces.Order.Controller;
+using Common.Interfaces.Order.Gateway;
+using Common.Interfaces.Order.Presenter;
+using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Payments;
 using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Gateway;
@@ -18,9 +22,13 @@ using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using Refit;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
@@ -89,6 +97,13 @@ public class Program
         builder.Services.AddTransient<IImageProductGateway, ImageProductGateway>();
         builder.Services.AddTransient<IImageProductRepository, ImageProductRepository>();
         builder.Services.AddTransient<IImageProductPresenter, ImageProductPresenter>();
+
+
+        builder.Services.AddTransient<IOrderController, OrderController>();
+        builder.Services.AddTransient<IOrderGateway, OrderGateway>();
+        builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+        builder.Services.AddTransient<IOrderPresenter, OrderPresenter>();
+        builder.Services.AddTransient<IOrderItemPresenter, OrderItemPresenter>();
 
         // builder.Services.AddTransient<IProductManager, ProductManager>();
         // builder.Services.AddTransient<IProductRepository, ProductRepository>();

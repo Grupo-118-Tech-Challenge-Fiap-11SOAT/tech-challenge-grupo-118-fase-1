@@ -32,10 +32,10 @@ public class GetActiveProductsByIdsUseCase
     /// <returns></returns>
     /// <exception cref="InvalidProductException"></exception>
     /// <exception cref="DeactivatedProductException"></exception>
-    public async Task<List<Product?>> ExecuteAsync(int[] productIds, CancellationToken cancellationToken = default)
+    public async Task<List<Product>?> ExecuteAsync(int[] productIds, CancellationToken cancellationToken = default)
     {
         if (productIds == null || productIds.Length == 0)
-            return new List<Product?>();
+            return null;
 
         var products = await _productGateway.GetProductsByIdsAsync(productIds, cancellationToken);
 
