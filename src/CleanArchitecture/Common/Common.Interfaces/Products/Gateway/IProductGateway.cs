@@ -59,10 +59,8 @@ public interface IProductGateway
     /// <summary>
     /// Updates an existing product by its ID.
     /// </summary>
-    /// <param name="productId">The ID of the product to update.</param>
     /// <param name="product">The updated product entity.</param>
     /// <param name="cancellationToken">The cancellation token for async operations.</param>
     /// <returns>The updated product entity or null if the product is not found.</returns>
-    Task<ProductDomain?> UpdateProductAsync(int productId, ProductDomain product,
-        CancellationToken cancellationToken = default);
+    Task<ProductDomain?> UpdateProductAsync(ProductDomain product, CancellationToken cancellationToken = default);
 }

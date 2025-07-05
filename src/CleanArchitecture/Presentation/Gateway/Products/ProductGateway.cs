@@ -81,7 +81,7 @@ public class ProductGateway : IProductGateway
         return product;
     }
 
-    public async Task<ProductDomain?> UpdateProductAsync(int productId, ProductDomain product,
+    public async Task<ProductDomain?> UpdateProductAsync(ProductDomain product,
         CancellationToken cancellationToken = default)
     {
         var productEntity = new ProductEntity(
@@ -93,7 +93,7 @@ public class ProductGateway : IProductGateway
             product.Id
         );
 
-        await _productRepository.UpdateProductAsync(productEntity.Id, productEntity, cancellationToken);
+        await _productRepository.UpdateProductAsync(productEntity, cancellationToken);
 
         return product;
     }

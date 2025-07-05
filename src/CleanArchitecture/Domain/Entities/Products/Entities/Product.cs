@@ -46,15 +46,17 @@ public class Product : BaseEntity
     protected Product()
     {
     }
-
-    public void UpdateProduct(Product productToUpdate)
+    
+    public void UpdateProduct(string name, string description, ProductType category, decimal price, bool isActive)
     {
-        this.Name = productToUpdate.Name;
-        this.Description = productToUpdate.Description;
-        this.Category = productToUpdate.Category;
-        this.Price = productToUpdate.Price;
-        this.IsActive = productToUpdate.IsActive;
+        this.Name = name;
+        this.Description = description;
+        this.Category = category;
+        this.Price = price;
+        this.IsActive = isActive;
         this.UpdatedAt = DateTimeOffset.Now;
+        
+        CheckProductValue();
     }
 
     public void AddImage(ImageProduct image)

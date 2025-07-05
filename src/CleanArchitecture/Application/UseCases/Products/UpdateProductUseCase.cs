@@ -7,10 +7,12 @@ namespace TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 public class UpdateProductUseCase
 {
     private readonly IProductGateway _productGateway;
+    private readonly GetProductByIdUseCase _getProductByIdUseCase;
 
     public UpdateProductUseCase(IProductGateway productGateway)
     {
         _productGateway = productGateway;
+        _getProductByIdUseCase = GetProductByIdUseCase.Create(productGateway);
     }
 
     public static UpdateProductUseCase Create(IProductGateway productGateway)
@@ -20,16 +22,19 @@ public class UpdateProductUseCase
 
     public async Task<Product?> ExecuteAsync(int productId, ProductDto productDto, CancellationToken cancellationToken)
     {
-        var productToUpdate = new Product(
+        var product = await _getProductByIdUseCase.ExecuteAsync(productId, false, cancellationToken);
+
+        if (product is null)
+            return null;
+
+        product.UpdateProduct(
             productDto.Name,
             productDto.Description,
             productDto.Category,
             productDto.Price,
-            productDto.IsActive,
-            productId
-        );
+            productDto.IsActive);
 
-        var updatedProduct = await _productGateway.UpdateProductAsync(productId, productToUpdate, cancellationToken);
+        var updatedProduct = await _productGateway.UpdateProductAsync(product, cancellationToken);
 
         return updatedProduct;
     }
