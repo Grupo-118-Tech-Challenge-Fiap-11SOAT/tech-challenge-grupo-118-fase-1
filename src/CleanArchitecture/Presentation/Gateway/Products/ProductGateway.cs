@@ -107,22 +107,7 @@ public class ProductGateway : IProductGateway
         if (persistedProducts == null)
             return null;
 
-        var productsDto = new List<ProductDomain>();
-
-        persistedProducts.ForEach(productEntity =>
-        {
-            productsDto.Add(
-                new ProductDomain(
-                    productEntity.Name,
-                    productEntity.Description,
-                    productEntity.Category,
-                    productEntity.Price,
-                    productEntity.IsActive,
-                    productEntity.Id
-                ));
-        });
-
-        return productsDto;
+        return ConvertDatabaseProductsToDomain(persistedProducts);
     }
 
     public async Task<List<ProductDomain>?> GetProductsByIdsAsync(int[] productIds,
@@ -134,9 +119,14 @@ public class ProductGateway : IProductGateway
         if (persistedProducts == null)
             return null;
 
+        return ConvertDatabaseProductsToDomain(persistedProducts);
+    }
+
+    private List<ProductDomain>? ConvertDatabaseProductsToDomain(List<ProductEntity> productEntities)
+    {
         var productsDto = new List<ProductDomain>();
 
-        persistedProducts.ForEach(productEntity =>
+        productEntities.ForEach(productEntity =>
         {
             productsDto.Add(
                 new ProductDomain(
