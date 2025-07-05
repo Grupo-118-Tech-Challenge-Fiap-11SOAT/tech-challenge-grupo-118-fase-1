@@ -23,12 +23,12 @@ public class ImageProductGateway : IImageProductGateway
     {
         var product = await _productRepository.GetProductByIdAsync(productId, true, skip, take, cancellationToken);
 
-        if (product is null && product.Images?.Count == 0)
+        if (product is null || product?.Images?.Count == 0)
             return null;
 
         var imageProductsDto = new List<ImageProductDomain>();
 
-        product.Images.ForEach(imageProductEntity =>
+        product?.Images?.ForEach(imageProductEntity =>
         {
             imageProductsDto.Add(new ImageProductDomain(
                 imageProductEntity.ProductId,
