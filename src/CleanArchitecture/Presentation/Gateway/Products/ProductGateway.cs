@@ -37,7 +37,9 @@ public class ProductGateway : IProductGateway
                     productEntity.Category,
                     productEntity.Price,
                     productEntity.IsActive,
-                    productEntity.Id
+                    productEntity.Id,
+                    createdAt: productEntity.CreatedAt,
+                    updatedAt: productEntity.UpdatedAt
                 ));
         });
 
@@ -59,7 +61,9 @@ public class ProductGateway : IProductGateway
             persistedProduct.Category,
             persistedProduct.Price,
             persistedProduct.IsActive,
-            persistedProduct.Id
+            persistedProduct.Id,
+            createdAt: persistedProduct.CreatedAt,
+            updatedAt: persistedProduct.UpdatedAt
         );
     }
 
@@ -81,7 +85,7 @@ public class ProductGateway : IProductGateway
         return product;
     }
 
-    public async Task<ProductDomain?> UpdateProductAsync(int productId, ProductDomain product,
+    public async Task<ProductDomain?> UpdateProductAsync(ProductDomain product,
         CancellationToken cancellationToken = default)
     {
         var productEntity = new ProductEntity(
@@ -93,7 +97,10 @@ public class ProductGateway : IProductGateway
             product.Id
         );
 
-        await _productRepository.UpdateProductAsync(productEntity.Id, productEntity, cancellationToken);
+        productEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        productEntity.CreatedAt = product.CreatedAt;
+
+        await _productRepository.UpdateProductAsync(productEntity, cancellationToken);
 
         return product;
     }
@@ -135,7 +142,10 @@ public class ProductGateway : IProductGateway
                     productEntity.Category,
                     productEntity.Price,
                     productEntity.IsActive,
-                    productEntity.Id
+                    productEntity.Id,
+                    createdAt: productEntity.CreatedAt,
+                    updatedAt: productEntity.UpdatedAt
+                    
                 ));
         });
 

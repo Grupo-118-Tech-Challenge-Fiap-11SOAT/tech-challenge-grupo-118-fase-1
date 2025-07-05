@@ -31,8 +31,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Common.Dto.Order.Data
 
         builder.Property(o => o.UpdatedAt)
             .HasColumnType("datetimeoffset")
-            .HasDefaultValueSql("SYSDATETIMEOFFSET()")
-            .ValueGeneratedOnUpdate();
+            .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
         builder.Ignore(o => o.IsActive);
 

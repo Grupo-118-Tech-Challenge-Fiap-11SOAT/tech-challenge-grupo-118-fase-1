@@ -32,11 +32,10 @@ public class Order : BaseEntity
         OrderStatus status,
         bool isActive,
         List<OrderItem>? orderItems,
-        int id = 0)
+        int id = 0,
+        DateTimeOffset? createdAt = null,
+        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
     {
-        if (id != 0)
-            this.Id = id;
-
         this.OrderNumber = orderNumber;
 
         this.Cpf = cpf;
@@ -86,9 +85,7 @@ public class Order : BaseEntity
             if (nextStatus is null)
                 throw new ChangeStatusNotAllowed(Status);
 
-
             Status = nextStatus.Value;
-            UpdatedAt = DateTimeOffset.Now;
         }
         else
         {

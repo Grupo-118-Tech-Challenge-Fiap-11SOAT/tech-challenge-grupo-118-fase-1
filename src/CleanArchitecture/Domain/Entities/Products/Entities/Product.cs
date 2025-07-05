@@ -27,11 +27,10 @@ public class Product : BaseEntity
         decimal price,
         bool isActive,
         int id = 0,
-        List<ImageProduct>? images = null)
+        List<ImageProduct>? images = null,
+        DateTimeOffset? createdAt = null,
+        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
     {
-        if (id != 0)
-            this.Id = id;
-
         this.Name = name;
         this.Description = description;
         this.Category = productType;
@@ -47,14 +46,16 @@ public class Product : BaseEntity
     {
     }
 
-    public void UpdateProduct(Product productToUpdate)
+    public void UpdateProduct(string name, string description, ProductType category, decimal price, bool isActive)
     {
-        this.Name = productToUpdate.Name;
-        this.Description = productToUpdate.Description;
-        this.Category = productToUpdate.Category;
-        this.Price = productToUpdate.Price;
-        this.IsActive = productToUpdate.IsActive;
+        this.Name = name;
+        this.Description = description;
+        this.Category = category;
+        this.Price = price;
+        this.IsActive = isActive;
         this.UpdatedAt = DateTimeOffset.Now;
+
+        CheckProductValue();
     }
 
     public void AddImage(ImageProduct image)

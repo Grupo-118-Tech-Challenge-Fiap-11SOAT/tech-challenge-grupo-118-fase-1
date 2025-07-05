@@ -75,7 +75,7 @@ public class ProductRepository : IProductRepository
         if (includeImages)
             productQuery = productQuery.Include(p => p.Images.Skip(skip).Take(take));
 
-        var productEntity = await productQuery.FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+        var productEntity = await productQuery.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
 
         if (productEntity is null)
             return null;
@@ -92,18 +92,11 @@ public class ProductRepository : IProductRepository
         return product;
     }
 
-    public async Task<Product?> UpdateProductAsync(int productId, Product product,
-        CancellationToken cancellationToken = default)
+    public async Task<Product?> UpdateProductAsync(Product product, CancellationToken cancellationToken = default)
     {
-        var productEntity = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
-
-        if (productEntity is null)
-            return null;
-
-        productEntity.UpdateProduct(product);
-
+        _dbContext.Update(product).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return productEntity;
+        return product;
     }
 }

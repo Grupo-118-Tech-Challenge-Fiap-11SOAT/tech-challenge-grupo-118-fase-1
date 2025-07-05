@@ -36,7 +36,9 @@ public class OrderGateway : IOrderGateway
                 orderEntity.Status,
                 orderEntity.IsActive,
                 orderItems,
-                orderEntity.Id));
+                orderEntity.Id,
+                orderEntity.CreatedAt,
+                orderEntity.UpdatedAt));
         });
 
         return orderDtos;
@@ -69,7 +71,9 @@ public class OrderGateway : IOrderGateway
             orderEntity.Status,
             orderEntity.IsActive,
             orderItems,
-            orderEntity.Id);
+            orderEntity.Id,
+            orderEntity.CreatedAt,
+            orderEntity.UpdatedAt);
     }
 
     public async Task<OrderDomain> UpdateAsync(OrderDomain order, CancellationToken cancellationToken = default)
@@ -86,13 +90,18 @@ public class OrderGateway : IOrderGateway
         var orderItemsEntity = order.OrderItems.Select(item =>
             new Common.Dto.Order.Database.OrderItem(item.ProductId, item.Quantity, order.Id)).ToList();
 
-        return new OrderEntity(order.OrderNumber,
+        var orderEntity = new OrderEntity(order.OrderNumber,
             order.Cpf,
             order.Total,
             order.Status,
             order.IsActive,
             orderItemsEntity,
             order.Id);
+
+        orderEntity.UpdatedAt = DateTimeOffset.UtcNow;
+        orderEntity.CreatedAt = order.CreatedAt;
+
+        return orderEntity;
     }
 
     private List<OrderItem> CreateOrderItemsFromOrder(OrderEntity order)

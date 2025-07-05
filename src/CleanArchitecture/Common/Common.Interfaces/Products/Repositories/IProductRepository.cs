@@ -62,10 +62,8 @@ public interface IProductRepository
     /// <summary>
     /// Updates an existing product with the provided details.
     /// </summary>
-    /// <param name="productId">The unique identifier of the product to be updated.</param>
     /// <param name="product">The updated product data.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The updated Product entity</returns>
-    Task<Product?> UpdateProductAsync(int productId, Product product,
-        CancellationToken cancellationToken = default);
+    Task<Product?> UpdateProductAsync(Product product, CancellationToken cancellationToken = default);
 }
