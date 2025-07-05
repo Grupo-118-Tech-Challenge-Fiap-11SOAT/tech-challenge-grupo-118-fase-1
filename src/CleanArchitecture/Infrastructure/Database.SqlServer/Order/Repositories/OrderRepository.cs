@@ -41,13 +41,14 @@ public class OrderRepository : IOrderRepository
     {
         return await _dbContext.Orders
             .Include(x => x.OrderItems)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
     public async Task<Common.Dto.Order.Database.Order> UpdateAsync(Common.Dto.Order.Database.Order order,
         CancellationToken cancellationToken = default)
     {
-        _dbContext.Update(order);
+        _dbContext.Update(order).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return order;

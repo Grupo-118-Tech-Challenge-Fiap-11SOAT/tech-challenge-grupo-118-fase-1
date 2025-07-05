@@ -44,7 +44,7 @@ public class OrderGateway : IOrderGateway
 
     public async Task<OrderDomain> CreateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
-        var orderEntity = new OrderEntity(order.OrderNumber, order.Cpf, order.Total, order.Status, order.IsActive);
+        var orderEntity = CreateOrderEntityFromOrder(order);
 
         var createdOrder = await _orderRepository.CreateAsync(orderEntity, cancellationToken);
 
@@ -74,12 +74,25 @@ public class OrderGateway : IOrderGateway
 
     public async Task<OrderDomain> UpdateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
-        var orderEntity = new OrderEntity(order.OrderNumber, order.Cpf, order.Total, order.Status, order.IsActive,
-            order.Id);
+        var orderEntity = CreateOrderEntityFromOrder(order);
 
         await _orderRepository.UpdateAsync(orderEntity, cancellationToken);
 
         return order;
+    }
+
+    private OrderEntity CreateOrderEntityFromOrder(OrderDomain order)
+    {
+        var orderItemsEntity = order.OrderItems.Select(item =>
+            new Common.Dto.Order.Database.OrderItem(item.ProductId, item.Quantity, order.Id)).ToList();
+
+        return new OrderEntity(order.OrderNumber,
+            order.Cpf,
+            order.Total,
+            order.Status,
+            order.IsActive,
+            orderItemsEntity,
+            order.Id);
     }
 
     private List<OrderItem> CreateOrderItemsFromOrder(OrderEntity order)
