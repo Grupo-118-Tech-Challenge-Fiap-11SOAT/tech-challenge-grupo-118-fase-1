@@ -25,4 +25,11 @@ public class ImageProduct : BaseEntity
         this.Position = position;
         this.Url = url;
     }
+    
+    public void UpdateImageProduct(ImageProduct imageToUpdate)
+    {
+        this.Position = imageToUpdate.Position;
+        this.Url = imageToUpdate.Url;
+        this.UpdatedAt = DateTimeOffset.Now;
+    }
 }
