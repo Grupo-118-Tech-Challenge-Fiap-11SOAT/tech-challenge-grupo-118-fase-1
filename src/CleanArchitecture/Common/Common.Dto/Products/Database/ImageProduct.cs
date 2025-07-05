@@ -25,7 +25,7 @@ public class ImageProduct : BaseEntity
         this.Position = position;
         this.Url = url;
     }
-    
+
     public void UpdateImageProduct(ImageProduct imageToUpdate)
     {
         this.Position = imageToUpdate.Position;

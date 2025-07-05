@@ -1,5 +1,6 @@
 using Common.Dto.Order;
 using Common.Enums;
+using Common.Interfaces.Order.Controller;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -12,7 +13,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 [Route("[controller]")]
 public class OrderController : ControllerBase
 {
-    // private readonly IOrderManager _orderManager;
+    private readonly IOrderController _orderController;
 
     private readonly ProblemDetails ORDER_NOT_FOUND = new ProblemDetails
     {
@@ -20,11 +21,11 @@ public class OrderController : ControllerBase
         Status = StatusCodes.Status404NotFound,
         Detail = "The specified order was not found."
     };
-    
-    // public OrderController(IOrderManager orderManager)
-    // {
-    //     _orderManager = orderManager;
-    // }
+
+    public OrderController(IOrderController orderController)
+    {
+        _orderController = orderController;
+    }
 
     /// <summary>
     /// Retrieves all orders with the specified status and supports pagination.
@@ -38,14 +39,12 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> GetAllAsync(OrderStatus status, CancellationToken cancellationToken, int skip = 0,
         int take = 10)
     {
-        // var orders =
-        //     await _orderManager.GetAllAsync(status, skip, take, cancellationToken);
-        //
-        // if (orders is null || orders.Count == 0)
-        //     return NotFound(ORDER_NOT_FOUND);
-        //
-        // return Ok(orders);
-        return Ok();
+        var orders = await _orderController.GetAllAsync(status, cancellationToken, skip, take);
+
+        if (orders is null || orders.Count == 0)
+            return NotFound(ORDER_NOT_FOUND);
+
+        return Ok(orders);
     }
 
     /// <summary>
@@ -57,10 +56,9 @@ public class OrderController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
-        // var result = await _orderManager.CreateAsync(orderDto, cancellationToken);
-        //
-        // return CreatedAtAction("GetById", new { result.Id }, result);
-        return Ok();
+        var result = await _orderController.CreateAsync(orderDto, cancellationToken);
+
+        return CreatedAtAction("GetById", new { result.Id }, result);
     }
 
     /// <summary>
@@ -72,10 +70,9 @@ public class OrderController : ControllerBase
     [HttpPatch("{id}/change-status")]
     public async Task<IActionResult> PatchStatus(int id, CancellationToken cancellationToken)
     {
-        // var result = await _orderManager.UpdateStatusAsync(id, cancellationToken);
-        //
-        // return Ok(result);
-        return Ok();
+        var result = await _orderController.UpdateStatusAsync(id, cancellationToken);
+
+        return Ok(result);
     }
 
     /// <summary>
@@ -89,9 +86,8 @@ public class OrderController : ControllerBase
     [HttpGet("{id}"), ActionName("GetById")]
     public async Task<ActionResult<OrderResponseDto>> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        // var order = await _orderManager.GetByIdAsync(id, cancellationToken);
-        //
-        // return order is null ? NotFound(ORDER_NOT_FOUND) : Ok(order);
-        return Ok();
+        var order = await _orderController.GetByIdAsync(id, cancellationToken);
+
+        return order is null ? NotFound(ORDER_NOT_FOUND) : Ok(order);
     }
 }

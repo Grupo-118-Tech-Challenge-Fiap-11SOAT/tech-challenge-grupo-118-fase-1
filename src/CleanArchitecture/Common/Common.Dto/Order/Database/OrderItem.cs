@@ -8,6 +8,13 @@ public class OrderItem
     {
     }
 
+    public OrderItem(int productId, int quantity, int orderId = 0)
+    {
+        this.ProductId = productId;
+        this.Quantity = quantity;
+        this.OrderId = orderId;
+    }
+
     public int ProductId { get; protected set; }
     public int OrderId { get; protected set; }
     public int Quantity { get; protected set; }

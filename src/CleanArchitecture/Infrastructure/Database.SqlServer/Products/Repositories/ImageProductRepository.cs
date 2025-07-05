@@ -68,9 +68,4 @@ public class ImageProductRepository : IImageProductRepository
 
         return imageProductEntity;
     }
-
-    public async Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
 }

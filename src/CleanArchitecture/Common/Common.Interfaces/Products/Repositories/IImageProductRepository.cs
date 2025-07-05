@@ -43,15 +43,4 @@ public interface IImageProductRepository
     /// <returns>The requested image product if found, otherwise null.</returns>
     Task<ImageProduct?> GetImageProductByIdAsync(int productId, int imageId,
         CancellationToken cancellationToken = default);
-
-    /// <summary>
-    /// Retrieves a paginated list of images associated with a specific product.
-    /// </summary>
-    /// <param name="productId">The unique identifier of the product whose images are to be retrieved.</param>
-    /// <param name="skip">The number of images to skip for pagination. Default is 0.</param>
-    /// <param name="take">The maximum number of images to return. Default is 10.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A list of image products associated with the specified product, or null if none are found.</returns>
-    Task<List<ImageProduct>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
-        CancellationToken cancellationToken = default);
 }
