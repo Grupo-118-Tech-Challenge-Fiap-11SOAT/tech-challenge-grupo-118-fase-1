@@ -66,4 +66,20 @@ public class PaymentResponse
     /// The code for user payment, depends on provider (ex: qr code)
     /// </summary>
     public string? UserPaymentCode { get; set; }
+
+    public PaymentResponse(
+        int id,
+        Guid uuid,
+        int orderId,
+        PaymentProvider provider,
+        PaymentStatus status,
+        string? userPaymentCode)
+    {
+        Id = id;
+        Uuid = uuid;
+        OrderId = orderId;
+        Provider = provider;
+        Status = status;
+        UserPaymentCode = userPaymentCode;
+    }
 }

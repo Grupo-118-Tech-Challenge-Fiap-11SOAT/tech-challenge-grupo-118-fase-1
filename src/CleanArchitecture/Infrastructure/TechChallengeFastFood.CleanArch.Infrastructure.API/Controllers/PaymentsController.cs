@@ -1,4 +1,5 @@
 using Common.Dto.Payments;
+using Common.Interfaces.Payments.Controller;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -8,16 +9,15 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("payments")]
-// public class PaymentsController(IPaymentManager paymentManager) : ControllerBase
-public class PaymentsController: ControllerBase
+public class PaymentsController : ControllerBase
 {
-    // private readonly IPaymentManager _paymentManager;
-    //
-    // public PaymentsController(IPaymentManager paymentManager)
-    // {
-    //     _paymentManager = paymentManager;
-    // }
-    
+    private readonly IPaymentController _paymentController;
+
+    public PaymentsController(IPaymentController paymentController)
+    {
+        _paymentController = paymentController;
+    }
+
     /// <summary>
     /// Creates a payment.
     /// </summary>
@@ -30,9 +30,8 @@ public class PaymentsController: ControllerBase
     public async Task<ActionResult<PaymentResponse>> CreatePaymentAsync([FromBody] PaymentRequest request,
         CancellationToken cancellationToken)
     {
-        // var response = await paymentManager.CreatePaymentAsync(request, cancellationToken);
-        // return Created(response.Id.ToString(), response);
-        return Created();
+        var response = await _paymentController.CreatePaymentAsync(request, cancellationToken);
+        return Created(response.Id.ToString(), response);
     }
 
     /// <summary>
@@ -47,9 +46,8 @@ public class PaymentsController: ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<PaymentResponse>> ConfirmPaymentAsync(int id, CancellationToken cancellationToken)
     {
-        // var response = await paymentManager.ConfirmPaymentAsync(id, cancellationToken);
-        // return Ok(response);
-        return Ok();
+        var response = await _paymentController.ConfirmPaymentAsync(id, cancellationToken);
+        return Ok(response);
     }
 
     /// <summary>
@@ -65,8 +63,7 @@ public class PaymentsController: ControllerBase
     public async Task<IActionResult> ProcessCallbackAsync([FromBody] PaymentCallbackRequest request,
         CancellationToken cancellationToken)
     {
-        // await paymentManager.ProcessCallbackAsync(request, cancellationToken);
-        // return Ok();
+        await _paymentController.ProcessCallbackAsync(request, cancellationToken);
         return Ok();
     }
 }
