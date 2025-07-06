@@ -16,4 +16,24 @@ public class Payment
     public decimal Value { get; protected set; }
     public string? ExternalId { get; protected set; }
     public string? UserPaymentCode { get; protected set; }
+
+    public Payment(
+        int id,
+        Guid uuid,
+        int orderId,
+        PaymentProvider provider,
+        PaymentStatus status,
+        decimal value = 0,
+        string? externalId = null,
+        string? userPaymentCode = null)
+    {
+        Id = id;
+        Uuid = uuid;
+        OrderId = orderId;
+        Provider = provider;
+        Status = status;
+        Value = value;
+        ExternalId = externalId;
+        UserPaymentCode = userPaymentCode;
+    }
 }

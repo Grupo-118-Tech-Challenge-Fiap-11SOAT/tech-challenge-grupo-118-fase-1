@@ -1,11 +1,16 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Common.Dto.MercadoPago;
 using Common.Interfaces.Employee;
 using Common.Interfaces.Order.Controller;
 using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
 using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Payments;
+using Common.Interfaces.Payments.Controller;
+using Common.Interfaces.Payments.Gateway;
+using Common.Interfaces.Payments.Presenter;
+using Common.Interfaces.Payments.Repositories;
 using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Gateway;
 using Common.Interfaces.Products.Presenter;
@@ -23,12 +28,16 @@ using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using Refit;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
@@ -79,9 +88,8 @@ public class Program
         });
 
         //Uso via variavel de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
-
-        //TODO: Insert MercadoPago configuration
-        // builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPago"));
+        
+        builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPago"));
 
         builder.Services.AddDbContext<CleanArchDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -105,19 +113,17 @@ public class Program
         builder.Services.AddTransient<IOrderPresenter, OrderPresenter>();
         builder.Services.AddTransient<IOrderItemPresenter, OrderItemPresenter>();
 
-        // builder.Services.AddTransient<IProductManager, ProductManager>();
-        // builder.Services.AddTransient<IProductRepository, ProductRepository>();
+        builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
+        builder.Services.AddTransient<IPaymentPresenter, PaymentPresenter>();
+        builder.Services.AddTransient<IPaymentGateway, PaymentGateway>();
+        builder.Services.AddTransient<IPaymentController, PaymentController>();
+        builder.Services.AddTransient<IPaymentController, PaymentController>();
+
         //
         // builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
         // builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
         //
-        // builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-        // builder.Services.AddTransient<IOrderManager, OrderManager>();
-        // builder.Services.AddTransient<IOrderService, OrderService>();
-        //
-        // builder.Services.AddTransient<IPaymentManager, PaymentManager>();
-        // builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
-        // builder.Services.AddTransient<IPaymentService, PaymentService>();
+
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
         //

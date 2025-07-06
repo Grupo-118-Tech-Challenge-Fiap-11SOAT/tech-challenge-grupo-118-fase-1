@@ -17,8 +17,7 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .IsRequired();
         builder.HasIndex(p => p.Uuid)
             .IsUnique();
-
-        //TODO: OrderId - Foreign Key
+        
         builder.Property(p => p.OrderId)
             .IsRequired();
 

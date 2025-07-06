@@ -92,4 +92,10 @@ public class Order : BaseEntity
             throw new ChangeStatusInvalidException();
         }
     }
+    
+    public void IsOrderOnReceivedStatus()
+    {
+        if (Status != OrderStatus.Received)
+            throw new DomainException($"Order is not in a received state.");
+    }
 }
