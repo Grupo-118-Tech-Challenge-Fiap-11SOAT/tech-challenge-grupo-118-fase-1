@@ -30,6 +30,7 @@ public class OrderPresenter : IOrderPresenter
             order.Cpf,
             order.Total,
             order.Status,
-            items);
+            items,
+            order.CreatedAt);
     }
 }

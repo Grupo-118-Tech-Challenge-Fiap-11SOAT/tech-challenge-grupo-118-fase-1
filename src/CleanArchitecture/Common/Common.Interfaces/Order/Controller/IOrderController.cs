@@ -17,6 +17,16 @@ public interface IOrderController
         CancellationToken cancellationToken = default, int skip = 0, int take = 10);
 
     /// <summary>
+    /// Retrieves a list of orders that will be displayed in monitoring displays, with optional pagination.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    Task<List<OrderResponseDto>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0,
+        int take = 10);
+
+    /// <summary>
     /// Creates a new order.
     /// </summary>
     /// <param name="order">The order entity to create.</param>
