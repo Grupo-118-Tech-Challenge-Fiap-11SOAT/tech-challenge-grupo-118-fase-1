@@ -18,6 +18,15 @@ public interface IOrderGateway
         CancellationToken cancellationToken = default, int skip = 0, int take = 10);
 
     /// <summary>
+    /// Retrieves a list of orders that will be displayed in monitoring displays, based on specific criteria.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    Task<List<OrderDomain>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10);    
+    
+    /// <summary>
     /// Creates a new order.
     /// </summary>
     /// <param name="order">The order entity to create.</param>

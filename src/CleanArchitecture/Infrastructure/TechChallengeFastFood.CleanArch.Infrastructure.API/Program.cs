@@ -27,6 +27,7 @@ using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using Refit;
+using TechChallengeFastFood.CleanArch.API.Converters;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
@@ -55,6 +56,7 @@ public class Program
         builder.Services.AddControllers().AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new CustomDateTimeConverter());
                     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 }
             )
@@ -88,7 +90,7 @@ public class Program
         });
 
         //Uso via variavel de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
-        
+
         builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPago"));
 
         builder.Services.AddDbContext<CleanArchDbContext>(options =>

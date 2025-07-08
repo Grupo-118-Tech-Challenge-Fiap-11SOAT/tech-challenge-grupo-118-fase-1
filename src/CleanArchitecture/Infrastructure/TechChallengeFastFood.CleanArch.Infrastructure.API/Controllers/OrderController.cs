@@ -35,11 +35,32 @@ public class OrderController : ControllerBase
     /// <param name="skip">The number of records to skip. Used for pagination.</param>
     /// <param name="take">The number of records to take. Used for pagination.</param>
     /// <returns>The list of orders matching the specified criteria or appropriate status code if no orders are found.</returns>
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAllAsync(OrderStatus status, CancellationToken cancellationToken, int skip = 0,
         int take = 10)
     {
         var orders = await _orderController.GetAllAsync(status, cancellationToken, skip, take);
+
+        if (orders is null || orders.Count == 0)
+            return NotFound(ORDER_NOT_FOUND);
+
+        return Ok(orders);
+    }
+
+    /// <summary>
+    /// Retrieves a list of orders that will be displayed in monitoring displays, with pagination support.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    [HttpGet("monitor")]
+    [ProducesResponseType(typeof(List<OrderResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOrdersToMonitorAsync(CancellationToken cancellationToken, int skip = 0,
+        int take = 10)
+    {
+        var orders = await _orderController.GetOrdersToMonitorAsync(cancellationToken, skip, take);
 
         if (orders is null || orders.Count == 0)
             return NotFound(ORDER_NOT_FOUND);

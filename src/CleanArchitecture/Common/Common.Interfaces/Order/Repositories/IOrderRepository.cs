@@ -16,6 +16,15 @@ public interface IOrderRepository
         CancellationToken cancellationToken = default, int skip = 0, int take = 10);
 
     /// <summary>
+    /// Retrieves a list of orders following a specific criteria for monitoring purposes.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    Task<List<Dto.Order.Database.Order>> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10);
+    
+    /// <summary>
     /// Creates a new order in the system.
     /// </summary>
     /// <param name="order">The order entity containing the details of the order to be created.</param>
