@@ -1,4 +1,5 @@
 using Common.Dto.Base.Database;
+using Common.Dto.Payments.Database;
 using Common.Enums;
 
 namespace Common.Dto.Order.Database;
@@ -15,6 +16,8 @@ public class Order : BaseEntity
     public OrderStatus Status { get; protected set; }
     public ICollection<OrderItem> OrderItems { get; protected set; }
 
+    public Payment Payment { get; protected set; }
+    
     public Order(int orderNumber, string? cpf, decimal total, OrderStatus status, bool isActive,
         List<OrderItem> orderItems = null, int id = 0)
     {

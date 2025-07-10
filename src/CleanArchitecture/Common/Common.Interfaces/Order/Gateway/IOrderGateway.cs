@@ -43,6 +43,14 @@ public interface IOrderGateway
     Task<OrderDomain?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves an order by its ID, including payment details.
+    /// </summary>
+    /// <param name="id">The ID of the order to retrieve</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<OrderDomain?> GetByIdWithPaymentAsync(int id, CancellationToken cancellationToken = default);    
+    
+    /// <summary>
     /// Updates an existing order.
     /// </summary>
     /// <param name="order">The updated order entity.</param>

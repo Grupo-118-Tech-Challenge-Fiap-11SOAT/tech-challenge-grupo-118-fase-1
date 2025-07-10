@@ -103,6 +103,38 @@ public class OrderGateway : IOrderGateway
             orderEntity.UpdatedAt);
     }
 
+    public async Task<OrderDomain?> GetByIdWithPaymentAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var orderEntity = await _orderRepository.GetByIdWithPaymentAsync(id, cancellationToken);
+
+        if (orderEntity is null)
+            return null;
+
+        var orderItems = CreateOrderItemsFromOrder(orderEntity);
+
+        var paymentDomain = new Domain.Entities.Payments.Entities.Payment(
+            orderEntity.Payment.OrderId,
+            orderEntity.Payment.Provider,
+            orderEntity.Payment.Value,
+            orderEntity.Payment.Id,
+            orderEntity.Payment.ExternalId,
+            orderEntity.Payment.UserPaymentCode);
+        
+        paymentDomain.SetStatus(orderEntity.Payment.Status);
+        
+        return new OrderDomain(
+            orderEntity.OrderNumber,
+            orderEntity.Cpf,
+            orderEntity.Total,
+            orderEntity.Status,
+            orderEntity.IsActive,
+            orderItems,
+            orderEntity.Id,
+            orderEntity.CreatedAt,
+            orderEntity.UpdatedAt,
+            paymentDomain);
+    }
+    
     public async Task<OrderDomain> UpdateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
         var orderEntity = CreateOrderEntityFromOrder(order);

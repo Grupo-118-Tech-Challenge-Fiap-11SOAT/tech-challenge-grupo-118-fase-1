@@ -43,9 +43,18 @@ public interface IOrderController
     Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves an order by its ID, including payment details.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<OrderPaymentResponseDto> GetByIdWithPaymentAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an existing order.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token for async operations.</param>
-    /// <returns>The updated order entity.</returns>
+    /// <param name="orderId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<OrderResponseDto?> UpdateStatusAsync(int orderId, CancellationToken cancellationToken = default);
 }

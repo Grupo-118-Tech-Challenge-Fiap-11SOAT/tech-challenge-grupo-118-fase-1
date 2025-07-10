@@ -22,7 +22,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Entities.Customer", b =>
+            modelBuilder.Entity("Common.Dto.Customers.Database.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                     b.ToTable("Customers", (string)null);
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Entities.Employee", b =>
+            modelBuilder.Entity("Common.Dto.Employee.Database.Employee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,7 +165,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities.Order", b =>
+            modelBuilder.Entity("Common.Dto.Order.Database.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetimeoffset")
                         .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
@@ -201,7 +201,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities.OrderItem", b =>
+            modelBuilder.Entity("Common.Dto.Order.Database.OrderItem", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -221,7 +221,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                     b.ToTable("OrderItems", (string)null);
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Entities.Payment", b =>
+            modelBuilder.Entity("Common.Dto.Payments.Database.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -259,13 +259,16 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
                     b.HasIndex("Uuid")
                         .IsUnique();
 
                     b.ToTable("Payments", (string)null);
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.ImageProduct", b =>
+            modelBuilder.Entity("Common.Dto.Products.Database.ImageProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -410,7 +413,7 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.Product", b =>
+            modelBuilder.Entity("Common.Dto.Products.Database.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -544,15 +547,15 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities.OrderItem", b =>
+            modelBuilder.Entity("Common.Dto.Order.Database.OrderItem", b =>
                 {
-                    b.HasOne("TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities.Order", "Order")
+                    b.HasOne("Common.Dto.Order.Database.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.Product", "Product")
+                    b.HasOne("Common.Dto.Products.Database.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -563,9 +566,20 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.ImageProduct", b =>
+            modelBuilder.Entity("Common.Dto.Payments.Database.Payment", b =>
                 {
-                    b.HasOne("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.Product", "Product")
+                    b.HasOne("Common.Dto.Order.Database.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("Common.Dto.Payments.Database.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Common.Dto.Products.Database.ImageProduct", b =>
+                {
+                    b.HasOne("Common.Dto.Products.Database.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -574,12 +588,15 @@ namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Entities.Order", b =>
+            modelBuilder.Entity("Common.Dto.Order.Database.Order", b =>
                 {
                     b.Navigation("OrderItems");
+
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Entities.Product", b =>
+            modelBuilder.Entity("Common.Dto.Products.Database.Product", b =>
                 {
                     b.Navigation("Images");
 
