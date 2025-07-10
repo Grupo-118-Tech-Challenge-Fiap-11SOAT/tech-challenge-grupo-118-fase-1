@@ -41,6 +41,15 @@ public interface IOrderRepository
     Task<Dto.Order.Database.Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves an order by its unique identifier, including payment details.
+    /// </summary>
+    /// <param name="id">The unique identifier of the order</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Common.Dto.Order.Database.Order?> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default);    
+    
+    /// <summary>
     /// Updates an existing order with the provided details.
     /// Updates an existing order with the provided details.
     /// </summary>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 namespace TechChallengeFastFood.CleanArch.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CleanArchDbContext))]
-    partial class CleanArchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250709232956_AddRelationshipWithOrderAndPayment")]
+    partial class AddRelationshipWithOrderAndPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

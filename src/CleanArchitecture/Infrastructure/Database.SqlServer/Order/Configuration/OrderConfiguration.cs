@@ -40,5 +40,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Common.Dto.Order.Data
             .WithOne(oi => oi.Order)
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(o=> o.Payment)
+            .WithOne(p => p.Order)
+            .HasForeignKey<Common.Dto.Payments.Database.Payment>(p => p.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

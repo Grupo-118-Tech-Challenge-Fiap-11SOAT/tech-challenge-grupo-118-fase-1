@@ -15,6 +15,7 @@ public class OrderController : IOrderController
     private readonly GetOrdersToMonitorUseCase _getOrdersToMonitorUseCase;
     private readonly GetOrderByIdUseCase _getOrderByIdUseCase;
     private readonly UpdateOrderStatusUseCase _updateStatusOrderUseCase;
+    private readonly GetOrderWithPaymentDetailsUseCase _getOrderWithPaymentDetailsUseCase;
 
     private readonly IOrderPresenter _orderPresenter;
 
@@ -25,6 +26,7 @@ public class OrderController : IOrderController
         _getOrdersToMonitorUseCase = GetOrdersToMonitorUseCase.Create(orderGateway);
         _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
         _updateStatusOrderUseCase = UpdateOrderStatusUseCase.Create(orderGateway);
+        _getOrderWithPaymentDetailsUseCase = GetOrderWithPaymentDetailsUseCase.Create(orderGateway);
 
         _orderPresenter = orderPresenter;
     }
@@ -50,29 +52,37 @@ public class OrderController : IOrderController
                 : null;
         }
     }
-    
+
     public async Task<OrderResponseDto> CreateAsync(OrderRequestDto order,
-            CancellationToken cancellationToken = default)
-        {
-            var createdOrder = await _createOrderUseCase.ExecuteAsync(order, cancellationToken);
+        CancellationToken cancellationToken = default)
+    {
+        var createdOrder = await _createOrderUseCase.ExecuteAsync(order, cancellationToken);
 
-            return _orderPresenter.Convert(createdOrder);
-        }
-
-        public async Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
-        {
-            var order = await _getOrderByIdUseCase.ExecuteAsync(id, cancellationToken);
-
-            return order is not null
-                ? _orderPresenter.Convert(order)
-                : null;
-        }
-
-        public async Task<OrderResponseDto?> UpdateStatusAsync(int orderId,
-            CancellationToken cancellationToken = default)
-        {
-            var updatedOrder = await _updateStatusOrderUseCase.ExecuteAsync(orderId, cancellationToken);
-
-            return updatedOrder is not null ? _orderPresenter.Convert(updatedOrder) : null;
-        }
+        return _orderPresenter.Convert(createdOrder);
     }
+
+    public async Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var order = await _getOrderByIdUseCase.ExecuteAsync(id, cancellationToken);
+
+        return order is not null
+            ? _orderPresenter.Convert(order)
+            : null;
+    }
+
+    public async Task<OrderPaymentResponseDto> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default)
+    {
+        var orderWithPayment = await _getOrderWithPaymentDetailsUseCase.ExecuteAsync(id, cancellationToken);
+
+        return _orderPresenter.Convert(orderWithPayment, orderWithPayment.Payment);
+    }
+
+    public async Task<OrderResponseDto?> UpdateStatusAsync(int orderId,
+        CancellationToken cancellationToken = default)
+    {
+        var updatedOrder = await _updateStatusOrderUseCase.ExecuteAsync(orderId, cancellationToken);
+
+        return updatedOrder is not null ? _orderPresenter.Convert(updatedOrder) : null;
+    }
+}

@@ -21,6 +21,13 @@ public class OrderController : ControllerBase
         Status = StatusCodes.Status404NotFound,
         Detail = "The specified order was not found."
     };
+    
+    private readonly ProblemDetails PAYMENT_DETAILS_NOT_FOUND = new ProblemDetails
+    {
+        Title = "Order or Payment details not found",
+        Status = StatusCodes.Status404NotFound,
+        Detail = "Please check the order ID and ensure that payment details are available."
+    };
 
     public OrderController(IOrderController orderController)
     {
@@ -110,5 +117,24 @@ public class OrderController : ControllerBase
         var order = await _orderController.GetByIdAsync(id, cancellationToken);
 
         return order is null ? NotFound(ORDER_NOT_FOUND) : Ok(order);
+    }
+
+    /// <summary>
+    /// Retrieves an order by its unique identifier along with its payment details.
+    /// </summary>
+    /// <param name="id">The unique identifier of the order</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [ProducesResponseType(typeof(OrderPaymentResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [HttpGet("{id}/payment-details")]
+    public async Task<ActionResult<OrderPaymentResponseDto>> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken)
+    {
+        var orderWithPayment = await _orderController.GetByIdWithPaymentAsync(id, cancellationToken);
+
+        return orderWithPayment is null
+            ? NotFound(PAYMENT_DETAILS_NOT_FOUND)
+            : Ok(orderWithPayment);
     }
 }

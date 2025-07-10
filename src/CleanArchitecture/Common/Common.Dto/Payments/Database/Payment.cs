@@ -17,6 +17,8 @@ public class Payment
     public string? ExternalId { get; protected set; }
     public string? UserPaymentCode { get; protected set; }
 
+    public Order.Database.Order Order { get; protected set; }
+    
     public Payment(
         int id,
         Guid uuid,

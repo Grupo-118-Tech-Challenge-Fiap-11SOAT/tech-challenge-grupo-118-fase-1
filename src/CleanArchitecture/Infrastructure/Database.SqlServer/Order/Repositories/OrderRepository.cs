@@ -63,6 +63,16 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<Common.Dto.Order.Database.Order?> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Orders
+            .Include(x => x.OrderItems)
+            .Include(x => x.Payment)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+    
     public async Task<Common.Dto.Order.Database.Order> UpdateAsync(Common.Dto.Order.Database.Order order,
         CancellationToken cancellationToken = default)
     {
