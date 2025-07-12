@@ -1,0 +1,9 @@
+
+name: sqlserver
+
+service:
+  type: 'LoadBalancer'
+  port: 1433
+
+serviceAccount:
+  create: false
