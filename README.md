@@ -107,7 +107,14 @@ De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para per
 
 ## Helm - SQL Server
 
+Para facilitar a instalação do SQL Server em um cluster Kubernetes, foi criado um [chart Helm](https://helm.sh/docs/intro/install/). O chart inclui as configurações necessárias para o banco de dados, como usuário, senha e porta.
 Comando de instalação (a partir da pasta raiz do projeto)
 ```shell
 helm upgrade --install sqlserver infra/helm/devsqlchart
 ```
+
+Dados para acesso ao banco de dados
+
+- **Usuário**: sa
+- **Senha**: Mssql!Passw0rd
+- **Host**: localhost, 31390 (porta do serviço NodePort)
