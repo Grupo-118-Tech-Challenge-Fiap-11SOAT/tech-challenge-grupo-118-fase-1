@@ -118,3 +118,8 @@ Dados para acesso ao banco de dados
 - **Usuário**: sa
 - **Senha**: Mssql!Passw0rd
 - **Host**: localhost, 31390 (porta do serviço NodePort)
+
+Connection string de exemplo:
+```plaintext
+Data Source=localhost,31390;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;
+```
