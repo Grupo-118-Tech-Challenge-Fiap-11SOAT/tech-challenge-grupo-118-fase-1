@@ -19,13 +19,14 @@
   - **Matrícula**: RM362963
   - **Usuário Discord**: _viniciusnunes
 
-# Miro
+# Fase 1
+## Miro
 - [Clique aqui para acessar o Miro do Projeto](https://miro.com/app/board/uXjVIDgIqTM=/?share_link_id=224738363095)
 
-# Notion
+## Notion
 - [Clique aqui para acessar o Notion do Projeto](https://www.notion.so/1d25c6f7a32e8045949dd2c342b6a403?v=1d25c6f7a32e806bb165000c707b9a3d&pvs=4)
 
-# Linguagem Ubíqua
+## Linguagem Ubíqua
 
 - **Totem**: Terminal de Atendimento automatizado com o qual o cliente irá interagir, no modelo Wizard;
   - **Modelo Wizard**: Processo passo a passo que permitirá ao usuário escolher os itens do lanche por etapas e por tipo;
@@ -56,7 +57,7 @@
 - **Balcão**: Área responsável por realizar a entrega do Pedido para o Cliente;
 - **Telão**: Visualização que permitirá ao cliente ver a fila de Pedidos sendo Preparados e que estão Prontos;
 
-# Tecnologias utilizadas
+## Tecnologias utilizadas
 - **Linguagem**: C# / Asp.Net Core Web Api (dotnet 8)
 - **Banco de Dados**: SQL Server 2022
 - **ORM**: Entity Framework Core
@@ -65,7 +66,7 @@
 
 Escolhas efetuadas de acordo com a familiariade de todo o grupo para acelerarmos o tempo de desenvolvimento e focarmos nas atividades fundamentais
 
-# Utilizando a autenticação
+## Utilizando a autenticação
 Inicialmente temos um usuário admin cadastrado, para validar as credenciais acesse no swagger o endpoint de Login, fornecendo as credenciais
 ```
 email: admin@admin.com
@@ -74,19 +75,19 @@ password:  adminPass
 
 Com isso deve ser gerado um token que deve ser fornecido no canto superior direito clicando no botão Authorize, adicionar a palavra Bearer e colar o conteúdo da resposta do endpoint Login, Ex: Bearer eyJhbGciOiJIUzI1NiIsI e clicar em Authorize. Após isso fechar clicar em close e seu usuário estará autenticado e com acesso a todos os endpoints da aplicação.
 
-# Estrutura do Banco de Dados
+## Estrutura do Banco de Dados
 
 Abaixo segue a modelagem do nosso banco de dados, contendo como as entidades se relacionam.
 
 ![Diagrama do Banco de Dados](TechChallengeFastFoodDatabaseDiagram-V1.png)
 
-# Configuração
+## Configuração
 Para geração do qr code com o mercado pago, estão sendo utilizadas credenciais de sandbox. Para utilizar sua própria conta, basta atualizar
 as variáveis de ambiemte com o prefixo "MercadoPago__" no docker-compose.yaml.
 
 Por ainda não ser possível confirmar um pagamento pix em ambiente de sandbox, a simulação de confirmação pode ser feita através do endpoint /payment/{id}, informando o código do pagamento a ser confirmado.
 
-# Como executar a aplicação
+## Como executar a aplicação
 De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para permitir que a partir de 2 comandos (ou até um, se apenas considerado a execução), a aplicação aparece online
 
 - Navegue até o diretório raíz do repositório
@@ -101,3 +102,12 @@ De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para per
       - HealthCheck do container
     - Após a inicialização, a aplicação estará acessível na seguinte URL: http://localhost:8080
       - A própria API cria e aplica as migrations, melhorando assim a experiência de uso do projeto
+
+# Fase 2
+
+## Helm - SQL Server
+
+Comando de instalação (a partir da pasta raiz do projeto)
+```shell
+helm upgrade --install sqlserver infra/helm/devsqlchart
+```
