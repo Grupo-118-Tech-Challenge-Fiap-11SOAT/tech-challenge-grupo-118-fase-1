@@ -42,7 +42,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ (.Values.service.instances | first).targetPort | default 8080 }}
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
@@ -56,14 +56,50 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- if .Values.configMap.enabled }}
+            {{- range .Values.configMap.mounts }}
+            - name: config-volume
+              mountPath: {{ .mountPath }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+              readOnly: true
+            {{- end }}
+            {{- end }}
+            {{- if .Values.secret.enabled }}
+            {{- range .Values.secret.mounts }}
+            - name: secret-volume
+              mountPath: {{ .mountPath }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+              readOnly: true
+            {{- end }}
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- end }}
       volumes:
+        {{- if .Values.configMap.enabled }}
+        - name: config-volume
+          configMap:
+            name: {{ .Values.configMap.name | default (include "techchallengefastfoodapi118fase2.fullname" .) }}
+            {{- with .Values.configMap.defaultMode }}
+            defaultMode: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.secret.enabled }}
+        - name: secret-volume
+          secret:
+            secretName: {{ .Values.secret.name | default (include "techchallengefastfoodapi118fase2.fullname" .) }}
+            {{- with .Values.secret.defaultMode }}
+            defaultMode: {{ . }}
+            {{- end }}
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

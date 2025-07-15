@@ -51,10 +51,20 @@ securityContext: {}
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  instances:
+    - name: fastfood-api-clusterip
+      type: ClusterIP
+      port: 80
+      targetPort: 8080
+      portName: http
+      
+# Configuration to test the api that runs inside cluster
+    - name: fastfood-api-nodeport
+      type: NodePort
+      port: 80
+      targetPort: 8080
+      nodePort: 30080
+      portName: http
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -116,6 +126,27 @@ volumeMounts: []
 #   mountPath: "/etc/foo"
 #   readOnly: true
 
+# ConfigMap configuration
+configMap:
+  enabled: false
+  name: ""  # If empty, will use the chart fullname
+  defaultMode: 0644
+  mounts:
+    - mountPath: "/app/config/application.properties"
+      subPath: "app.properties"
+    - mountPath: "/app/config/database.yml"
+      subPath: "database.yml"
+
+# Secret configuration
+secret:
+  enabled: false
+  name: ""  # If empty, will use the chart fullname
+  defaultMode: 0600
+  mounts:
+    - mountPath: "/app/secrets/db-password.txt"
+      subPath: "database-password"
+    - mountPath: "/app/secrets/api-key.txt"
+      subPath: "api-key"
 nodeSelector: {}
 
 tolerations: []
