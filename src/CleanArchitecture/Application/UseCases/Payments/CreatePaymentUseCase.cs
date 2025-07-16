@@ -9,24 +9,22 @@ namespace TechChallengeFastFood.CleanArch.Application.UseCases.Payments;
 public class CreatePaymentUseCase
 {
     private readonly IPaymentGateway _paymentGateway;
-
-    private readonly GetOrderByIdUseCase _getOrderByIdUseCase;
-
-    public CreatePaymentUseCase(IPaymentGateway paymentGateway, IOrderGateway orderGateway)
+    
+    public CreatePaymentUseCase(IPaymentGateway paymentGateway)
     {
         _paymentGateway = paymentGateway;
-        _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
     }
 
-    public static CreatePaymentUseCase Create(IPaymentGateway paymentGateway, IOrderGateway orderGateway)
+    public static CreatePaymentUseCase Create(IPaymentGateway paymentGateway)
     {
-        return new CreatePaymentUseCase(paymentGateway, orderGateway);
+        return new CreatePaymentUseCase(paymentGateway);
     }
 
-    public async Task<Payment> ExecuteAsync(PaymentRequest paymentRequest, CancellationToken cancellationToken)
+    public async Task<Payment> ExecuteAsync(
+        Domain.Entities.Order.Entities.Order order,
+        PaymentRequest paymentRequest,
+        CancellationToken cancellationToken)
     {
-        var order = await _getOrderByIdUseCase.ExecuteAsync(paymentRequest.OrderId, cancellationToken);
-
         var payment = new Payment(paymentRequest.OrderId, paymentRequest.Provider, order.Total);
 
         var paymentData = await _paymentGateway.ProcessPaymentAsync(payment, cancellationToken);

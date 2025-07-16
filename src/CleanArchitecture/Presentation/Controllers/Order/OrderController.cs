@@ -5,6 +5,7 @@ using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
 using Common.Interfaces.Products.Gateway;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Order;
+using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
 
@@ -17,16 +18,20 @@ public class OrderController : IOrderController
     private readonly UpdateOrderStatusUseCase _updateStatusOrderUseCase;
     private readonly GetOrderWithPaymentDetailsUseCase _getOrderWithPaymentDetailsUseCase;
 
+    private readonly GetActiveProductsByIdsUseCase _getActiveProductsByIdsUseCase;
+
     private readonly IOrderPresenter _orderPresenter;
 
     public OrderController(IOrderGateway orderGateway, IProductGateway productGateway, IOrderPresenter orderPresenter)
     {
-        _createOrderUseCase = CreateOrderUseCase.Create(orderGateway, productGateway);
+        _createOrderUseCase = CreateOrderUseCase.Create(orderGateway);
         _getAllOrdersUseCase = GetAllOrdersUseCase.Create(orderGateway);
         _getOrdersToMonitorUseCase = GetOrdersToMonitorUseCase.Create(orderGateway);
         _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
         _updateStatusOrderUseCase = UpdateOrderStatusUseCase.Create(orderGateway);
         _getOrderWithPaymentDetailsUseCase = GetOrderWithPaymentDetailsUseCase.Create(orderGateway);
+
+        _getActiveProductsByIdsUseCase = GetActiveProductsByIdsUseCase.Create(productGateway);
 
         _orderPresenter = orderPresenter;
     }
@@ -56,7 +61,14 @@ public class OrderController : IOrderController
     public async Task<OrderResponseDto> CreateAsync(OrderRequestDto order,
         CancellationToken cancellationToken = default)
     {
-        var createdOrder = await _createOrderUseCase.ExecuteAsync(order, cancellationToken);
+        int[] productIds = order
+            .Items
+            .Select(item => item.ProductId)
+            .ToArray();
+
+        var activeProducts = await _getActiveProductsByIdsUseCase.ExecuteAsync(productIds, cancellationToken);
+
+        var createdOrder = await _createOrderUseCase.ExecuteAsync(order, activeProducts, cancellationToken);
 
         return _orderPresenter.Convert(createdOrder);
     }
