@@ -28,6 +28,14 @@ public class EmployeeController : IEmployeeController
         _employeePresenter = employeePresenter;
     }
 
+    /// <summary>
+    /// Cria um novo funcionário.
+    /// </summary>
+    /// <param name="employee">DTO contendo os dados do funcionário a ser criado.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <returns>
+    /// <see cref="EmployeeResponseDto"/> representando o funcionário criado.
+    /// </returns>
     public async Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employee, CancellationToken cancellationToken = default)
     {
         var createdEmployee = await _createEmployeeUseCase.ExecuteAsync(employee, cancellationToken);
@@ -35,6 +43,14 @@ public class EmployeeController : IEmployeeController
         return _employeePresenter.Convert(createdEmployee);
     }
 
+    /// <summary>
+    /// Exclui um funcionário pelo identificador fornecido.
+    /// </summary>
+    /// <param name="id">Identificador único do funcionário a ser excluído.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <returns>
+    /// <c>true</c> se o funcionário foi excluído com sucesso; caso contrário, <c>false</c>.
+    /// </returns>
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         var deleteEmployeeUseCase = await _deleteEmployeeUseCase.ExecuteAsync(id, cancellationToken);
@@ -42,6 +58,15 @@ public class EmployeeController : IEmployeeController
         return deleteEmployeeUseCase;
     }
 
+    /// <summary>
+    /// Recupera uma lista paginada de funcionários.
+    /// </summary>
+    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="skip">Quantidade de registros a serem ignorados para paginação.</param>
+    /// <param name="take">Quantidade máxima de registros a serem retornados.</param>
+    /// <returns>
+    /// Uma lista de <see cref="EmployeeResponseDto"/> representando os funcionários encontrados, ou <c>null</c> se nenhum funcionário for encontrado.
+    /// </returns>
     public async Task<List<EmployeeResponseDto>?> GetAllAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {
         var employees = await _getAllEmployeeUseCase.ExecuteAsync(cancellationToken, skip, take);
@@ -49,6 +74,14 @@ public class EmployeeController : IEmployeeController
         return _employeePresenter.Convert(employees);
     }
 
+    /// <summary>
+    /// Recupera um funcionário pelo identificador fornecido.
+    /// </summary>
+    /// <param name="id">Identificador único do funcionário.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <returns>
+    /// <see cref="EmployeeResponseDto"/> representando o funcionário encontrado, ou <c>null</c> se não existir.
+    /// </returns>
     public async Task<EmployeeResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var employee = await _getEmployeeByIdUseCase.ExecuteAsync(id, cancellationToken);
@@ -56,6 +89,14 @@ public class EmployeeController : IEmployeeController
         return _employeePresenter.Convert(employee);
     }
 
+    /// <summary>
+    /// Atualiza os dados de um funcionário existente.
+    /// </summary>
+    /// <param name="employee">DTO contendo os dados atualizados do funcionário.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <returns>
+    /// <see cref="EmployeeResponseDto"/> representando o funcionário atualizado, ou <c>null</c> se o funcionário não existir.
+    /// </returns>
     public async Task<EmployeeResponseDto?> UpdateAsync(UpdateEmployeeDto employee, CancellationToken cancellationToken = default)
     {
         var existingEmployee = await _getEmployeeByIdUseCase.ExecuteAsync(employee.Id, cancellationToken);

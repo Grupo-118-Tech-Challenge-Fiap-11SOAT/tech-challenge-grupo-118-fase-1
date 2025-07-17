@@ -1,21 +1,25 @@
 using Common.Dto.Employee;
 using Common.Interfaces.Employee.Controller;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
+/// <summary>
+/// Controlador responsável pelas operações de funcionários.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeController _employeeController;
 
+    /// <summary>
+    /// Inicializa uma nova instância de <see cref="EmployeeController"/>.
+    /// </summary>
+    /// <param name="employeeController">Serviço de controle de funcionários.</param>
     public EmployeeController(IEmployeeController employeeController)
     {
         _employeeController = employeeController;
@@ -28,6 +32,12 @@ public class EmployeeController : ControllerBase
         Detail = "The requested employee could not be found."
     };
 
+    /// <summary>
+    /// Obtém um funcionário pelo identificador.
+    /// </summary>
+    /// <param name="id">Identificador do funcionário.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Funcionário encontrado ou erro 404.</returns>
     public async Task<IActionResult> GetEmployeeById(int id, CancellationToken cancellationToken)
     {
         var employee = await _employeeController.GetByIdAsync(id, cancellationToken);
@@ -37,6 +47,13 @@ public class EmployeeController : ControllerBase
         return Ok(employee);
     }
 
+    /// <summary>
+    /// Obtém todos os funcionários com paginação.
+    /// </summary>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <param name="skip">Quantidade de registros a pular.</param>
+    /// <param name="take">Quantidade de registros a retornar.</param>
+    /// <returns>Lista de funcionários ou erro 404.</returns>
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken, int skip = 0, int take = 10)
     {
         var employees = await _employeeController.GetAllAsync(cancellationToken, skip, take);
@@ -46,12 +63,25 @@ public class EmployeeController : ControllerBase
         return Ok(employees);
     }
 
+    /// <summary>
+    /// Cria um novo funcionário.
+    /// </summary>
+    /// <param name="employeeDto">Dados do funcionário.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Funcionário criado.</returns>
     public async Task<IActionResult> PostAsync([FromBody] EmployeeRequestDto employeeDto, CancellationToken cancellationToken)
     {
         var result = await _employeeController.CreateAsync(employeeDto, cancellationToken);
         return CreatedAtAction("GetEmployeeById", new { result.Id }, result);
     }
 
+    /// <summary>
+    /// Atualiza os dados de um funcionário existente.
+    /// </summary>
+    /// <param name="id">Identificador do funcionário.</param>
+    /// <param name="employeeDto">Dados atualizados do funcionário.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Funcionário atualizado ou erro 404.</returns>
     public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateEmployeeDto employeeDto, CancellationToken cancellationToken)
     {
         var result = await _employeeController.UpdateAsync(employeeDto, cancellationToken);
@@ -60,6 +90,12 @@ public class EmployeeController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Remove um funcionário pelo identificador.
+    /// </summary>
+    /// <param name="id">Identificador do funcionário.</param>
+    /// <param name="cancellationToken">Token de cancelamento.</param>
+    /// <returns>Resposta sem conteúdo.</returns>
     public async Task<IActionResult> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         await _employeeController.DeleteAsync(id, cancellationToken);
