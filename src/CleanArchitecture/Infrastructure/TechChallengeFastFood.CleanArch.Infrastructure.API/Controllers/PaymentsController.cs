@@ -1,6 +1,9 @@
 using Common.Dto.Payments;
 using Common.Interfaces.Payments.Controller;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 

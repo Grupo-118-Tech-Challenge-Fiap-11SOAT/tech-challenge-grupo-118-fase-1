@@ -32,6 +32,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Adapters\Driven\Infra.Database.SqlServer\Infra.Database.SqlServer.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Enums\Common.Enums.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Interfaces\Common.Interfaces.csproj" />
       <ProjectReference Include="..\..\Presentation\Controllers\Controllers.csproj" />
       <ProjectReference Include="..\Database.SqlServer\Database.SqlServer.csproj" />
       <ProjectReference Include="..\External.Api.MercadoPago\External.Api.MercadoPago.csproj" />
