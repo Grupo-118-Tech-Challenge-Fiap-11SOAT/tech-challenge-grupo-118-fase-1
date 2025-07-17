@@ -3,15 +3,16 @@
 # Declare variables to be passed into your templates.
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-replicaCount: 1
+replicaCount: 2
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
   repository: your-fastfood-api-image  # Replace with your actual image name
+  imageName: techchallengefastfoodapi118fase2
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"  # Override this with your actual image tag
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -100,13 +101,13 @@ resources: {}
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
   httpGet:
-    path: /health  # Update this to match your API's health endpoint
+    path: /healthz  # Update this to match your API's health endpoint
     port: http
   initialDelaySeconds: 30
   periodSeconds: 10
 readinessProbe:
   httpGet:
-    path: /health  # Update this to match your API's health endpoint
+    path: /healthz  # Update this to match your API's health endpoint
     port: http
   initialDelaySeconds: 5
   periodSeconds: 5
@@ -115,8 +116,8 @@ readinessProbe:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 50
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
@@ -136,23 +137,81 @@ volumeMounts: []
 configMap:
   enabled: false
   name: ""  # If empty, will use the chart fullname
-  defaultMode: 0644
-  mounts:
-    - mountPath: "/app/config/application.properties"
-      subPath: "app.properties"
-    - mountPath: "/app/config/database.yml"
-      subPath: "database.yml"
+  annotations: {}
+  # ConfigMap data - these values will be stored as plain text
+  data:
+    # Application configuration
+    LOGGING__LOGLEVEL: "Information"
+    AllowedHosts: "*"    
+    # Configure JWT Timer
+    Jwt__ExpirationMinutes: "60"   
+  # Environment variables to create from configMap keys
+  envVars:
+    - name: "LOGGING__LOGLEVEL"
+      configMapKey: "LOGGING__LOGLEVEL"
+    - name: "AllowedHosts"
+      configMapKey: "AllowedHosts"
+    - name: "Jwt__ExpirationMinutes"
+      configMapKey: "Jwt__ExpirationMinutes"
 
 # Secret configuration
 secret:
-  enabled: false
-  name: ""  # If empty, will use the chart fullname
-  defaultMode: 0600
-  mounts:
-    - mountPath: "/app/secrets/db-password.txt"
-      subPath: "database-password"
-    - mountPath: "/app/secrets/api-key.txt"
-      subPath: "api-key"
+  enabled: true
+  name: "tech-challenge-fast-food-api-fase2"  # If empty, will use the chart fullname
+  annotations: {}
+  # Secret data - these values will be base64 encoded automatically
+  data:
+    # JWT Variables
+    Jwt__Key: "08fa1d833b85a776166dd0a30ec21687"
+    Jwt__Issuer: "http://localhost:8080"
+    Jwt__Audience: "http://localhost:8080"
+
+    # Mercado Pago configuration
+    MercadoPago__BaseUrl: "https://api.mercadopago.com"
+    MercadoPago__AccessToken: "TEST-5682763374989417-050719-e82307aaf8e2a1218fedc910c6e75726-407780263"
+    MercadoPago__UserId: "407780263"
+    MercadoPago__PosId: "POS01"
+    MercadoPago__SponsorId: "1726345772"
+    MercadoPago__NotificationUrl: "https://webhook.site/13d12356-257d-4668-83db-1eb7e99498d7"
+
+    #Database configuration
+    ConnectionStrings__DefaultConnection: "Data Source=sqlserver-clusterip, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
+
+  # Environment variables to create from secret keys
+  envVars:
+    - name: "Jwt__Key"
+      secretKey: "Jwt__Key"
+
+    - name: "Jwt__Issuer"
+      secretKey: "Jwt__Issuer"
+
+    - name: "Jwt__Audience"
+      secretKey: "Jwt__Audience"
+
+    - name: "Jwt__ExpirationMinutes"
+      secretKey: "Jwt__ExpirationMinutes"
+
+    - name: "MercadoPago__BaseUrl"
+      secretKey: "MercadoPago__BaseUrl"
+
+    - name: "MercadoPago__AccessToken"
+      secretKey: "MercadoPago__AccessToken"
+
+    - name: "MercadoPago__UserId"
+      secretKey: "MercadoPago__UserId"
+
+    - name: "MercadoPago__PosId"
+      secretKey: "MercadoPago__PosId"
+
+    - name: "MercadoPago__SponsorId"
+      secretKey: "MercadoPago__SponsorId"
+
+    - name: "MercadoPago__NotificationUrl"
+      secretKey: "MercadoPago__NotificationUrl"
+
+    - name: "ConnectionStrings__DefaultConnection"
+      secretKey: "ConnectionStrings__DefaultConnection"
+
 nodeSelector: {}
 
 tolerations: []

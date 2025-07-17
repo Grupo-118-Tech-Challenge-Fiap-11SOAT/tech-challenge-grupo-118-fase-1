@@ -123,3 +123,20 @@ Connection string de exemplo:
 ```plaintext
 Data Source=localhost,31390;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;
 ```
+
+## Helm - API
+
+### Deploy with secrets and config enabled:
+
+```bash
+# Enable both secret and configmap
+helm install fastfood-api . \
+  --set secret.enabled=true \
+  --set configMap.enabled=true
+
+# Or override specific values
+helm install fastfood-api . \
+  --set secret.enabled=true \
+  --set secret.data.DB_PASSWORD="my-secure-password" \
+  --set configMap.enabled=true \
+  --set configMap.data.APP_ENV="staging"
