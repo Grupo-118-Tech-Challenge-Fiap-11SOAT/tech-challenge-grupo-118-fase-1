@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador responsável pelas operações relacionadas ao cliente.
+/// Controlador responsï¿½vel pelas operaï¿½ï¿½es relacionadas ao cliente.
 /// </summary>
 [Route("[controller]")]
 public class CustomerController : ControllerBase
@@ -16,9 +16,9 @@ public class CustomerController : ControllerBase
     private readonly ICustomerController _customerController;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="CustomerController"/>.
+    /// Inicializa uma nova instï¿½ncia de <see cref="CustomerController"/>.
     /// </summary>
-    /// <param name="customerController">Serviço de controle de clientes.</param>
+    /// <param name="customerController">Serviï¿½o de controle de clientes.</param>
     public CustomerController(ICustomerController customerController)
     {
         _customerController = customerController;
@@ -32,11 +32,15 @@ public class CustomerController : ControllerBase
     };
 
     /// <summary>
-    /// Obtém um cliente pelo CPF.
+    /// Obtï¿½m um cliente pelo CPF.
     /// </summary>
     /// <param name="cpf">CPF do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se não existir.</returns>
+    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nï¿½o existir.</returns>
+    [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [HttpGet("cpf/{cpf}")]
     public async Task<IActionResult> GetCustomerByCpf(string cpf, CancellationToken cancellationToken)
     {
         var customers = await _customerController.GetCustomerByCpf(cpf, cancellationToken);
@@ -45,11 +49,15 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Obtém um cliente pelo ID.
+    /// Obtï¿½m um cliente pelo ID.
     /// </summary>
     /// <param name="id">ID do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se não existir.</returns>
+    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nï¿½o existir.</returns>
+    [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetCustomerById(int id, CancellationToken cancellationToken)
     {
         var customer = await _customerController.GetCustomerById(id, cancellationToken);
@@ -63,8 +71,13 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <param name="customerDto">Dados do cliente a ser criado.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resultado da criação do cliente.</returns>
-    public async Task<IActionResult> PostAsync([FromBody] CustomerRequestDto customerDto, CancellationToken cancellationToken)
+    /// <returns>Resultado da criaï¿½ï¿½o do cliente.</returns>
+    [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [HttpPost]
+    public async Task<IActionResult> PostAsync([FromBody] CustomerRequestDto customerDto,
+        CancellationToken cancellationToken)
     {
         var result = await _customerController.CreateAsync(customerDto, cancellationToken);
         return result.Error ? BadRequest(result) : CreatedAtAction("GetCustomerById", new { result.Id }, result);
@@ -76,8 +89,13 @@ public class CustomerController : ControllerBase
     /// <param name="id">ID do cliente.</param>
     /// <param name="customerDto">Dados atualizados do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente atualizado ou <see cref="NotFoundResult"/> se não existir.</returns>
-    public async Task<IActionResult> PutAsync(int id, [FromBody] CustomerUpdateDto customerDto, CancellationToken cancellationToken)
+    /// <returns>Cliente atualizado ou <see cref="NotFoundResult"/> se nï¿½o existir.</returns>
+    [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutAsync(int id, [FromBody] CustomerUpdateDto customerDto,
+        CancellationToken cancellationToken)
     {
         var result = await _customerController.UpdateAsync(customerDto, cancellationToken);
         if (result is null)
