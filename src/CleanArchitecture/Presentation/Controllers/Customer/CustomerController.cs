@@ -48,7 +48,11 @@ public class CustomerController : ICustomerController
 
     public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customer, CancellationToken cancellationToken = default)
     {
-        var customerDomain = await _updateCustomerUseCase.ExecuteAsync(customer, cancellationToken);
+        var existingCustomer = await _getCustomerByIdUseCase.ExecuteAsync(customer.Id, cancellationToken);
+        if (existingCustomer is null)
+            return null;
+
+        var customerDomain = await _updateCustomerUseCase.ExecuteAsync(customer, existingCustomer, cancellationToken);
 
         return _customerPresenter.Convert(customerDomain);
     }

@@ -6,12 +6,10 @@ namespace TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
 public class UpdateCustomerUseCase
 {
     private readonly ICustomerGateway _customerGateway;
-    private readonly GetCustomerByIdUseCase _getCustomerByIdUseCase;
 
     public UpdateCustomerUseCase(ICustomerGateway customerGateway)
     {
         _customerGateway = customerGateway;
-        _getCustomerByIdUseCase = GetCustomerByIdUseCase.Create(customerGateway);
     }
 
     public static UpdateCustomerUseCase Create(ICustomerGateway customerGateway)
@@ -19,10 +17,8 @@ public class UpdateCustomerUseCase
         return new UpdateCustomerUseCase(customerGateway);
     }
 
-    public async Task<Domain.Entities.Customer.Entities.Customer?> ExecuteAsync(CustomerUpdateDto customerUpdateDto, CancellationToken cancellationToken)
+    public async Task<Domain.Entities.Customer.Entities.Customer?> ExecuteAsync(CustomerUpdateDto customerUpdateDto, Domain.Entities.Customer.Entities.Customer customer, CancellationToken cancellationToken)
     {
-        var customer = await _getCustomerByIdUseCase.ExecuteAsync(customerUpdateDto.Id, cancellationToken);
-
         customer.UpdateCustomer(
             customerUpdateDto.Cpf,
             customerUpdateDto.Name,
