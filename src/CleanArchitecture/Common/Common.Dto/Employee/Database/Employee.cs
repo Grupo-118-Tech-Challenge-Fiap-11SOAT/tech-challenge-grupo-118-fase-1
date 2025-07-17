@@ -12,6 +12,11 @@ public class Employee : Person
     {
     }
 
+    public Employee(int id)
+    {
+        Id = id;
+    }
+
     public Employee(string cpf,
         string name,
         string surname,
