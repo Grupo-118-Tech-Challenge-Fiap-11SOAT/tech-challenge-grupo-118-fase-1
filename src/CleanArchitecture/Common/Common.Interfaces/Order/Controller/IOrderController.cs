@@ -17,6 +17,16 @@ public interface IOrderController
         CancellationToken cancellationToken = default, int skip = 0, int take = 10);
 
     /// <summary>
+    /// Retrieves a list of orders that will be displayed in monitoring displays, with optional pagination.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    Task<List<OrderResponseDto>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0,
+        int take = 10);
+
+    /// <summary>
     /// Creates a new order.
     /// </summary>
     /// <param name="order">The order entity to create.</param>
@@ -33,9 +43,18 @@ public interface IOrderController
     Task<OrderResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves an order by its ID, including payment details.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<OrderPaymentResponseDto> GetByIdWithPaymentAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an existing order.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token for async operations.</param>
-    /// <returns>The updated order entity.</returns>
+    /// <param name="orderId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<OrderResponseDto?> UpdateStatusAsync(int orderId, CancellationToken cancellationToken = default);
 }

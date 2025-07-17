@@ -16,31 +16,20 @@ public class OrderResponseDto
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public OrderStatus Status { get; set; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public DateTimeOffset? CreatedAt { get; set; }
+
     public List<OrderItemDto> Items { get; set; }
 
     public OrderResponseDto(int id, int orderNumber, string? cpf, decimal total, OrderStatus status,
-        List<OrderItemDto> items)
+        List<OrderItemDto> items, DateTimeOffset? createdAt)
     {
         Id = id;
         OrderNumber = orderNumber;
         Cpf = cpf;
         Total = total;
         Status = status;
+        CreatedAt = createdAt;
         Items = items ?? new List<OrderItemDto>();
     }
-
-
-    // public OrderResponseDto(Entities.Order order)
-    // {
-    //     Id = order.Id;
-    //     OrderNumber = order.OrderNumber;
-    //     Cpf = order.Cpf;
-    //     Total = order.Total;
-    //     Status = order.Status;
-    //     Items = order.OrderItems?.Select(item => new OrderItemDto
-    //     {
-    //         ProductId = item.ProductId,
-    //         Quantity = item.Quantity
-    //     }).ToList() ?? new List<OrderItemDto>();
-    // }
 }

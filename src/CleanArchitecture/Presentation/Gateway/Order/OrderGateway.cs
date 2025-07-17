@@ -44,6 +44,33 @@ public class OrderGateway : IOrderGateway
         return orderDtos;
     }
 
+    public async Task<List<OrderDomain>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
+    {
+        var orderEntities = await _orderRepository.GetOrdersToMonitorAsync(cancellationToken, skip, take);
+
+        if (orderEntities is null)
+            return null;
+
+        var orderDtos = new List<OrderDomain>();
+
+        orderEntities.ForEach(orderEntity =>
+        {
+            var orderItems = CreateOrderItemsFromOrder(orderEntity);
+
+            orderDtos.Add(new OrderDomain(orderEntity.OrderNumber,
+                orderEntity.Cpf,
+                orderEntity.Total,
+                orderEntity.Status,
+                orderEntity.IsActive,
+                orderItems,
+                orderEntity.Id,
+                orderEntity.CreatedAt,
+                orderEntity.UpdatedAt));
+        });
+
+        return orderDtos;
+    }
+
     public async Task<OrderDomain> CreateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
         var orderEntity = CreateOrderEntityFromOrder(order);
@@ -76,6 +103,38 @@ public class OrderGateway : IOrderGateway
             orderEntity.UpdatedAt);
     }
 
+    public async Task<OrderDomain?> GetByIdWithPaymentAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var orderEntity = await _orderRepository.GetByIdWithPaymentAsync(id, cancellationToken);
+
+        if (orderEntity is null)
+            return null;
+
+        var orderItems = CreateOrderItemsFromOrder(orderEntity);
+
+        var paymentDomain = new Domain.Entities.Payments.Entities.Payment(
+            orderEntity.Payment.OrderId,
+            orderEntity.Payment.Provider,
+            orderEntity.Payment.Value,
+            orderEntity.Payment.Id,
+            orderEntity.Payment.ExternalId,
+            orderEntity.Payment.UserPaymentCode);
+        
+        paymentDomain.SetStatus(orderEntity.Payment.Status);
+        
+        return new OrderDomain(
+            orderEntity.OrderNumber,
+            orderEntity.Cpf,
+            orderEntity.Total,
+            orderEntity.Status,
+            orderEntity.IsActive,
+            orderItems,
+            orderEntity.Id,
+            orderEntity.CreatedAt,
+            orderEntity.UpdatedAt,
+            paymentDomain);
+    }
+    
     public async Task<OrderDomain> UpdateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
         var orderEntity = CreateOrderEntityFromOrder(order);

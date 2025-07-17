@@ -3,6 +3,7 @@ using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Exceptions;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Base.Extensions;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Order.Exceptions;
+using TechChallengeFastFood.CleanArch.Domain.Entities.Payments.Entities;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Products.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities;
@@ -16,6 +17,8 @@ public class Order : BaseEntity
     public decimal Total { get; protected set; }
     public OrderStatus Status { get; protected set; }
     public ICollection<OrderItem> OrderItems { get; protected set; }
+    
+    public Payment? Payment { get; protected set; }
 
     private static readonly Dictionary<OrderStatus, OrderStatus?> NextStatus = new()
     {
@@ -34,7 +37,8 @@ public class Order : BaseEntity
         List<OrderItem>? orderItems,
         int id = 0,
         DateTimeOffset? createdAt = null,
-        DateTimeOffset? updatedAt = null) : base(id, createdAt, updatedAt)
+        DateTimeOffset? updatedAt = null,
+        Payment payment = null) : base(id, createdAt, updatedAt)
     {
         this.OrderNumber = orderNumber;
 
@@ -44,6 +48,7 @@ public class Order : BaseEntity
         this.IsActive = isActive;
 
         this.OrderItems = orderItems ?? new List<OrderItem>();
+        this.Payment = payment;
     }
 
     public Order(string? cpf, List<OrderItem> orderItems, List<Product>? products)

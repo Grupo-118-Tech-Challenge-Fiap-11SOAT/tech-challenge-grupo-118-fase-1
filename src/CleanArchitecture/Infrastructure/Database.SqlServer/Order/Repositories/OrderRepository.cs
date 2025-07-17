@@ -27,6 +27,24 @@ public class OrderRepository : IOrderRepository
         return orders;
     }
 
+    public async Task<List<Common.Dto.Order.Database.Order>> GetOrdersToMonitorAsync(
+        CancellationToken cancellationToken = default, int skip = 0, int take = 10)
+    {
+        var orders = await _dbContext.Orders
+            .Where(o => o.Status != OrderStatus.Completed && o.Status != OrderStatus.Canceled)
+            .Skip(skip)
+            .Take(take)
+            .Include(o => o.OrderItems)
+            .OrderByDescending(o => o.Status == OrderStatus.Ready)
+            .ThenByDescending(o => o.Status == OrderStatus.InPreparation)
+            .ThenByDescending(o => o.Status == OrderStatus.Received)
+            .ThenBy(o => o.CreatedAt)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return orders;
+    }
+
     public async Task<Common.Dto.Order.Database.Order> CreateAsync(Common.Dto.Order.Database.Order order,
         CancellationToken cancellationToken)
     {
@@ -45,6 +63,16 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<Common.Dto.Order.Database.Order?> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Orders
+            .Include(x => x.OrderItems)
+            .Include(x => x.Payment)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+    
     public async Task<Common.Dto.Order.Database.Order> UpdateAsync(Common.Dto.Order.Database.Order order,
         CancellationToken cancellationToken = default)
     {

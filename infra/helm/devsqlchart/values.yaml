@@ -1,0 +1,20 @@
+
+name: sqlserver
+
+service:
+  instances:
+    - type: 'NodePort'
+      name: sqlserver-nodeport
+      port: 31390
+      targetPort: 1433
+      nodePort: 31390
+    - type: 'ClusterIP'
+      name: sqlserver-clusterip
+      port: 1433
+      targetPort: 1433
+
+serviceAccount:
+  create: false
+
+# Comando de instalação (a partir da pasta raiz do projeto)
+# helm upgrade --install sqlserver infra/helm/devsqlchart

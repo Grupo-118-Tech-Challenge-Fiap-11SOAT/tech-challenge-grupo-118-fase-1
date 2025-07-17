@@ -1,5 +1,6 @@
 using Common.Dto.Order;
 using Common.Interfaces.Order.Presenter;
+using TechChallengeFastFood.CleanArch.Domain.Entities.Payments.Entities;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
 
@@ -14,6 +15,9 @@ public class OrderPresenter : IOrderPresenter
 
     public List<OrderResponseDto> Convert(List<Domain.Entities.Order.Entities.Order> orders)
     {
+        if (orders is null)
+            return null;
+
         var orderDtos = new List<OrderResponseDto>();
 
         orders.ForEach(o => orderDtos.Add(Convert(o)));
@@ -22,6 +26,9 @@ public class OrderPresenter : IOrderPresenter
 
     public OrderResponseDto Convert(Domain.Entities.Order.Entities.Order order)
     {
+        if (order is null)
+            return null;
+
         var items = _orderItemPresenter.Convert(order.OrderItems);
 
         return new OrderResponseDto(
@@ -30,6 +37,26 @@ public class OrderPresenter : IOrderPresenter
             order.Cpf,
             order.Total,
             order.Status,
-            items);
+            items,
+            order.CreatedAt);
+    }
+
+    public OrderPaymentResponseDto Convert(Domain.Entities.Order.Entities.Order order, Payment payment)
+    {
+        var items = _orderItemPresenter.Convert(order.OrderItems);
+
+        if (order is null || payment is null)
+            return null;
+
+        return new OrderPaymentResponseDto(
+            order.Id,
+            order.OrderNumber,
+            order.Cpf,
+            order.Total,
+            order.Status,
+            items,
+            order.CreatedAt,
+            order.Payment?.Provider,
+            order.Payment?.Status);
     }
 }

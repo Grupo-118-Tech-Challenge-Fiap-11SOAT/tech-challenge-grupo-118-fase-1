@@ -5,6 +5,7 @@ using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
 using Common.Interfaces.Products.Gateway;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Order;
+using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
 
@@ -12,17 +13,25 @@ public class OrderController : IOrderController
 {
     private readonly CreateOrderUseCase _createOrderUseCase;
     private readonly GetAllOrdersUseCase _getAllOrdersUseCase;
+    private readonly GetOrdersToMonitorUseCase _getOrdersToMonitorUseCase;
     private readonly GetOrderByIdUseCase _getOrderByIdUseCase;
     private readonly UpdateOrderStatusUseCase _updateStatusOrderUseCase;
+    private readonly GetOrderWithPaymentDetailsUseCase _getOrderWithPaymentDetailsUseCase;
+
+    private readonly GetActiveProductsByIdsUseCase _getActiveProductsByIdsUseCase;
 
     private readonly IOrderPresenter _orderPresenter;
 
     public OrderController(IOrderGateway orderGateway, IProductGateway productGateway, IOrderPresenter orderPresenter)
     {
-        _createOrderUseCase = CreateOrderUseCase.Create(orderGateway, productGateway);
+        _createOrderUseCase = CreateOrderUseCase.Create(orderGateway);
         _getAllOrdersUseCase = GetAllOrdersUseCase.Create(orderGateway);
+        _getOrdersToMonitorUseCase = GetOrdersToMonitorUseCase.Create(orderGateway);
         _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
         _updateStatusOrderUseCase = UpdateOrderStatusUseCase.Create(orderGateway);
+        _getOrderWithPaymentDetailsUseCase = GetOrderWithPaymentDetailsUseCase.Create(orderGateway);
+
+        _getActiveProductsByIdsUseCase = GetActiveProductsByIdsUseCase.Create(productGateway);
 
         _orderPresenter = orderPresenter;
     }
@@ -37,10 +46,29 @@ public class OrderController : IOrderController
             : null;
     }
 
+    public async Task<List<OrderResponseDto>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default,
+        int skip = 0, int take = 10)
+    {
+        {
+            var orders = await _getOrdersToMonitorUseCase.ExecuteAsync(skip, take, cancellationToken);
+
+            return orders is not null
+                ? _orderPresenter.Convert(orders)
+                : null;
+        }
+    }
+
     public async Task<OrderResponseDto> CreateAsync(OrderRequestDto order,
         CancellationToken cancellationToken = default)
     {
-        var createdOrder = await _createOrderUseCase.ExecuteAsync(order, cancellationToken);
+        int[] productIds = order
+            .Items
+            .Select(item => item.ProductId)
+            .ToArray();
+
+        var activeProducts = await _getActiveProductsByIdsUseCase.ExecuteAsync(productIds, cancellationToken);
+
+        var createdOrder = await _createOrderUseCase.ExecuteAsync(order, activeProducts, cancellationToken);
 
         return _orderPresenter.Convert(createdOrder);
     }
@@ -54,7 +82,16 @@ public class OrderController : IOrderController
             : null;
     }
 
-    public async Task<OrderResponseDto?> UpdateStatusAsync(int orderId, CancellationToken cancellationToken = default)
+    public async Task<OrderPaymentResponseDto> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default)
+    {
+        var orderWithPayment = await _getOrderWithPaymentDetailsUseCase.ExecuteAsync(id, cancellationToken);
+
+        return _orderPresenter.Convert(orderWithPayment, orderWithPayment.Payment);
+    }
+
+    public async Task<OrderResponseDto?> UpdateStatusAsync(int orderId,
+        CancellationToken cancellationToken = default)
     {
         var updatedOrder = await _updateStatusOrderUseCase.ExecuteAsync(orderId, cancellationToken);
 

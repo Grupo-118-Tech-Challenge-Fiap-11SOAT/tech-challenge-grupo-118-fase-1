@@ -16,6 +16,15 @@ public interface IOrderRepository
         CancellationToken cancellationToken = default, int skip = 0, int take = 10);
 
     /// <summary>
+    /// Retrieves a list of orders following a specific criteria for monitoring purposes.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip"></param>
+    /// <param name="take"></param>
+    /// <returns></returns>
+    Task<List<Dto.Order.Database.Order>> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10);
+    
+    /// <summary>
     /// Creates a new order in the system.
     /// </summary>
     /// <param name="order">The order entity containing the details of the order to be created.</param>
@@ -31,6 +40,15 @@ public interface IOrderRepository
     /// <returns>The order matching the specified identifier, or null if no such order exists.</returns>
     Task<Dto.Order.Database.Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Retrieves an order by its unique identifier, including payment details.
+    /// </summary>
+    /// <param name="id">The unique identifier of the order</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Common.Dto.Order.Database.Order?> GetByIdWithPaymentAsync(int id,
+        CancellationToken cancellationToken = default);    
+    
     /// <summary>
     /// Updates an existing order with the provided details.
     /// Updates an existing order with the provided details.
