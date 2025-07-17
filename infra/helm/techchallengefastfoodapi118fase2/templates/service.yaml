@@ -1,15 +1,46 @@
+{{- if .Values.service }}
+{{- range $service := .Values.service.instances }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "techchallengefastfoodapi118fase2.fullname" . }}
+  name: {{ $service.name }}
   labels:
-    {{- include "techchallengefastfoodapi118fase2.labels" . | nindent 4 }}
+    {{- include "techchallengefastfoodapi118fase2.labels" $ | nindent 4 }}
+    {{- with $service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ $service.type }}
+  {{- if $service.loadBalancerIP }}
+  loadBalancerIP: {{ $service.loadBalancerIP }}
+  {{- end }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  {{- if $service.ports }}
+  {{- range $service.ports }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort | default .name }}
+      protocol: {{ .protocol | default "TCP" }}
+      {{- if and (eq $service.type "NodePort") .nodePort }}
+      nodePort: {{ .nodePort }}
+      {{- end }}
+  {{- end }}
+  {{- else }}
+    - name: {{ $service.portName | default "http" }}
+      port: {{ $service.port }}
+      targetPort: {{ $service.targetPort | default "http" }}
+      protocol: {{ $service.protocol | default "TCP" }}
+      {{- if and (eq $service.type "NodePort") $service.nodePort }}
+      nodePort: {{ $service.nodePort }}
+      {{- end }}
+  {{- end }}
   selector:
-    {{- include "techchallengefastfoodapi118fase2.selectorLabels" . | nindent 4 }}
+    {{- include "techchallengefastfoodapi118fase2.selectorLabels" $ | nindent 4 }}
+---
+{{- end }}
+{{- end }}
