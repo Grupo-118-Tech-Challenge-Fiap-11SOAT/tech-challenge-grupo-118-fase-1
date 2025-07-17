@@ -105,7 +105,7 @@ De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para per
 
 # Fase 2
 
-## Helm - SQL Server
+## 1 - Helm - SQL Server
 
 Para facilitar a instalação do SQL Server em um cluster Kubernetes, foi criado um [chart Helm](https://helm.sh/docs/intro/install/). O chart inclui as configurações necessárias para o banco de dados, como usuário, senha e porta.
 Comando de instalação (a partir da pasta raiz do projeto)
@@ -124,19 +124,16 @@ Connection string de exemplo:
 Data Source=localhost,31390;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;
 ```
 
-## Helm - API
+## 2 - Helm - API
 
-### Deploy with secrets and config enabled:
+### Image Build (from the root of the project)
 
 ```bash
-# Enable both secret and configmap
-helm install fastfood-api . \
-  --set secret.enabled=true \
-  --set configMap.enabled=true
+docker build . -f src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:latest -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:1.0.0
+```
 
-# Or override specific values
-helm install fastfood-api . \
-  --set secret.enabled=true \
-  --set secret.data.DB_PASSWORD="my-secure-password" \
-  --set configMap.enabled=true \
-  --set configMap.data.APP_ENV="staging"
+### Deploy with no secrets or config (from the root of the project)
+
+```bash
+helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallengefastfoodapi118fase2
+```
