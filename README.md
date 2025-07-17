@@ -105,7 +105,7 @@ De maneira bem simplificada, nosso `docker-compose.yml` foi configurado para per
 
 # Fase 2
 
-## Helm - SQL Server
+## 1 - Helm - SQL Server
 
 Para facilitar a instalação do SQL Server em um cluster Kubernetes, foi criado um [chart Helm](https://helm.sh/docs/intro/install/). O chart inclui as configurações necessárias para o banco de dados, como usuário, senha e porta.
 Comando de instalação (a partir da pasta raiz do projeto)
@@ -122,4 +122,18 @@ Dados para acesso ao banco de dados
 Connection string de exemplo:
 ```plaintext
 Data Source=localhost,31390;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;
+```
+
+## 2 - Helm - API
+
+### Image Build (from the root of the project)
+
+```bash
+docker build . -f src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:latest -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:1.0.0
+```
+
+### Deploy with no secrets or config (from the root of the project)
+
+```bash
+helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallengefastfoodapi118fase2
 ```

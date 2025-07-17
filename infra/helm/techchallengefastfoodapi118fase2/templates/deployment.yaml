@@ -38,12 +38,33 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}/{{ .Values.image.imageName }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ (.Values.service.instances | first).targetPort | default 8080 }}
               protocol: TCP
+          {{- if or .Values.secret.enabled .Values.configMap.enabled }}
+          env:
+            {{- if .Values.secret.enabled }}
+            {{- range .Values.secret.envVars }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.secret.name | default (include "techchallengefastfoodapi118fase2.fullname" $) }}
+                  key: {{ .secretKey }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.configMap.enabled }}
+            {{- range .Values.configMap.envVars }}
+            - name: {{ .name }}
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ $.Values.configMap.name | default (include "techchallengefastfoodapi118fase2.fullname" $) }}
+                  key: {{ .configMapKey }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
