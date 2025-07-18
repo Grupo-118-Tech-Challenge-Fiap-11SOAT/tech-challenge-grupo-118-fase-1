@@ -1,4 +1,5 @@
 using Common.Dto.Products;
+using Common.Interfaces.Products.Gateway;
 using Common.Interfaces.Products.Presenter;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Products.Entities;
 
@@ -6,6 +7,11 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 
 public class ImageProductPresenter : IImageProductPresenter
 {
+    public static IImageProductPresenter Create()
+    {
+        return new ImageProductPresenter();
+    }
+
     public List<ImageProductDto> Convert(List<ImageProduct> imageProducts)
     {
         var imageProductDtos = new List<ImageProductDto>();
