@@ -5,6 +5,11 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Employee;
 
 public class EmployeePresenter : IEmployeePresenter
 {
+    public static IEmployeePresenter Create()
+    {
+        return new EmployeePresenter();
+    }
+
     public List<EmployeeResponseDto> Convert(List<Domain.Entities.Employee.Entities.Employee> employees)
     {
         var employeeResponseDtos = new List<EmployeeResponseDto>();

@@ -21,13 +21,19 @@ public class CustomerGateway : ICustomerGateway
         _customerRepository = customerRepository;
     }
 
+    public static ICustomerGateway Create(ICustomerRepository customerRepository)
+    {
+        return new CustomerGateway(customerRepository);
+    }
+
     /// <summary>
     /// Cria um novo cliente de forma assíncrona.
     /// </summary>
     /// <param name="customer">Entidade de domínio do cliente a ser criado.</param>
     /// <param name="cancellationToken">Token para cancelamento da operação.</param>
     /// <returns>Entidade de domínio do cliente criado.</returns>
-    public async Task<CustomerDomain> CreateAsync(CustomerDomain customer, CancellationToken cancellationToken = default)
+    public async Task<CustomerDomain> CreateAsync(CustomerDomain customer,
+        CancellationToken cancellationToken = default)
     {
         var customerEntity = new CustomerEntity
         (
@@ -98,7 +104,8 @@ public class CustomerGateway : ICustomerGateway
     /// <param name="customer">Entidade de domínio do cliente com dados atualizados.</param>
     /// <param name="cancellationToken">Token para cancelamento da operação.</param>
     /// <returns>Entidade de domínio do cliente atualizada.</returns>
-    public async Task<CustomerDomain?> UpdateAsync(CustomerDomain customer, CancellationToken cancellationToken = default)
+    public async Task<CustomerDomain?> UpdateAsync(CustomerDomain customer,
+        CancellationToken cancellationToken = default)
     {
         var customerEntity = new CustomerEntity
         (

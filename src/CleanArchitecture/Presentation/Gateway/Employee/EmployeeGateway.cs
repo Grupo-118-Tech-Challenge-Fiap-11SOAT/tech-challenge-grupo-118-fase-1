@@ -14,6 +14,11 @@ public class EmployeeGateway : IEmployeeGateway
         _employeeRepository = employeeRepository;
     }
 
+    public static IEmployeeGateway Create(IEmployeeRepository employeeRepository)
+    {
+        return new EmployeeGateway(employeeRepository);
+    }
+    
     /// <summary>
     /// Cria um novo funcionário no repositório.
     /// </summary>

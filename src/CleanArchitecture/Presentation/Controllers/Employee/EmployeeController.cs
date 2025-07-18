@@ -2,8 +2,11 @@
 using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Presenter;
+using Common.Interfaces.Employee.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products.ImageProduct;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Employee;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Employee;
 
@@ -17,15 +20,17 @@ public class EmployeeController : IEmployeeController
 
     private readonly IEmployeePresenter _employeePresenter;
 
-    public EmployeeController(IEmployeeGateway employeeGateway, IEmployeePresenter employeePresenter)
+    public EmployeeController(IEmployeeRepository employeeRepository)
     {
+        IEmployeeGateway employeeGateway = EmployeeGateway.Create(employeeRepository);
+
         _createEmployeeUseCase = CreateEmployeeUseCase.Create(employeeGateway);
         _getAllEmployeeUseCase = GetAllEmployeeUseCase.Create(employeeGateway);
         _getEmployeeByIdUseCase = GetByEmployeeIdUseCase.Create(employeeGateway);
         _updateEmployeeUseCase = UpdateEmployeeUseCase.Create(employeeGateway);
         _deleteEmployeeUseCase = DeleteEmployeeUseCase.Create(employeeGateway);
 
-        _employeePresenter = employeePresenter;
+        _employeePresenter = EmployeePresenter.Create();
     }
 
     /// <summary>
@@ -36,7 +41,8 @@ public class EmployeeController : IEmployeeController
     /// <returns>
     /// <see cref="EmployeeResponseDto"/> representando o funcionário criado.
     /// </returns>
-    public async Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employee, CancellationToken cancellationToken = default)
+    public async Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employee,
+        CancellationToken cancellationToken = default)
     {
         var createdEmployee = await _createEmployeeUseCase.ExecuteAsync(employee, cancellationToken);
 
@@ -67,7 +73,8 @@ public class EmployeeController : IEmployeeController
     /// <returns>
     /// Uma lista de <see cref="EmployeeResponseDto"/> representando os funcionários encontrados, ou <c>null</c> se nenhum funcionário for encontrado.
     /// </returns>
-    public async Task<List<EmployeeResponseDto>?> GetAllAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
+    public async Task<List<EmployeeResponseDto>?> GetAllAsync(CancellationToken cancellationToken = default,
+        int skip = 0, int take = 10)
     {
         var employees = await _getAllEmployeeUseCase.ExecuteAsync(cancellationToken, skip, take);
 
@@ -97,7 +104,8 @@ public class EmployeeController : IEmployeeController
     /// <returns>
     /// <see cref="EmployeeResponseDto"/> representando o funcionário atualizado, ou <c>null</c> se o funcionário não existir.
     /// </returns>
-    public async Task<EmployeeResponseDto?> UpdateAsync(UpdateEmployeeDto employee, CancellationToken cancellationToken = default)
+    public async Task<EmployeeResponseDto?> UpdateAsync(UpdateEmployeeDto employee,
+        CancellationToken cancellationToken = default)
     {
         var existingEmployee = await _getEmployeeByIdUseCase.ExecuteAsync(employee.Id, cancellationToken);
         if (existingEmployee is null)
@@ -105,7 +113,8 @@ public class EmployeeController : IEmployeeController
             return null;
         }
 
-        var updateEmployeeUseCase = await _updateEmployeeUseCase.ExecuteAsync(employee, existingEmployee, cancellationToken);
+        var updateEmployeeUseCase =
+            await _updateEmployeeUseCase.ExecuteAsync(employee, existingEmployee, cancellationToken);
 
         return _employeePresenter.Convert(updateEmployeeUseCase);
     }

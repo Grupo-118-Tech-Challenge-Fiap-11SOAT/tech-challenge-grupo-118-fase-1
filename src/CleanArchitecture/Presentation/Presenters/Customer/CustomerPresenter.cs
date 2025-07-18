@@ -5,14 +5,16 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Customer;
 
 public class CustomerPresenter : ICustomerPresenter
 {
+    public static ICustomerPresenter Create()
+    {
+        return new CustomerPresenter();
+    }
+
     public List<CustomerResponseDto> Convert(List<Domain.Entities.Customer.Entities.Customer> customers)
     {
         var customerDtos = new List<CustomerResponseDto>();
 
-        customers.ToList().ForEach(customer =>
-        {
-            customerDtos.Add(Convert(customer));
-        });
+        customers.ToList().ForEach(customer => { customerDtos.Add(Convert(customer)); });
 
         return customerDtos;
     }
