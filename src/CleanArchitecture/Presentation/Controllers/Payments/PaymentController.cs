@@ -1,11 +1,16 @@
 using Common.Dto.Payments;
 using Common.Interfaces.Order.Gateway;
+using Common.Interfaces.Order.Repositories;
+using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Controller;
 using Common.Interfaces.Payments.Gateway;
 using Common.Interfaces.Payments.Presenter;
+using Common.Interfaces.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Order;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Payments;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Payments;
 using PaymentCallbackRequest = Common.Dto.Payments.PaymentCallbackRequest;
 using PaymentResponse = Common.Dto.Payments.PaymentResponse;
 
@@ -21,16 +26,20 @@ public class PaymentController : IPaymentController
 
     private readonly IPaymentPresenter _paymentPresenter;
 
-    public PaymentController(IPaymentGateway paymentGateway, IOrderGateway orderGateway,
-        IPaymentPresenter paymentPresenter)
+    public PaymentController(IPaymentRepository paymentRepository,
+        IOrderRepository orderRepository,
+        IPaymentProcessorFactory paymentProcessorFactory)
     {
+        IOrderGateway orderGateway = OrderGateway.Create(orderRepository);
+        IPaymentGateway paymentGateway = PaymentGateway.Create(paymentRepository, paymentProcessorFactory);
+
         _createPaymentUseCase = CreatePaymentUseCase.Create(paymentGateway);
         _confirmPaymentUseCase = ConfirmPaymentUseCase.Create(paymentGateway, orderGateway);
         _getPaymentByIdUseCase = GetPaymentByIdUseCase.Create(paymentGateway);
 
         _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
 
-        _paymentPresenter = paymentPresenter;
+        _paymentPresenter = PaymentPresenter.Create();
     }
 
     public async Task<PaymentResponse> CreatePaymentAsync(PaymentRequest paymentRequest,

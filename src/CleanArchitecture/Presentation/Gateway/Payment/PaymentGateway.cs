@@ -18,6 +18,12 @@ public class PaymentGateway : IPaymentGateway
         _paymentProcessorFactory = paymentProcessorFactory;
     }
 
+    public static IPaymentGateway Create(
+        IPaymentRepository paymentRepository,
+        IPaymentProcessorFactory paymentProcessorFactory)
+    {
+        return new PaymentGateway(paymentRepository, paymentProcessorFactory);
+    }
 
     public async Task<ProcessedPaymentDto> ProcessPaymentAsync(Domain.Entities.Payments.Entities.Payment payment,
         CancellationToken cancellationToken)
