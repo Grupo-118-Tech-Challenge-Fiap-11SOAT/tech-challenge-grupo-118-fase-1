@@ -3,9 +3,14 @@ using Common.Enums;
 using Common.Interfaces.Order.Controller;
 using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
+using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Products.Gateway;
+using Common.Interfaces.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Order;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
 
@@ -21,9 +26,12 @@ public class OrderController : IOrderController
     private readonly GetActiveProductsByIdsUseCase _getActiveProductsByIdsUseCase;
 
     private readonly IOrderPresenter _orderPresenter;
-
-    public OrderController(IOrderGateway orderGateway, IProductGateway productGateway, IOrderPresenter orderPresenter)
+    
+    public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
     {
+        IOrderGateway orderGateway = OrderGateway.Create(orderRepository);
+        IProductGateway productGateway = ProductGateway.Create(productRepository);
+
         _createOrderUseCase = CreateOrderUseCase.Create(orderGateway);
         _getAllOrdersUseCase = GetAllOrdersUseCase.Create(orderGateway);
         _getOrdersToMonitorUseCase = GetOrdersToMonitorUseCase.Create(orderGateway);
@@ -33,7 +41,7 @@ public class OrderController : IOrderController
 
         _getActiveProductsByIdsUseCase = GetActiveProductsByIdsUseCase.Create(productGateway);
 
-        _orderPresenter = orderPresenter;
+        _orderPresenter = OrderPresenter.Create(OrderItemPresenter.Create());
     }
 
     public async Task<List<OrderResponseDto>?> GetAllAsync(OrderStatus status,

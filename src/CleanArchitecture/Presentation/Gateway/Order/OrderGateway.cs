@@ -16,6 +16,11 @@ public class OrderGateway : IOrderGateway
         _orderRepository = orderRepository;
     }
 
+    public static IOrderGateway Create(IOrderRepository orderRepository)
+    {
+        return new OrderGateway(orderRepository);
+    }
+
     public async Task<List<OrderDomain>?> GetAllAsync(OrderStatus status, CancellationToken cancellationToken = default,
         int skip = 0, int take = 10)
     {
@@ -44,7 +49,8 @@ public class OrderGateway : IOrderGateway
         return orderDtos;
     }
 
-    public async Task<List<OrderDomain>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
+    public async Task<List<OrderDomain>?> GetOrdersToMonitorAsync(CancellationToken cancellationToken = default,
+        int skip = 0, int take = 10)
     {
         var orderEntities = await _orderRepository.GetOrdersToMonitorAsync(cancellationToken, skip, take);
 
@@ -119,9 +125,9 @@ public class OrderGateway : IOrderGateway
             orderEntity.Payment.Id,
             orderEntity.Payment.ExternalId,
             orderEntity.Payment.UserPaymentCode);
-        
+
         paymentDomain.SetStatus(orderEntity.Payment.Status);
-        
+
         return new OrderDomain(
             orderEntity.OrderNumber,
             orderEntity.Cpf,
@@ -134,7 +140,7 @@ public class OrderGateway : IOrderGateway
             orderEntity.UpdatedAt,
             paymentDomain);
     }
-    
+
     public async Task<OrderDomain> UpdateAsync(OrderDomain order, CancellationToken cancellationToken = default)
     {
         var orderEntity = CreateOrderEntityFromOrder(order);
