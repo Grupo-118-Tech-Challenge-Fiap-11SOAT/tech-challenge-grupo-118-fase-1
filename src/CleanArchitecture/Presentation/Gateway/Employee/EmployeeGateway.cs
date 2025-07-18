@@ -117,6 +117,9 @@ public class EmployeeGateway : IEmployeeGateway
     {
         var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
 
+        if (employee is null)
+            return null;
+        
         return new EmployeeDomain
         (
             employee.Cpf,

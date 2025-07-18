@@ -66,6 +66,9 @@ public class CustomerGateway : ICustomerGateway
     {
         var customer = await _customerRepository.GetByIdAsync(id, cancellationToken);
 
+        if (customer is null)
+            return null;
+
         return new CustomerDomain
         (
             customer.Cpf,
@@ -86,6 +89,9 @@ public class CustomerGateway : ICustomerGateway
     public async Task<CustomerDomain?> GetCustomerByCpf(string cpf, CancellationToken cancellationToken = default)
     {
         var customer = await _customerRepository.GetCustomerByCpf(cpf, cancellationToken);
+
+        if (customer is null)
+            return null;
 
         return new CustomerDomain
         (

@@ -12,6 +12,9 @@ public class CustomerPresenter : ICustomerPresenter
 
     public List<CustomerResponseDto> Convert(List<Domain.Entities.Customer.Entities.Customer> customers)
     {
+        if (customers is null || customers.Count == 0)
+            return null;
+
         var customerDtos = new List<CustomerResponseDto>();
 
         customers.ToList().ForEach(customer => { customerDtos.Add(Convert(customer)); });
@@ -21,6 +24,9 @@ public class CustomerPresenter : ICustomerPresenter
 
     public CustomerResponseDto Convert(Domain.Entities.Customer.Entities.Customer customer)
     {
+        if (customer is null)
+            return null;
+
         return new CustomerResponseDto(
             customer.Id,
             customer.Cpf,

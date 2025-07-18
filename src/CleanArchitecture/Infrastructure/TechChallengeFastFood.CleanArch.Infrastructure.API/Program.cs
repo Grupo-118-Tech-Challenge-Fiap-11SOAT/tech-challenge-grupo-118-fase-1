@@ -1,7 +1,15 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Common.Dto.MercadoPago;
+using Common.Interfaces.Customer.Controller;
+using Common.Interfaces.Customer.Gateway;
+using Common.Interfaces.Customer.Presenter;
+using Common.Interfaces.Customer.Repositories;
 using Common.Interfaces.Employee;
+using Common.Interfaces.Employee.Controller;
+using Common.Interfaces.Employee.Gateway;
+using Common.Interfaces.Employee.Presenter;
+using Common.Interfaces.Employee.Repositories;
 using Common.Interfaces.Order.Controller;
 using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
@@ -27,19 +35,28 @@ using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using Refit;
+using TechChallengeFastFood.CleanArch.API.Controllers;
 using TechChallengeFastFood.CleanArch.API.Converters;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
-using TechChallengeFastFood.CleanArch.Presentation.Controllers.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Customer;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Customer;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
+using CustomerController = TechChallengeFastFood.CleanArch.Presentation.Controllers.Customer.CustomerController;
+using EmployeeController = TechChallengeFastFood.CleanArch.Presentation.Controllers.Employee.EmployeeController;
+using OrderController = TechChallengeFastFood.CleanArch.Presentation.Controllers.Order.OrderController;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace TechChallengeFastFood.CleanArch.API;
@@ -108,7 +125,6 @@ public class Program
         builder.Services.AddTransient<IImageProductRepository, ImageProductRepository>();
         builder.Services.AddTransient<IImageProductPresenter, ImageProductPresenter>();
 
-
         builder.Services.AddTransient<IOrderController, OrderController>();
         builder.Services.AddTransient<IOrderGateway, OrderGateway>();
         builder.Services.AddTransient<IOrderRepository, OrderRepository>();
@@ -121,16 +137,18 @@ public class Program
         builder.Services.AddTransient<IPaymentController, PaymentController>();
         builder.Services.AddTransient<IPaymentController, PaymentController>();
 
-        //
-        // builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-        // builder.Services.AddTransient<IEmployeeManager, EmployeeManager>();
-        //
+        builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+        builder.Services.AddTransient<ICustomerGateway, CustomerGateway>();
+        builder.Services.AddTransient<ICustomerPresenter, CustomerPresenter>();
+        builder.Services.AddTransient<ICustomerController, CustomerController>();
 
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
-        //
-        // builder.Services.AddTransient<ICustomerManager, CustomerManager>();
-        // builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+
+        builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+        builder.Services.AddTransient<IEmployeeGateway, EmployeeGateway>();
+        builder.Services.AddTransient<IEmployeePresenter, EmployeePresenter>();
+        builder.Services.AddTransient<IEmployeeController, EmployeeController>();
 
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
         {
