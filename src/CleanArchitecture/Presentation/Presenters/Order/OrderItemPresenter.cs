@@ -6,6 +6,11 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Order;
 
 public class OrderItemPresenter : IOrderItemPresenter
 {
+    public static IOrderItemPresenter Create()
+    {
+        return new OrderItemPresenter();
+    }
+
     public List<OrderItemDto> Convert(ICollection<OrderItem> orderItems)
     {
         var orderItemDtos = new List<OrderItemDto>();

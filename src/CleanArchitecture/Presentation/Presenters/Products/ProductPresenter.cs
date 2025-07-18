@@ -6,6 +6,11 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 
 public class ProductPresenter : IProductPresenter
 {
+    public static IProductPresenter Create()
+    {
+        return new ProductPresenter();
+    }
+    
     public List<ProductDto> Convert(List<Product> products)
     {
         var productDtos = new List<ProductDto>();

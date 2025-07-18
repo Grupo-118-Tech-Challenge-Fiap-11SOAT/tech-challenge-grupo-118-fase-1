@@ -16,6 +16,11 @@ public class ProductGateway : IProductGateway
         _productRepository = productRepository;
     }
 
+    public static IProductGateway Create(IProductRepository productRepository)
+    {
+        return new ProductGateway(productRepository);
+    }
+    
     public async Task<List<ProductDomain>?> GetProductsAsync(int skip = 0, int take = 10,
         bool searchActiveProducts = false,
         CancellationToken cancellationToken = default)

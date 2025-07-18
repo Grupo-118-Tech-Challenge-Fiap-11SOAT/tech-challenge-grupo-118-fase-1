@@ -18,6 +18,12 @@ public class ImageProductGateway : IImageProductGateway
         _productRepository = productRepository;
     }
 
+    public static IImageProductGateway Create(IImageProductRepository imageProductRepository,
+        IProductRepository productRepository)
+    {
+        return new ImageProductGateway(imageProductRepository, productRepository);
+    }
+
     public async Task<List<ImageProductDomain>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default)
     {

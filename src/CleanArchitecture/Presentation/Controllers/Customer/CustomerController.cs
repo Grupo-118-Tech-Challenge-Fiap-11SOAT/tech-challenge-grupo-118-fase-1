@@ -2,7 +2,10 @@
 using Common.Interfaces.Customer.Controller;
 using Common.Interfaces.Customer.Gateway;
 using Common.Interfaces.Customer.Presenter;
+using Common.Interfaces.Customer.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Customer;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Customer;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Customer;
 
@@ -15,14 +18,16 @@ public class CustomerController : ICustomerController
 
     private readonly ICustomerPresenter _customerPresenter;
 
-    public CustomerController(ICustomerGateway customerGateway, ICustomerPresenter customerPresenter)
+    public CustomerController(ICustomerRepository customerRepository)
     {
+        ICustomerGateway customerGateway = CustomerGateway.Create(customerRepository);
+
         _getCustomerByCpfUseCase = GetCustomerByCpfUseCase.Create(customerGateway);
         _getCustomerByIdUseCase = GetCustomerByIdUseCase.Create(customerGateway);
         _createCustomerUseCase = CreateCustomerUseCase.Create(customerGateway);
         _updateCustomerUseCase = UpdateCustomerUseCase.Create(customerGateway);
 
-        _customerPresenter = customerPresenter;
+        _customerPresenter = CustomerPresenter.Create();
     }
 
     /// <summary>
@@ -33,7 +38,8 @@ public class CustomerController : ICustomerController
     /// <returns>
     /// <see cref="CustomerResponseDto"/> contendo os dados do cliente criado.
     /// </returns>
-    public async Task<CustomerResponseDto> CreateAsync(CustomerRequestDto customer, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponseDto> CreateAsync(CustomerRequestDto customer,
+        CancellationToken cancellationToken = default)
     {
         var customerDomain = await _createCustomerUseCase.ExecuteAsync(customer, cancellationToken);
 
@@ -81,7 +87,8 @@ public class CustomerController : ICustomerController
     /// <see cref="CustomerResponseDto"/> contendo os dados do cliente atualizado,
     /// ou <c>null</c> caso o cliente não seja encontrado.
     /// </returns>
-    public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customer, CancellationToken cancellationToken = default)
+    public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customer,
+        CancellationToken cancellationToken = default)
     {
         var existingCustomer = await _getCustomerByIdUseCase.ExecuteAsync(customer.Id, cancellationToken);
         if (existingCustomer is null)

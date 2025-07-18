@@ -5,6 +5,8 @@ using Common.Interfaces.Products.Presenter;
 using Common.Interfaces.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products.ImageProduct;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
@@ -20,18 +22,22 @@ public class ImageProductController : IImageProductController
 
     private readonly IImageProductPresenter _imageProductPresenter;
 
-    public ImageProductController(IImageProductGateway imageProductGateway, IProductGateway productGateway,
-        IImageProductPresenter imageProductPresenter)
+    public ImageProductController(IImageProductRepository imageProductRepository, IProductRepository productRepository)
     {
+        IImageProductGateway imageProductGateway =
+            ImageProductGateway.Create(imageProductRepository, productRepository);
+
+        IProductGateway productGateway = ProductGateway.Create(productRepository);
+
         _getProductImageUseCase = GetProductImagesUseCase.Create(imageProductGateway);
         _getProductImageByIdUseCase = GetProductImageByIdUseCase.Create(imageProductGateway);
         _createImageProductUseCase = CreateImageProductUseCase.Create(imageProductGateway);
         _updateImageProductUseCase = UpdateImageProductUseCase.Create(imageProductGateway);
         _deleteImageProductUseCase = DeleteImageProductUseCase.Create(imageProductGateway);
 
-        _getProductByIdUseCase = GetProductByIdUseCase.Create(productGateway);        
+        _getProductByIdUseCase = GetProductByIdUseCase.Create(productGateway);
 
-        _imageProductPresenter = imageProductPresenter;
+        _imageProductPresenter = ImageProductPresenter.Create();
     }
 
     public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
@@ -60,10 +66,10 @@ public class ImageProductController : IImageProductController
         CancellationToken cancellationToken = default)
     {
         var product = await _getProductByIdUseCase.ExecuteAsync(productId, true, cancellationToken);
-        
+
         if (product is null)
             return null;
-        
+
         var imageProduct = await _createImageProductUseCase.ExecuteAsync(product, imageProductDto, cancellationToken);
 
         if (imageProduct is null)
@@ -80,7 +86,7 @@ public class ImageProductController : IImageProductController
 
         if (product is null)
             return null;
-        
+
         var imageProduct =
             await _updateImageProductUseCase.ExecuteAsync(product, imageId, imageProductDto, cancellationToken);
 

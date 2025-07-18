@@ -14,6 +14,11 @@ public class EmployeeGateway : IEmployeeGateway
         _employeeRepository = employeeRepository;
     }
 
+    public static IEmployeeGateway Create(IEmployeeRepository employeeRepository)
+    {
+        return new EmployeeGateway(employeeRepository);
+    }
+    
     /// <summary>
     /// Cria um novo funcionário no repositório.
     /// </summary>
@@ -112,6 +117,9 @@ public class EmployeeGateway : IEmployeeGateway
     {
         var employee = await _employeeRepository.GetByIdAsync(id, cancellationToken);
 
+        if (employee is null)
+            return null;
+        
         return new EmployeeDomain
         (
             employee.Cpf,

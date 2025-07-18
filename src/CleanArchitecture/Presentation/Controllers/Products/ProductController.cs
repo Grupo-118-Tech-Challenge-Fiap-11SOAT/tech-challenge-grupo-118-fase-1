@@ -2,7 +2,10 @@ using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Gateway;
 using Common.Interfaces.Products.Presenter;
+using Common.Interfaces.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
+using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
@@ -16,15 +19,17 @@ public class ProductController : IProductController
 
     private readonly IProductPresenter _productPresenter;
 
-    public ProductController(IProductGateway productGateway, IProductPresenter productPresenter)
+    public ProductController(IProductRepository productRepository)
     {
+        IProductGateway productGateway = ProductGateway.Create(productRepository);
+
         _getProductsUseCase = GetProductsUseCase.Create(productGateway);
         _createProductUseCase = CreateProductUseCase.Create(productGateway);
         _updateProductUseCase = UpdateProductUseCase.Create(productGateway);
         _getProductByTypeUseCase = GetProductByTypeUseCase.Create(productGateway);
         _getProductByIdUseCase = GetProductByIdUseCase.Create(productGateway);
 
-        _productPresenter = productPresenter;
+        _productPresenter = ProductPresenter.Create();
     }
 
     public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,

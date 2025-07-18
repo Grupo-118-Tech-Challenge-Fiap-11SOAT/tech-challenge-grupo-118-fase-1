@@ -13,6 +13,11 @@ public class OrderPresenter : IOrderPresenter
         _orderItemPresenter = orderItemPresenter;
     }
 
+    public static OrderPresenter Create(IOrderItemPresenter orderItemPresenter)
+    {
+        return new OrderPresenter(orderItemPresenter);
+    }
+
     public List<OrderResponseDto> Convert(List<Domain.Entities.Order.Entities.Order> orders)
     {
         if (orders is null)
