@@ -138,31 +138,30 @@ docker build . -f src/CleanArchitecture/Infrastructure/TechChallengeFastFood.Cle
 helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallengefastfoodapi118fase2
 ```
 
-## Data Diagram
+## Data Flow Diagram
 ```mermaid
 %% Objects Definition
 flowchart TD
 
-    User
+  User
 
-    %% Infrastructure Layer
-    API(🔵Handler)
-    Repository(🔵Database Access)
-    Database[(🔵Database created with Entity Framework)]
+%% Infrastructure Layer
+  API(🔵Handler)
+Repository(🔵Database Access)
+Database[(🔵Database created with Entity Framework)]
 
-    %%Presentation Layer    
-    Controller[🟢Clean Architecture Controller]
-    Gateway[🟢Clean Architecture Gateway]
-    Presenter[🟢Clean Architecture Presenter]
+%%Presentation Layer
+Controller[🟢Clean Architecture Controller]
+Gateway[🟢Clean Architecture Gateway]
+Presenter[🟢Clean Architecture Presenter]
 
-    %% Application
-    UseCase[🔴Clean Architecture UseCase]
+%% Application
+UseCase[🔴Clean Architecture UseCase]
 
-    %% Domain Layer
-    Entity[🟡Clean Architecture Domain]
+%% Domain Layer
+Entity[🟡Clean Architecture Domain]
 
 %% Data inbound 
-
 User ---> | 1-HTTP Request | API
 API ---> | 2-Parse/Validate | Controller
 Controller ----> | 3-Call | UseCase
