@@ -146,7 +146,7 @@ flowchart TD
   User
 
 %% Infrastructure Layer
-  API(🔵Handler)
+API(🔵Handler)
 Repository(🔵Database Access)
 Database[(🔵Database created with Entity Framework)]
 
@@ -178,4 +178,67 @@ Controller ---> | 11-Call | Presenter
 Presenter ---> | 12-Creates Output Result | Controller
 Controller ---> | 13-Return Data | API
 API ---> | 14-Return Data | User
+```
+
+## Order Sequence Diagram
+```mermaid
+sequenceDiagram
+    actor Client
+    participant APIOrderController
+    
+    participant CleanOrderController
+
+    participant GetActiveProductsByIdsUseCase
+    participant ProductGateway
+    participant ProductRepository
+
+    participant OrderGateway
+    participant OrderRepository
+    participant OrderPresenter
+    participant OrderItemPresenter
+
+    participant CreateOrderUseCase
+
+
+    participant Order
+    participant Database
+
+    %% Request from client to API
+    Client ->> APIOrderController: HTTP POST
+    APIOrderController ->> CleanOrderController: DataConversion and <br/>Validation
+    
+    %% Clean Order Controller Logic
+    CleanOrderController ->> GetActiveProductsByIdsUseCase: Search ActiveProducts
+    GetActiveProductsByIdsUseCase ->> ProductGateway: Search ActiveProducts
+    ProductGateway ->> ProductRepository: Search ActiveProducts
+    ProductRepository ->> Database: Get Products Elements
+
+    %% Search Active Products
+    Database -->> ProductRepository: List<Product>
+    ProductRepository -->> ProductGateway: List<Product>
+    ProductGateway -->> GetActiveProductsByIdsUseCase: List<Product>
+    GetActiveProductsByIdsUseCase -->> CleanOrderController: List<Product>
+
+    %% Create Order
+    CleanOrderController ->> CreateOrderUseCase: Create Order Request
+    CreateOrderUseCase ->> Order: Create Order Entity
+    CreateOrderUseCase ->> OrderGateway: Call Gateway to Persist
+    OrderGateway ->> OrderRepository: Persist Data
+    OrderRepository ->> Database: Create Order Entry
+
+    %% Return Persisted Data
+    OrderRepository -->> OrderGateway: Return Created Order
+    OrderGateway -->> CreateOrderUseCase: Return Domain Entity Order
+    CreateOrderUseCase -->> CleanOrderController: Return OrderGateway
+
+    %% Send Data to Presenter
+    CleanOrderController -> OrderPresenter: Send Order Entity to Convert
+    OrderPresenter -> OrderItemPresenter: Convert elements to items
+
+    OrderItemPresenter -->> OrderPresenter: Return items
+    OrderPresenter -->> CleanOrderController: Return converted items
+
+    %% Send Data to API
+    CleanOrderController -->> APIOrderController: Create Order result data
+    APIOrderController -->> Client: Return data to client
 ```
