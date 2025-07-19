@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador respons�vel pelas opera��es relacionadas ao cliente.
+/// Controlador responsavel pelas opera��es relacionadas ao cliente.
 /// </summary>
 [Route("[controller]")]
 public class CustomerController : ControllerBase
@@ -16,9 +16,9 @@ public class CustomerController : ControllerBase
     private readonly ICustomerController _customerController;
 
     /// <summary>
-    /// Inicializa uma nova inst�ncia de <see cref="CustomerController"/>.
+    /// Inicializa uma nova instancia de <see cref="CustomerController"/>.
     /// </summary>
-    /// <param name="customerController">Servi�o de controle de clientes.</param>
+    /// <param name="customerController">Servico de controle de clientes.</param>
     public CustomerController(ICustomerController customerController)
     {
         _customerController = customerController;
@@ -32,11 +32,11 @@ public class CustomerController : ControllerBase
     };
 
     /// <summary>
-    /// Obt�m um cliente pelo CPF.
+    /// Obtem um cliente pelo CPF.
     /// </summary>
     /// <param name="cpf">CPF do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se n�o existir.</returns>
+    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -49,11 +49,11 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Obt�m um cliente pelo ID.
+    /// Obtem um cliente pelo ID.
     /// </summary>
     /// <param name="id">ID do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se n�o existir.</returns>
+    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -71,7 +71,7 @@ public class CustomerController : ControllerBase
     /// </summary>
     /// <param name="customerDto">Dados do cliente a ser criado.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resultado da cria��o do cliente.</returns>
+    /// <returns>Resultado da criacao do cliente.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -89,7 +89,7 @@ public class CustomerController : ControllerBase
     /// <param name="id">ID do cliente.</param>
     /// <param name="customerDto">Dados atualizados do cliente.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente atualizado ou <see cref="NotFoundResult"/> se n�o existir.</returns>
+    /// <returns>Cliente atualizado ou <see cref="NotFoundResult"/> se nao existir.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
