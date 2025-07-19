@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Interfaces.Products.Repositories;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -38,12 +40,12 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Product constructor
     /// </summary>
-    /// <param name="productController"></param>
-    /// <param name="imageProductController"></param>
-    public ProductsController(IProductController productController, IImageProductController imageProductController)
+    /// <param name="productRepository"></param>
+    /// <param name="imageProductRepository"></param>
+    public ProductsController(IProductRepository productRepository, IImageProductRepository imageProductRepository)
     {
-        _productController = productController;
-        _imageProductController = imageProductController;
+        _productController = ProductController.Create(productRepository);
+        _imageProductController = ImageProductController.Create(imageProductRepository, productRepository);
     }
 
     #region Products Methods

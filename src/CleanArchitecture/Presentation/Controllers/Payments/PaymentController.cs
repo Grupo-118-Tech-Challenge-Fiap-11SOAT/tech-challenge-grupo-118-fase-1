@@ -42,6 +42,15 @@ public class PaymentController : IPaymentController
         _paymentPresenter = PaymentPresenter.Create();
     }
 
+    public static IPaymentController Create(IPaymentRepository paymentRepository,
+        IOrderRepository orderRepository,
+        IPaymentProcessorFactory paymentProcessorFactory)
+    {
+        return new PaymentController(paymentRepository,
+            orderRepository,
+            paymentProcessorFactory);
+    }
+
     public async Task<PaymentResponse> CreatePaymentAsync(PaymentRequest paymentRequest,
         CancellationToken cancellationToken)
     {
