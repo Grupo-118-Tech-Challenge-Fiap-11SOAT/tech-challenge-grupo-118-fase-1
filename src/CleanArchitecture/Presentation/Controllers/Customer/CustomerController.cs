@@ -3,14 +3,12 @@ using Common.Interfaces.Customer.Controller;
 using Common.Interfaces.Customer.Gateway;
 using Common.Interfaces.Customer.Presenter;
 using Common.Interfaces.Customer.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Customer;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Customer;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Customer;
 
-[Authorize]
 public class CustomerController : ICustomerController
 {
     private readonly GetCustomerByCpfUseCase _getCustomerByCpfUseCase;

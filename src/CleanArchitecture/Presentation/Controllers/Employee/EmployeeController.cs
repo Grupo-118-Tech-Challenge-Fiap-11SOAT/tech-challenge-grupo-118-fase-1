@@ -4,14 +4,12 @@ using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Presenter;
 using Common.Interfaces.Employee.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Employee;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Employee;
 
-[Authorize]
 public class EmployeeController : IEmployeeController
 {
     private readonly CreateEmployeeUseCase _createEmployeeUseCase;

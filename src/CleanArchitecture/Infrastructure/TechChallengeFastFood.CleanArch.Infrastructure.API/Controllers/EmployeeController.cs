@@ -1,5 +1,6 @@
 using Common.Dto.Employee;
 using Common.Interfaces.Employee.Controller;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeController _employeeController;
