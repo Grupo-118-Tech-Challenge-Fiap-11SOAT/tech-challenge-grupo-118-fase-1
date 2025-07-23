@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Interfaces.Order.Repositories;
+using Common.Interfaces.Payments;
+using Common.Interfaces.Payments.Repositories;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -16,9 +20,11 @@ public class PaymentsController : ControllerBase
 {
     private readonly IPaymentController _paymentController;
 
-    public PaymentsController(IPaymentController paymentController)
+    public PaymentsController(IPaymentRepository paymentRepository,
+        IOrderRepository orderRepository,
+        IPaymentProcessorFactory paymentProcessorFactory)
     {
-        _paymentController = paymentController;
+        _paymentController = PaymentController.Create(paymentRepository, orderRepository, paymentProcessorFactory);
     }
 
     /// <summary>

@@ -1,7 +1,9 @@
 using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
+using Common.Interfaces.Products.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -33,12 +35,12 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Product constructor
     /// </summary>
-    /// <param name="productController"></param>
-    /// <param name="imageProductController"></param>
-    public ProductsController(IProductController productController, IImageProductController imageProductController)
+    /// <param name="productRepository"></param>
+    /// <param name="imageProductRepository"></param>
+    public ProductsController(IProductRepository productRepository, IImageProductRepository imageProductRepository)
     {
-        _productController = productController;
-        _imageProductController = imageProductController;
+        _productController = ProductController.Create(productRepository);
+        _imageProductController = ImageProductController.Create(imageProductRepository, productRepository);
     }
 
     #region Products Methods

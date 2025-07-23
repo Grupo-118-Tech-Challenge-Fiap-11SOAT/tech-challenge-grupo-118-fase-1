@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Interfaces.Order.Repositories;
+using Common.Interfaces.Products.Repositories;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -24,7 +26,7 @@ public class OrderController : ControllerBase
         Status = StatusCodes.Status404NotFound,
         Detail = "The specified order was not found."
     };
-    
+
     private readonly ProblemDetails PAYMENT_DETAILS_NOT_FOUND = new ProblemDetails
     {
         Title = "Order or Payment details not found",
@@ -32,9 +34,9 @@ public class OrderController : ControllerBase
         Detail = "Please check the order ID and ensure that payment details are available."
     };
 
-    public OrderController(IOrderController orderController)
+    public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
     {
-        _orderController = orderController;
+        _orderController = Presentation.Controllers.Order.OrderController.Create(orderRepository, productRepository);
     }
 
     /// <summary>

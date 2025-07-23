@@ -44,6 +44,11 @@ public class OrderController : IOrderController
         _orderPresenter = OrderPresenter.Create(OrderItemPresenter.Create());
     }
 
+    public static IOrderController Create(IOrderRepository orderRepository, IProductRepository productRepository)
+    {
+        return new OrderController(orderRepository, productRepository);
+    }
+
     public async Task<List<OrderResponseDto>?> GetAllAsync(OrderStatus status,
         CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {

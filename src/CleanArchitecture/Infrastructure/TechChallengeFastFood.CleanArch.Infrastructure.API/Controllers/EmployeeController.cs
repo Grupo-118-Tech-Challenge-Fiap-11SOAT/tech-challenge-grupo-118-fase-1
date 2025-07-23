@@ -1,15 +1,14 @@
 using Common.Dto.Employee;
+using Common.Interfaces.Employee;
 using Common.Interfaces.Employee.Controller;
+using Common.Interfaces.Employee.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador respons�vel pelas opera��es de funcion�rios.
+/// Controlador responsável pelas operações de funcionários.
 /// </summary>
 [ApiController]
 [Route("[controller]")]
@@ -19,12 +18,12 @@ public class EmployeeController : ControllerBase
     private readonly IEmployeeController _employeeController;
 
     /// <summary>
-    /// Inicializa uma nova inst�ncia de <see cref="EmployeeController"/>.
+    /// Inicializa uma nova instância de <see cref="EmployeeController"/>.
     /// </summary>
-    /// <param name="employeeController">Servi�o de controle de funcion�rios.</param>
-    public EmployeeController(IEmployeeController employeeController)
+    /// <param name="employeeController">Serviço de controle de funcionários.</param>
+    public EmployeeController(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
-        _employeeController = employeeController;
+        _employeeController = Presentation.Controllers.Employee.EmployeeController.Create(employeeRepository, passwordManager);
     }
 
     private readonly ProblemDetails EMPLOYEE_NOT_FOUND = new ProblemDetails
@@ -35,11 +34,11 @@ public class EmployeeController : ControllerBase
     };
 
     /// <summary>
-    /// Obt�m um funcion�rio pelo identificador.
+    /// Obtém um funcionário pelo identificador.
     /// </summary>
-    /// <param name="id">Identificador do funcion�rio.</param>
+    /// <param name="id">Identificador do funcionário.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcion�rio encontrado ou erro 404.</returns>
+    /// <returns>Funcionário encontrado ou erro 404.</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}")]
@@ -53,12 +52,12 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Obt�m todos os funcion�rios com pagina��o.
+    /// Obtém todos os funcionários com paginação.
     /// </summary>
     /// <param name="cancellationToken">Token de cancelamento.</param>
     /// <param name="skip">Quantidade de registros a pular.</param>
     /// <param name="take">Quantidade de registros a retornar.</param>
-    /// <returns>Lista de funcion�rios ou erro 404.</returns>
+    /// <returns>Lista de funcionários ou erro 404.</returns>
     [ProducesResponseType(typeof(List<EmployeeResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
@@ -72,31 +71,33 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Cria um novo funcion�rio.
+    /// Cria um novo funcionário.
     /// </summary>
-    /// <param name="employeeDto">Dados do funcion�rio.</param>
+    /// <param name="employeeDto">Dados do funcionário.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcion�rio criado.</returns>
+    /// <returns>Funcionário criado.</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
     [HttpPost]
-    public async Task<IActionResult> PostAsync([FromBody] EmployeeRequestDto employeeDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostAsync([FromBody] EmployeeRequestDto employeeDto,
+        CancellationToken cancellationToken)
     {
         var result = await _employeeController.CreateAsync(employeeDto, cancellationToken);
         return CreatedAtAction("GetEmployeeById", new { result.Id }, result);
     }
 
     /// <summary>
-    /// Atualiza os dados de um funcion�rio existente.
+    /// Atualiza os dados de um funcionário existente.
     /// </summary>
-    /// <param name="id">Identificador do funcion�rio.</param>
-    /// <param name="employeeDto">Dados atualizados do funcion�rio.</param>
+    /// <param name="id">Identificador do funcionário.</param>
+    /// <param name="employeeDto">Dados atualizados do funcionário.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcion�rio atualizado ou erro 404.</returns>
+    /// <returns>Funcionário atualizado ou erro 404.</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateEmployeeDto employeeDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> PutAsync(int id, [FromBody] UpdateEmployeeDto employeeDto,
+        CancellationToken cancellationToken)
     {
         var result = await _employeeController.UpdateAsync(employeeDto, cancellationToken);
         if (result is null)
@@ -105,11 +106,11 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Remove um funcion�rio pelo identificador.
+    /// Remove um funcionário pelo identificador.
     /// </summary>
-    /// <param name="id">Identificador do funcion�rio.</param>
+    /// <param name="id">Identificador do funcionário.</param>
     /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resposta sem conte�do.</returns>
+    /// <returns>Resposta sem conteúdo.</returns>
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("{id}")]

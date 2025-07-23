@@ -33,6 +33,11 @@ public class EmployeeController : IEmployeeController
         _employeePresenter = EmployeePresenter.Create();
     }
 
+    public static IEmployeeController Create(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
+    {
+        return new EmployeeController(employeeRepository, passwordManager);
+    }
+
     /// <summary>
     /// Cria um novo funcionário.
     /// </summary>

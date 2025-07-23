@@ -30,6 +30,11 @@ public class CustomerController : ICustomerController
         _customerPresenter = CustomerPresenter.Create();
     }
 
+    public static ICustomerController Create(ICustomerRepository customerRepository)
+    {
+        return new CustomerController(customerRepository);
+    }
+
     /// <summary>
     /// Cria um novo cliente com os dados informados.
     /// </summary>

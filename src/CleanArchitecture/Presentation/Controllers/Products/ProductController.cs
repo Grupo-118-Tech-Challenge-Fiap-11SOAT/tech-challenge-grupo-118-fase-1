@@ -32,6 +32,11 @@ public class ProductController : IProductController
         _productPresenter = ProductPresenter.Create();
     }
 
+    public static IProductController Create(IProductRepository productRepository)
+    {
+        return new ProductController(productRepository);
+    }
+
     public async Task<List<ProductDto>?> GetProductsAsync(int skip = 0, int take = 10,
         bool searchActiveProducts = false,
         CancellationToken cancellationToken = default)

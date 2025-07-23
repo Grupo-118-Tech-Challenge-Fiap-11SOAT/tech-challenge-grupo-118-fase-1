@@ -1,12 +1,13 @@
 using Common.Dto.Customers;
 using Common.Interfaces.Customer.Controller;
+using Common.Interfaces.Customer.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador responsavel pelas opera��es relacionadas ao cliente.
+/// Controlador responsavel pelas operações relacionadas ao cliente.
 /// </summary>
 [Authorize]
 [Route("[controller]")]
@@ -17,10 +18,10 @@ public class CustomerController : ControllerBase
     /// <summary>
     /// Inicializa uma nova instancia de <see cref="CustomerController"/>.
     /// </summary>
-    /// <param name="customerController">Servico de controle de clientes.</param>
-    public CustomerController(ICustomerController customerController)
+    /// <param name="customerRepository">Servico de controle de clientes.</param>
+    public CustomerController(ICustomerRepository customerRepository)
     {
-        _customerController = customerController;
+        _customerController = Presentation.Controllers.Customer.CustomerController.Create(customerRepository);
     }
 
     private readonly ProblemDetails CUSTOMER_NOT_FOUND = new ProblemDetails

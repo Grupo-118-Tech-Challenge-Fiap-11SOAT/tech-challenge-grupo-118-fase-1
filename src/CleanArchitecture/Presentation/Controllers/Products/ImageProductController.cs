@@ -40,6 +40,12 @@ public class ImageProductController : IImageProductController
         _imageProductPresenter = ImageProductPresenter.Create();
     }
 
+    public static IImageProductController Create(IImageProductRepository imageProductRepository,
+        IProductRepository productRepository)
+    {
+        return new ImageProductController(imageProductRepository, productRepository);
+    }
+
     public async Task<List<ImageProductDto>?> GetProductImagesAsync(int productId, int skip = 0, int take = 10,
         CancellationToken cancellationToken = default)
     {
