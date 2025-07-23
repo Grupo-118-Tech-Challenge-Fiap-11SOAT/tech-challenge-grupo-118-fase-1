@@ -7,4 +7,5 @@ public interface IEmployeeRepository
     Task<Dto.Employee.Database.Employee?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task UpdateAsync(Dto.Employee.Database.Employee employee, CancellationToken cancellationToken = default);
     Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+    Task<Dto.Employee.Database.Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 }

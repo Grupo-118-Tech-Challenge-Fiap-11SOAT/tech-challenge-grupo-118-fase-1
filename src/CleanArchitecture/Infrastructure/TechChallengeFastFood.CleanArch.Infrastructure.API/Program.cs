@@ -58,6 +58,8 @@ using CustomerController = TechChallengeFastFood.CleanArch.Presentation.Controll
 using EmployeeController = TechChallengeFastFood.CleanArch.Presentation.Controllers.Employee.EmployeeController;
 using OrderController = TechChallengeFastFood.CleanArch.Presentation.Controllers.Order.OrderController;
 using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
+using Common.Interfaces.Login.Gateway;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Login;
 
 namespace TechChallengeFastFood.CleanArch.API;
 
@@ -149,6 +151,9 @@ public class Program
         builder.Services.AddTransient<IEmployeeGateway, EmployeeGateway>();
         builder.Services.AddTransient<IEmployeePresenter, EmployeePresenter>();
         builder.Services.AddTransient<IEmployeeController, EmployeeController>();
+
+        builder.Services.AddTransient<ILoginGateway, LoginGateway>();
+
 
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
         {

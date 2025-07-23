@@ -1,15 +1,17 @@
 ﻿using Common.Dto.Employee;
+using Common.Interfaces.Employee;
 using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Presenter;
 using Common.Interfaces.Employee.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
-using TechChallengeFastFood.CleanArch.Application.UseCases.Products.ImageProduct;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Employee;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Employee;
 
+[Authorize]
 public class EmployeeController : IEmployeeController
 {
     private readonly CreateEmployeeUseCase _createEmployeeUseCase;
@@ -20,9 +22,9 @@ public class EmployeeController : IEmployeeController
 
     private readonly IEmployeePresenter _employeePresenter;
 
-    public EmployeeController(IEmployeeRepository employeeRepository)
+    public EmployeeController(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
-        IEmployeeGateway employeeGateway = EmployeeGateway.Create(employeeRepository);
+        IEmployeeGateway employeeGateway = EmployeeGateway.Create(employeeRepository, passwordManager);
 
         _createEmployeeUseCase = CreateEmployeeUseCase.Create(employeeGateway);
         _getAllEmployeeUseCase = GetAllEmployeeUseCase.Create(employeeGateway);

@@ -1,5 +1,7 @@
-﻿using Common.Interfaces.Employee.Gateway;
+﻿using Common.Interfaces.Employee;
+using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Repositories;
+using System.Globalization;
 using EmployeeDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Employee.Entities.Employee;
 using EmployeeEntity = Common.Dto.Employee.Database.Employee;
 
@@ -8,17 +10,19 @@ namespace TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
 public class EmployeeGateway : IEmployeeGateway
 {
     private readonly IEmployeeRepository _employeeRepository;
+    private readonly IPasswordManager _passwordManager;
 
-    public EmployeeGateway(IEmployeeRepository employeeRepository)
+    public EmployeeGateway(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
         _employeeRepository = employeeRepository;
+        _passwordManager = passwordManager;
     }
 
-    public static IEmployeeGateway Create(IEmployeeRepository employeeRepository)
+    public static IEmployeeGateway Create(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
-        return new EmployeeGateway(employeeRepository);
+        return new EmployeeGateway(employeeRepository, passwordManager);
     }
-    
+
     /// <summary>
     /// Cria um novo funcionário no repositório.
     /// </summary>
@@ -27,6 +31,7 @@ public class EmployeeGateway : IEmployeeGateway
     /// <returns>Retorna o funcionário criado como objeto de domínio.</returns>
     public async Task<EmployeeDomain> CreateAsync(EmployeeDomain employee, CancellationToken cancellationToken = default)
     {
+        _passwordManager.CreatePasswordHash(employee.Password, out var hashedPassword);
         var employeeEntity = new EmployeeEntity
         (
             employee.Cpf,
@@ -34,7 +39,7 @@ public class EmployeeGateway : IEmployeeGateway
             employee.Surname,
             employee.Email,
             employee.BirthDay,
-            employee.Password,
+            hashedPassword,
             employee.Role,
             employee.IsActive
         );
@@ -104,6 +109,27 @@ public class EmployeeGateway : IEmployeeGateway
         return employeeDtos;
     }
 
+    public async Task<EmployeeDomain?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var employee = await _employeeRepository.GetByEmailAsync(email, cancellationToken);
+
+        if (employee is null)
+            return null;
+
+        return new EmployeeDomain
+        (
+            employee.Cpf,
+            employee.Name,
+            employee.Surname,
+            employee.Email,
+            employee.BirthDay,
+            employee.Password,
+            employee.Role,
+            employee.IsActive,
+            employee.Id
+        );
+    }
+
     /// <summary>
     /// Recupera um funcionário do repositório pelo identificador único.
     /// </summary>
@@ -119,7 +145,7 @@ public class EmployeeGateway : IEmployeeGateway
 
         if (employee is null)
             return null;
-        
+
         return new EmployeeDomain
         (
             employee.Cpf,

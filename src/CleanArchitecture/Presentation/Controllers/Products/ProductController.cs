@@ -3,12 +3,14 @@ using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Gateway;
 using Common.Interfaces.Products.Presenter;
 using Common.Interfaces.Products.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Products;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Products;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
+[Authorize]
 public class ProductController : IProductController
 {
     private readonly GetProductsUseCase _getProductsUseCase;

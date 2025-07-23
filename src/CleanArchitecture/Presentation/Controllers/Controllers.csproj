@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\..\Application\UseCases\UseCases.csproj" />
       <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
       <ProjectReference Include="..\..\Common\Common.Interfaces\Common.Interfaces.csproj" />

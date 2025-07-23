@@ -45,4 +45,10 @@ public class EmployeeRepository : IEmployeeRepository
         _dbContext.Employees.Update(employee).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Common.Dto.Employee.Database.Employee?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Employees
+            .FirstOrDefaultAsync(e => e.Email == email, cancellationToken);
+    }
 }
