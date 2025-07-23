@@ -8,6 +8,7 @@ using Infra.Api.MercadoPago.Payments.Options;
 using Microsoft.Extensions.Options;
 using Refit;
 using Domain.Payments.Dtos;
+using Domain.Order.Entities;
 
 namespace Infra.Api.MercadoPago.Payments.Processors
 {
@@ -16,12 +17,13 @@ namespace Infra.Api.MercadoPago.Payments.Processors
         IOptions<MercadoPagoOptions> options) : IPaymentProcessor
     {
         private readonly MercadoPagoOptions _options = options.Value;
+        private const string DEFAULT_UNIT = "https://api.mercadopago.com/";
 
-        public async Task<ProcessedPaymentDto> ProcessAsync(Payment payment, CancellationToken cancellationToken = default)
+        public async Task<ProcessedPaymentDto> ProcessAsync(Payment payment, Order order, CancellationToken cancellationToken = default)
         {
             try
             {
-                PaymentMercadoPagoModel paymentModel = CreatePaymentModel(payment);
+                PaymentMercadoPagoModel paymentModel = CreatePaymentModel(payment, order);
 
                 PaymentMercadoPagoDto paymentDto = await client
                     .CreateQrCodeAsync(_options.UserId, _options.PosId, paymentModel);
@@ -45,23 +47,24 @@ namespace Infra.Api.MercadoPago.Payments.Processors
             }
         }
         
-        private PaymentMercadoPagoModel CreatePaymentModel(Payment payment)
+        private PaymentMercadoPagoModel CreatePaymentModel(Payment payment, Order order)
         {
             return new PaymentMercadoPagoModel
             {
-                ExternalReference = payment.Uuid.ToString(),
+                ExternalReference = $"order_{order.Id}",
                 Title = "Pedido de lanche",
                 Description = "Pedido de lanche efetuado na loja TomeLanches",
-                NotificationUrl = _options.NotificationUrl,
+                NotificationUrl = $"{_options.NotificationUrl}/{payment.Uuid}",
                 TotalAmount = payment.Value,
-                Sponsor = new SponsorMercadoPagoModel
+                Items = order.OrderItems.Select(item => new ItemMercadoPagoModel
                 {
-                    Id = _options.SponsorId
-                },
-                CashOut = new CashOutMercadoPagoModel
-                {
-                    Amount = payment.Value
-                }
+                    Title = item.Product.Name,
+                    Description = item.Product.Description,
+                    UnitPrice = item.UnitPrice,
+                    Quantity = item.Quantity,
+                    UnitMeasure = DEFAULT_UNIT,
+                    TotalAmount = item.TotalValue
+                }).ToList(),
             };
         }
     }

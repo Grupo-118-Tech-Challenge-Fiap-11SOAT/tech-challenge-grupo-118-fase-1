@@ -10,14 +10,16 @@ namespace Application.Payments;
 public class PaymentManager(IPaymentProcessorFactory factory, IPaymentRepository repository,
     IPaymentService paymentService, IOrderService orderService) : IPaymentManager
 {
+    private const string PAYMENT_CREATED = "payment.created";
+
     public async Task<PaymentResponse> CreatePaymentAsync(PaymentRequest request, CancellationToken cancellationToken = default)
     {
-        Domain.Order.Entities.Order order = await orderService.ValidadeByIdAsync(request.OrderId, cancellationToken);
+        Domain.Order.Entities.Order order = await orderService.ValidateByIdAsync(request.OrderId, cancellationToken);
 
         var payment = new Payment(request.OrderId, request.Provider, order.Total);
 
         IPaymentProcessor processor = factory.GetProcessor(payment.Provider);
-        ProcessedPaymentDto paymentData = await processor.ProcessAsync(payment, cancellationToken);
+        ProcessedPaymentDto paymentData = await processor.ProcessAsync(payment, order, cancellationToken);
         UpdatePaymentData(payment, paymentData);
 
         await repository.CreateAsync(payment, cancellationToken);
@@ -25,17 +27,16 @@ public class PaymentManager(IPaymentProcessorFactory factory, IPaymentRepository
         return new PaymentResponse(payment);
     }
 
-    public async Task<PaymentResponse> ConfirmPaymentAsync(int id, CancellationToken cancellationToken = default)
+    public async Task ProcessCallbackAsync(Guid paymentUuid, MercadoPagoCallbackRequest request, CancellationToken cancellationToken = default)
     {
-        Payment payment = await paymentService.ValidateByIdAsync(id, cancellationToken);
-        Domain.Order.Entities.Order order = await orderService.ValidadeByIdAsync(payment.OrderId, cancellationToken);
-        await paymentService.ConfirmAsync(order, payment, cancellationToken);
-        return new PaymentResponse(payment);
-    }
+        if (request.Action != PAYMENT_CREATED)
+        {
+            return;
+        }
 
-    public async Task ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException("This method is not implemented yet.");
+        Payment payment = await paymentService.ValidateByUuidAsync(paymentUuid, cancellationToken);
+        Domain.Order.Entities.Order order = await orderService.ValidateByIdAsync(payment.OrderId, cancellationToken);
+        await paymentService.ConfirmAsync(order, payment, request.Id.ToString(), cancellationToken);
     }
  
     private void UpdatePaymentData(Payment payment, ProcessedPaymentDto paymentData)

@@ -10,6 +10,9 @@ public class OrderItem
     public Order Order { get; protected set; }
     public Product Product { get; protected set; }
 
+    public decimal TotalValue => Product.Price * Quantity;
+    public decimal UnitPrice => Product.Price; //TODO: unit price should be persisted instead of calculated
+
     public OrderItem(int orderId, int productId, int quantity)
     {
         this.ProductId = productId;

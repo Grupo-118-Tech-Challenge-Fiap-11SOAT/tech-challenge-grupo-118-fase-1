@@ -18,6 +18,12 @@ public class PaymentRepository(AppDbContext context) : IPaymentRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public Task<Payment?> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
+    {
+        return context.Payments
+            .FirstOrDefaultAsync(x => x.Uuid == uuid, cancellationToken);
+    }
+
     public async Task UpdateAsync(Payment payment, CancellationToken cancellationToken = default)
     {
         context.Update(payment);

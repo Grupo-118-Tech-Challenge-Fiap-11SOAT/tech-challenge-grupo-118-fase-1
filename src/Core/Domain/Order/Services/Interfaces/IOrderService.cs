@@ -8,7 +8,7 @@ public interface IOrderService
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The order matching the specified identifier</returns>
-    Task<Entities.Order> ValidadeByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Entities.Order> ValidateByIdAsync(int id, CancellationToken cancellationToken);
 
     /// <summary>
     /// Confurm a order.

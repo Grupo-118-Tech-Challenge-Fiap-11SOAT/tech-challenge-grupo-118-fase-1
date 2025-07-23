@@ -7,7 +7,7 @@ namespace Domain.Order.Services;
 
 public class OrderService(IOrderRepository repository) : IOrderService
 {
-    public async Task<Entities.Order> ValidadeByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<Entities.Order> ValidateByIdAsync(int id, CancellationToken cancellationToken)
     {
         var order = await repository.GetByIdAsync(id, cancellationToken);
         return order ?? throw new DomainException($"Order with id {id} not found.");

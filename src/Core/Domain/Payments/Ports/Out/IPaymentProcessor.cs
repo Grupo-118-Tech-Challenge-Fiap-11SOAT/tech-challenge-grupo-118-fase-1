@@ -11,5 +11,5 @@ public interface IPaymentProcessor
     /// <param name="payment">The payment to process.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    Task<ProcessedPaymentDto> ProcessAsync(Payment payment, CancellationToken cancellationToken = default);
+    Task<ProcessedPaymentDto> ProcessAsync(Payment payment, Order.Entities.Order order, CancellationToken cancellationToken = default);
 }

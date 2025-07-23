@@ -15,12 +15,19 @@ public class PaymentService(IPaymentRepository repository, IOrderService orderSe
         return payment ?? throw new DomainException($"Order with id {id} not found.");
     }
 
-    public async Task ConfirmAsync(Order.Entities.Order order, Payment payment, CancellationToken cancellationToken = default)
+    public async Task<Payment> ValidateByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
+    {
+        var payment = await repository.GetByUuidAsync(uuid, cancellationToken);
+        return payment ?? throw new DomainException($"Order with uuid {uuid} not found.");
+    }
+
+    public async Task ConfirmAsync(Order.Entities.Order order, Payment payment, string authorizationCode, CancellationToken cancellationToken = default)
     {
         if (payment.Status != PaymentStatus.Pending)
             throw new DomainException($"Payment with id {payment.Id} is not in a pending state.");
 
         payment.SetStatus(PaymentStatus.Approved);
+        payment.SetExternalId(authorizationCode);
         await repository.UpdateAsync(payment, cancellationToken);
 
         await orderService.ConfirmAsync(order, cancellationToken);

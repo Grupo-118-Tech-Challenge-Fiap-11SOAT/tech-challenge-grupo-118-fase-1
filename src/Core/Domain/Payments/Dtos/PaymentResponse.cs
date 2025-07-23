@@ -11,11 +11,6 @@ public class PaymentResponse(Payment payment)
     public int Id { get; set; } = payment.Id;
 
     /// <summary>
-    /// The uuid of the payment
-    /// </summary>
-    public Guid Uuid { get; set; } = payment.Uuid;
-
-    /// <summary>
     /// The id of the order
     /// </summary>
     public int OrderId { get; set; } = payment.OrderId;
