@@ -1,10 +1,9 @@
 using Common.Dto.Employee;
+using Common.Interfaces.Employee;
 using Common.Interfaces.Employee.Controller;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Interfaces.Employee.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -13,6 +12,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeController _employeeController;
@@ -21,9 +21,9 @@ public class EmployeeController : ControllerBase
     /// Inicializa uma nova instância de <see cref="EmployeeController"/>.
     /// </summary>
     /// <param name="employeeController">Serviço de controle de funcionários.</param>
-    public EmployeeController(IEmployeeRepository employeeRepository)
+    public EmployeeController(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
     {
-        _employeeController = Presentation.Controllers.Employee.EmployeeController.Create(employeeRepository);
+        _employeeController = Presentation.Controllers.Employee.EmployeeController.Create(employeeRepository, passwordManager);
     }
 
     private readonly ProblemDetails EMPLOYEE_NOT_FOUND = new ProblemDetails

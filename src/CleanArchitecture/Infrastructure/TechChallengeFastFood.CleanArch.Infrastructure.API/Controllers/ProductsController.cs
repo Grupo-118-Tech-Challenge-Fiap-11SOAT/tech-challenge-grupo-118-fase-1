@@ -1,13 +1,8 @@
 using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Interfaces.Products.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -17,7 +12,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-// [Authorize]
+[Authorize]
 public class ProductsController : ControllerBase
 {
     private readonly IProductController _productController;

@@ -1,16 +1,15 @@
 using Common.Dto.Customers;
 using Common.Interfaces.Customer.Controller;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Interfaces.Customer.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
 /// Controlador responsavel pelas operações relacionadas ao cliente.
 /// </summary>
+[Authorize]
 [Route("[controller]")]
 public class CustomerController : ControllerBase
 {

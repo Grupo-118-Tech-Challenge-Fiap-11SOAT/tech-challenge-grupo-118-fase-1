@@ -9,4 +9,5 @@ public interface IEmployeeGateway
     Task<EmployeeDomain?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
     Task<EmployeeDomain?> UpdateAsync(EmployeeDomain employee, CancellationToken cancellationToken = default);
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
+    Task<EmployeeDomain?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 }

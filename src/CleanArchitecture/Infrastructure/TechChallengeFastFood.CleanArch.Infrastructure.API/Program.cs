@@ -1,5 +1,3 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
 using Common.Dto.MercadoPago;
 using Common.Interfaces.Customer.Controller;
 using Common.Interfaces.Customer.Gateway;
@@ -10,6 +8,7 @@ using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Presenter;
 using Common.Interfaces.Employee.Repositories;
+using Common.Interfaces.Login.Gateway;
 using Common.Interfaces.Order.Controller;
 using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Presenter;
@@ -31,12 +30,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Refit;
+using System.Reflection;
+using System.Text.Json.Serialization;
+using TechChallengeFastFood.CleanArch.API.Converters;
 using TechChallengeFastFood.CleanArch.API.Filter;
 using TechChallengeFastFood.CleanArch.API.Handlers;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
-using Refit;
-using TechChallengeFastFood.CleanArch.API.Controllers;
-using TechChallengeFastFood.CleanArch.API.Converters;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
@@ -46,6 +46,7 @@ using TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Customer;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
+using TechChallengeFastFood.CleanArch.Presentation.Gateway.Login;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Products;
@@ -106,12 +107,14 @@ public class Program
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
 
-        //Uso via variável de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
+        //Uso via variavel de ambiente (Double underscore para representar o nível): ConnectionStrings__DefaultConnection
 
         builder.Services.Configure<MercadoPagoOptions>(builder.Configuration.GetSection("MercadoPago"));
 
         builder.Services.AddDbContext<CleanArchDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+        //TODO: Insert Dependency Injections implementation
 
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
 
@@ -127,6 +130,7 @@ public class Program
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
 
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
         {

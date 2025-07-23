@@ -26,7 +26,7 @@ public class OrderController : IOrderController
     private readonly GetActiveProductsByIdsUseCase _getActiveProductsByIdsUseCase;
 
     private readonly IOrderPresenter _orderPresenter;
-    
+
     public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
     {
         IOrderGateway orderGateway = OrderGateway.Create(orderRepository);
