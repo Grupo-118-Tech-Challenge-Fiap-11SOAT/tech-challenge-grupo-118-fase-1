@@ -116,43 +116,20 @@ public class Program
 
         //TODO: Insert Dependency Injections implementation
 
-        builder.Services.AddTransient<IProductController, ProductController>();
-        builder.Services.AddTransient<IProductGateway, ProductGateway>();
         builder.Services.AddTransient<IProductRepository, ProductRepository>();
-        builder.Services.AddTransient<IProductPresenter, ProductPresenter>();
 
-        builder.Services.AddTransient<IImageProductController, ImageProductController>();
-        builder.Services.AddTransient<IImageProductGateway, ImageProductGateway>();
         builder.Services.AddTransient<IImageProductRepository, ImageProductRepository>();
-        builder.Services.AddTransient<IImageProductPresenter, ImageProductPresenter>();
 
-        builder.Services.AddTransient<IOrderController, OrderController>();
-        builder.Services.AddTransient<IOrderGateway, OrderGateway>();
         builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-        builder.Services.AddTransient<IOrderPresenter, OrderPresenter>();
-        builder.Services.AddTransient<IOrderItemPresenter, OrderItemPresenter>();
 
         builder.Services.AddTransient<IPaymentRepository, PaymentRepository>();
-        builder.Services.AddTransient<IPaymentPresenter, PaymentPresenter>();
-        builder.Services.AddTransient<IPaymentGateway, PaymentGateway>();
-        builder.Services.AddTransient<IPaymentController, PaymentController>();
-        builder.Services.AddTransient<IPaymentController, PaymentController>();
 
         builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
-        builder.Services.AddTransient<ICustomerGateway, CustomerGateway>();
-        builder.Services.AddTransient<ICustomerPresenter, CustomerPresenter>();
-        builder.Services.AddTransient<ICustomerController, CustomerController>();
 
         builder.Services.AddTransient<IPaymentProcessorFactory, PaymentProcessorFactory>();
         builder.Services.AddTransient<MercadoPagoPaymentProcessor>();
 
         builder.Services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-        builder.Services.AddTransient<IEmployeeGateway, EmployeeGateway>();
-        builder.Services.AddTransient<IEmployeePresenter, EmployeePresenter>();
-        builder.Services.AddTransient<IEmployeeController, EmployeeController>();
-
-        builder.Services.AddTransient<ILoginGateway, LoginGateway>();
-        builder.Services.AddTransient<IPasswordManager, PasswordManager>();
 
 
         builder.Services.AddRefitClient<IMercadoPagoRepository>().ConfigureHttpClient(c =>
