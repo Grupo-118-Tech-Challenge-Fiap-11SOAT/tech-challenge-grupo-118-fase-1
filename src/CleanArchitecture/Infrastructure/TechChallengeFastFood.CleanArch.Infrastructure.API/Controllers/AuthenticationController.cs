@@ -63,14 +63,10 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto loginRequestDto, CancellationToken cancellationToken)
     {
         var employee = await _getByEmployeeEmailUseCase.ExecuteAsync(loginRequestDto.Email, cancellationToken);
-        if (employee == null)
-        {
-            return NotFound("Employee not found.");
-        }
 
-        if (!_verifyPasswordUseCase.Execute(loginRequestDto.Password, employee.Password))
+        if (employee == null || !_verifyPasswordUseCase.Execute(loginRequestDto.Password, employee.Password))
         {
-            return Unauthorized("Invalid password.");
+            return Unauthorized("Invalid credentials.");
         }
 
         var token = _loginUseCase.Execute(employee.Id, employee.Name, employee.Role);
