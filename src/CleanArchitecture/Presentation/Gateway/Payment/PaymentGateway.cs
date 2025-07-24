@@ -3,6 +3,7 @@ using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Gateway;
 using Common.Interfaces.Payments.Repositories;
 using PaymentDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Payments.Entities.Payment;
+using OrderDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities.Order;
 using PaymentEntity = Common.Dto.Payments.Database.Payment;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
@@ -25,7 +26,7 @@ public class PaymentGateway : IPaymentGateway
         return new PaymentGateway(paymentRepository, paymentProcessorFactory);
     }
 
-    public async Task<ProcessedPaymentDto> ProcessPaymentAsync(Domain.Entities.Payments.Entities.Payment payment,
+    public async Task<ProcessedPaymentDto> ProcessPaymentAsync(PaymentDomain payment, OrderDomain order,
         CancellationToken cancellationToken)
     {
         var processor = _paymentProcessorFactory.GetProcessor(payment.Provider);
@@ -39,7 +40,7 @@ public class PaymentGateway : IPaymentGateway
             payment.ExternalId,
             payment.UserPaymentCode);
 
-        var paymentData = await processor.ProcessAsync(paymentExternalDto, cancellationToken);
+        var paymentData = await processor.ProcessAsync(paymentExternalDto, order, cancellationToken);
         return paymentData;
     }
 
@@ -85,6 +86,20 @@ public class PaymentGateway : IPaymentGateway
         CancellationToken cancellationToken)
     {
         var payment = await _paymentRepository.GetByIdAsync(id, cancellationToken);
+
+        return new PaymentDomain(
+            payment.OrderId,
+            payment.Provider,
+            payment.Value,
+            payment.Id,
+            payment.ExternalId,
+            payment.UserPaymentCode);
+    }
+
+    public async Task<PaymentDomain> GetPaymentByUuidAsync(Guid uuid,
+        CancellationToken cancellationToken)
+    {
+        var payment = await _paymentRepository.GetByUuidAsync(uuid, cancellationToken);
 
         return new PaymentDomain(
             payment.OrderId,

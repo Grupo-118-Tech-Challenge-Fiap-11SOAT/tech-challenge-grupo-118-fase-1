@@ -21,6 +21,14 @@ public interface IPaymentRepository
     Task<Payment?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Retrieves a payment by its unique identifier.
+    /// </summary>
+    /// <param name="uuid">The unique universal identifier of the payment.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The payment matching the specified identifier, or null if no such order exists.</returns>
+    Task<Payment?> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an existing payment record in the database.
     /// </summary>
     /// <param name="payment">The payment that will be updated</param>

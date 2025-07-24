@@ -5,6 +5,7 @@ using Common.Interfaces.Payments;
 using External.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using Refit;
+using OrderDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities.Order;
 
 namespace External.Processors;
 
@@ -14,11 +15,11 @@ public class MercadoPagoPaymentProcessor(
 {
     private readonly MercadoPagoOptions _options = options.Value;
 
-    public async Task<ProcessedPaymentDto> ProcessAsync(PaymentExternalDto payment, CancellationToken cancellationToken = default)
+    public async Task<ProcessedPaymentDto> ProcessAsync(PaymentExternalDto payment, OrderDomain order, CancellationToken cancellationToken = default)
     {
         try
         {
-            PaymentMercadoPagoModel paymentModel = CreatePaymentModel(payment);
+            PaymentMercadoPagoModel paymentModel = CreatePaymentModel(payment, order);
 
             PaymentMercadoPagoDto paymentDto = await client
                 .CreateQrCodeAsync(_options.UserId, _options.PosId, paymentModel);
@@ -41,24 +42,25 @@ public class MercadoPagoPaymentProcessor(
             throw;
         }
     }
-        
-    private PaymentMercadoPagoModel CreatePaymentModel(PaymentExternalDto payment)
-    {
-        return new PaymentMercadoPagoModel
+    
+    private PaymentMercadoPagoModel CreatePaymentModel(PaymentExternalDto payment, OrderDomain order)
         {
-            ExternalReference = payment.Uuid.ToString(),
-            Title = "Pedido de lanche",
-            Description = "Pedido de lanche efetuado na loja TomeLanches",
-            NotificationUrl = _options.NotificationUrl,
-            TotalAmount = payment.Value,
-            Sponsor = new SponsorMercadoPagoModel
+            return new PaymentMercadoPagoModel
             {
-                Id = _options.SponsorId
-            },
-            CashOut = new CashOutMercadoPagoModel
-            {
-                Amount = payment.Value
-            }
-        };
-    }
+                ExternalReference = $"order_{order.Id}",
+                Title = "Pedido de lanche",
+                Description = "Pedido de lanche efetuado na loja TomeLanches",
+                NotificationUrl = $"{_options.NotificationUrl}/{payment.Uuid}",
+                TotalAmount = payment.Value,
+                Items = order.OrderItems.Select(item => new ItemMercadoPagoModel
+                {
+                    Title = item.Product.Name,
+                    Description = item.Product.Description,
+                    UnitPrice = item.UnitPrice,
+                    Quantity = item.Quantity,
+                    UnitMeasure = "unit",
+                    TotalAmount = item.TotalValue
+                }).ToList(),
+            };
+        }
 }

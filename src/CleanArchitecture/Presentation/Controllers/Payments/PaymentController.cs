@@ -11,7 +11,6 @@ using TechChallengeFastFood.CleanArch.Application.UseCases.Payments;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Order;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Payment;
 using TechChallengeFastFood.CleanArch.Presentation.Presenters.Payments;
-using PaymentCallbackRequest = Common.Dto.Payments.PaymentCallbackRequest;
 using PaymentResponse = Common.Dto.Payments.PaymentResponse;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
@@ -21,10 +20,11 @@ public class PaymentController : IPaymentController
     private readonly CreatePaymentUseCase _createPaymentUseCase;
     private readonly ConfirmPaymentUseCase _confirmPaymentUseCase;
     private readonly GetPaymentByIdUseCase _getPaymentByIdUseCase;
-
     private readonly GetOrderByIdUseCase _getOrderByIdUseCase;
-
+    private readonly GetPaymentByUuidUseCase _getPaymentByUuidUseCase;
     private readonly IPaymentPresenter _paymentPresenter;
+
+    private const string PAYMENT_CREATED = "payment.created";
 
     public PaymentController(IPaymentRepository paymentRepository,
         IOrderRepository orderRepository,
@@ -36,9 +36,8 @@ public class PaymentController : IPaymentController
         _createPaymentUseCase = CreatePaymentUseCase.Create(paymentGateway);
         _confirmPaymentUseCase = ConfirmPaymentUseCase.Create(paymentGateway, orderGateway);
         _getPaymentByIdUseCase = GetPaymentByIdUseCase.Create(paymentGateway);
-
         _getOrderByIdUseCase = GetOrderByIdUseCase.Create(orderGateway);
-
+        _getPaymentByUuidUseCase = GetPaymentByUuidUseCase.Create(paymentGateway);
         _paymentPresenter = PaymentPresenter.Create();
     }
 
@@ -70,8 +69,13 @@ public class PaymentController : IPaymentController
         return _paymentPresenter.Convert(updatedPayment);
     }
 
-    public async Task ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken)
+    public async Task ProcessCallbackAsync(Guid uuid, MercadoPagoCallbackRequest request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (request.Action != PAYMENT_CREATED)
+            return;
+
+        var payment = await _getPaymentByUuidUseCase.ExecuteAsync(uuid, cancellationToken);
+        var order = await _getOrderByIdUseCase.ExecuteAsync(payment.OrderId, cancellationToken);
+        await _confirmPaymentUseCase.ExecuteAsync(payment, order, cancellationToken);
     }
 }

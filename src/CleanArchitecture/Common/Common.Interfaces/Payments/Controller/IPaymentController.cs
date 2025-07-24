@@ -8,5 +8,5 @@ public interface IPaymentController
 
     Task<PaymentResponse> ConfirmPaymentAsync(int id, CancellationToken cancellationToken);
 
-    Task ProcessCallbackAsync(PaymentCallbackRequest request, CancellationToken cancellationToken);
+    Task ProcessCallbackAsync(Guid uuid, MercadoPagoCallbackRequest request, CancellationToken cancellationToken);
 }

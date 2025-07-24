@@ -27,7 +27,7 @@ public class CreatePaymentUseCase
     {
         var payment = new Payment(paymentRequest.OrderId, paymentRequest.Provider, order.Total);
 
-        var paymentData = await _paymentGateway.ProcessPaymentAsync(payment, cancellationToken);
+        var paymentData = await _paymentGateway.ProcessPaymentAsync(payment, order, cancellationToken);
 
         UpdatePaymentData(payment, paymentData);
 

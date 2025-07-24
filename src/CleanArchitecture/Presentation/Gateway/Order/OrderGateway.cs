@@ -2,6 +2,7 @@ using Common.Enums;
 using Common.Interfaces.Order.Gateway;
 using Common.Interfaces.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities;
+using TechChallengeFastFood.CleanArch.Domain.Entities.Products.Entities;
 using OrderDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Order.Entities.Order;
 using OrderEntity = Common.Dto.Order.Database.Order;
 
@@ -175,7 +176,13 @@ public class OrderGateway : IOrderGateway
 
         order.OrderItems.ToList().ForEach(item =>
         {
-            orderItems.Add(new OrderItem(item.ProductId, item.Quantity, order.Id));
+            orderItems.Add(new OrderItem(item.ProductId, item.Quantity, order.Id,
+                new Product(item.Product.Name,
+                    item.Product.Description,
+                    item.Product.Category,
+                    item.Product.Price,
+                    item.Product.IsActive,
+                    item.Product.Id)));
         });
 
         return orderItems;
