@@ -28,6 +28,13 @@ public class PaymentRepository : IPaymentRepository
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<Payment?> GetByUuidAsync(Guid uuid, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Payments
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Uuid == uuid, cancellationToken);
+    }
+
     public async Task UpdateAsync(Payment payment, CancellationToken cancellationToken = default)
     {
         _dbContext.Update(payment).State = EntityState.Modified;

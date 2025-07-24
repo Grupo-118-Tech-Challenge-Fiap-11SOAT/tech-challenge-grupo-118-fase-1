@@ -1,9 +1,6 @@
 using Common.Dto.Payments;
 using Common.Interfaces.Payments.Controller;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Repositories;
@@ -62,17 +59,17 @@ public class PaymentsController : ControllerBase
     /// <summary>
     /// Precess a payment update from Mercado Pago webhook.
     /// </summary>
+    /// <param name="paymentUuid">The updated payment uuid</param>
     /// <param name="request">The updated payment data</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    [ProducesResponseType(typeof(PaymentCallbackResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [HttpPost("webhooks/mercado-pago")]
-    public async Task<IActionResult> ProcessCallbackAsync([FromBody] PaymentCallbackRequest request,
-        CancellationToken cancellationToken)
+    [HttpPost("webhooks/mercado-pago/{paymentUuid:guid}")]
+    public async Task<IActionResult> ProcessCallbackAsync(Guid paymentUuid, [FromBody] MercadoPagoCallbackRequest request, CancellationToken cancellationToken)
     {
-        await _paymentController.ProcessCallbackAsync(request, cancellationToken);
+        await _paymentController.ProcessCallbackAsync(paymentUuid, request, cancellationToken);
         return Ok();
     }
 }
