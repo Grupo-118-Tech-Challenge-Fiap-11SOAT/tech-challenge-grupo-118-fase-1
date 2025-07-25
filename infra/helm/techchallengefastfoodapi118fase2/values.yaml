@@ -123,8 +123,13 @@ configMap:
     # Application configuration
     LOGGING__LOGLEVEL: "Information"
     AllowedHosts: "*"    
+
     # Configure JWT Timer
-    Jwt__ExpirationMinutes: "60"   
+    Jwt__ExpirationMinutes: "60"
+
+  # Mercado Pago configuration
+    MercadoPago__NotificationUrl: "https://webhook.site/8a7b20a7-0eab-4645-899c-17d419361fbd"
+
   # Environment variables to create from configMap keys
   envVars:
     - name: "LOGGING__LOGLEVEL"
@@ -135,6 +140,9 @@ configMap:
 
     - name: "Jwt__ExpirationMinutes"
       configMapKey: "Jwt__ExpirationMinutes"
+
+    - name: "MercadoPago__NotificationUrl"
+      secretKey: "MercadoPago__NotificationUrl"      
 
 # Secret configuration
 secret:
@@ -156,7 +164,6 @@ secret:
     MercadoPago__AccessToken: "APP_USR-306289084918862-072219-fa7e95087dbe33b631ffe685a321f0f9-2430042968"
     MercadoPago__UserId: "2430042968"
     MercadoPago__PosId: "POS01"
-    MercadoPago__NotificationUrl: "https://webhook.site/8a7b20a7-0eab-4645-899c-17d419361fbd"
 
     #Database configuration
     ConnectionStrings__DefaultConnection: "Data Source=sqlserver-clusterip, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
@@ -186,9 +193,6 @@ secret:
 
     - name: "MercadoPago__PosId"
       secretKey: "MercadoPago__PosId"
-
-    - name: "MercadoPago__NotificationUrl"
-      secretKey: "MercadoPago__NotificationUrl"
 
     - name: "ConnectionStrings__DefaultConnection"
       secretKey: "ConnectionStrings__DefaultConnection"
