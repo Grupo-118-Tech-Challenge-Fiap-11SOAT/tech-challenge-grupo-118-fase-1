@@ -13,6 +13,11 @@ public class PaymentRepository : IPaymentRepository
         _dbContext = context;
     }
 
+    public static IPaymentRepository Create(CleanArchDbContext context)
+    {
+        return new PaymentRepository(context);
+    }
+    
     public async Task<Payment> CreateAsync(Payment payment, CancellationToken cancellationToken = default)
     {
         await _dbContext.Payments.AddAsync(payment, cancellationToken);

@@ -13,6 +13,11 @@ public class ImageProductRepository : IImageProductRepository
         _context = context;
     }
 
+    public static IImageProductRepository Create(CleanArchDbContext context)
+    {
+        return new ImageProductRepository(context);
+    }
+    
     public async Task<ImageProduct> CreateImageProductAsync(ImageProduct imageProduct,
         CancellationToken cancellationToken = default)
     {

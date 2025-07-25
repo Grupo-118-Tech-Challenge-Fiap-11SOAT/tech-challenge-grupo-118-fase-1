@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-replicaCount: 2
+replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
@@ -40,27 +40,14 @@ podAnnotations: {}
 podLabels: {}
 
 podSecurityContext: {}
-  # fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
   # Default port for ingress and test compatibility
   port: 80
-  instances:
-    - name: fastfood-api-clusterip
-      type: ClusterIP
-      port: 80
-      targetPort: 8080
-      portName: http
-      
+  instances:      
 # Configuration to test the api that runs inside cluster
     - name: fastfood-api-nodeport
       type: NodePort
@@ -122,16 +109,9 @@ autoscaling:
 
 # Additional volumes on the output Deployment definition.
 volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
 
 # ConfigMap configuration
 configMap:
@@ -143,16 +123,26 @@ configMap:
     # Application configuration
     LOGGING__LOGLEVEL: "Information"
     AllowedHosts: "*"    
+
     # Configure JWT Timer
-    Jwt__ExpirationMinutes: "60"   
+    Jwt__ExpirationMinutes: "60"
+
+  # Mercado Pago configuration
+    MercadoPago__NotificationUrl: "https://webhook.site/8a7b20a7-0eab-4645-899c-17d419361fbd"
+
   # Environment variables to create from configMap keys
   envVars:
     - name: "LOGGING__LOGLEVEL"
       configMapKey: "LOGGING__LOGLEVEL"
+      
     - name: "AllowedHosts"
       configMapKey: "AllowedHosts"
+
     - name: "Jwt__ExpirationMinutes"
       configMapKey: "Jwt__ExpirationMinutes"
+
+    - name: "MercadoPago__NotificationUrl"
+      secretKey: "MercadoPago__NotificationUrl"      
 
 # Secret configuration
 secret:
@@ -166,13 +156,14 @@ secret:
     Jwt__Issuer: "http://localhost:8080"
     Jwt__Audience: "http://localhost:8080"
 
+    # Security Key
+    Security__Key: "ea9083a270357e95a1bdb53188a66bb4"
+
     # Mercado Pago configuration
     MercadoPago__BaseUrl: "https://api.mercadopago.com"
-    MercadoPago__AccessToken: "TEST-5682763374989417-050719-e82307aaf8e2a1218fedc910c6e75726-407780263"
-    MercadoPago__UserId: "407780263"
+    MercadoPago__AccessToken: "APP_USR-306289084918862-072219-fa7e95087dbe33b631ffe685a321f0f9-2430042968"
+    MercadoPago__UserId: "2430042968"
     MercadoPago__PosId: "POS01"
-    MercadoPago__SponsorId: "1726345772"
-    MercadoPago__NotificationUrl: "https://webhook.site/13d12356-257d-4668-83db-1eb7e99498d7"
 
     #Database configuration
     ConnectionStrings__DefaultConnection: "Data Source=sqlserver-clusterip, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
@@ -188,6 +179,9 @@ secret:
     - name: "Jwt__Audience"
       secretKey: "Jwt__Audience"
 
+    - name: "Security__Key"
+      secretKey: "Security__Key"      
+
     - name: "MercadoPago__BaseUrl"
       secretKey: "MercadoPago__BaseUrl"
 
@@ -199,12 +193,6 @@ secret:
 
     - name: "MercadoPago__PosId"
       secretKey: "MercadoPago__PosId"
-
-    - name: "MercadoPago__SponsorId"
-      secretKey: "MercadoPago__SponsorId"
-
-    - name: "MercadoPago__NotificationUrl"
-      secretKey: "MercadoPago__NotificationUrl"
 
     - name: "ConnectionStrings__DefaultConnection"
       secretKey: "ConnectionStrings__DefaultConnection"

@@ -3,6 +3,8 @@ using Common.Interfaces.Customer.Controller;
 using Common.Interfaces.Customer.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Repositories;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -18,9 +20,11 @@ public class CustomerController : ControllerBase
     /// <summary>
     /// Inicializa uma nova instancia de <see cref="CustomerController"/>.
     /// </summary>
-    /// <param name="customerRepository">Servico de controle de clientes.</param>
-    public CustomerController(ICustomerRepository customerRepository)
+    /// <param name="cleanArchDbContext"></param>
+    public CustomerController(CleanArchDbContext cleanArchDbContext)
     {
+        var customerRepository = CustomerRepository.Create(cleanArchDbContext);
+
         _customerController = Presentation.Controllers.Customer.CustomerController.Create(customerRepository);
     }
 

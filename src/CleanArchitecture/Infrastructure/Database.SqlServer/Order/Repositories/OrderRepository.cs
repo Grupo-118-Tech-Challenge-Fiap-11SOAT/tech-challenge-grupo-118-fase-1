@@ -13,6 +13,11 @@ public class OrderRepository : IOrderRepository
         _dbContext = context;
     }
 
+    public static IOrderRepository Create(CleanArchDbContext context)
+    {
+        return new OrderRepository(context);
+    }
+    
     public async Task<List<Common.Dto.Order.Database.Order>> GetAllAsync(OrderStatus status,
         CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {

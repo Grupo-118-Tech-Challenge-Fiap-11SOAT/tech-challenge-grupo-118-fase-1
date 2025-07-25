@@ -3,6 +3,8 @@ using Common.Interfaces.Products.Controller;
 using Common.Interfaces.Products.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Products;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -35,10 +37,12 @@ public class ProductsController : ControllerBase
     /// <summary>
     /// Product constructor
     /// </summary>
-    /// <param name="productRepository"></param>
-    /// <param name="imageProductRepository"></param>
-    public ProductsController(IProductRepository productRepository, IImageProductRepository imageProductRepository)
+    /// <param name="cleanArchDbContext"></param>
+    public ProductsController(CleanArchDbContext cleanArchDbContext)
     {
+        var productRepository = ProductRepository.Create(cleanArchDbContext);
+        var imageProductRepository = ImageProductRepository.Create(cleanArchDbContext);
+
         _productController = ProductController.Create(productRepository);
         _imageProductController = ImageProductController.Create(imageProductRepository, productRepository);
     }

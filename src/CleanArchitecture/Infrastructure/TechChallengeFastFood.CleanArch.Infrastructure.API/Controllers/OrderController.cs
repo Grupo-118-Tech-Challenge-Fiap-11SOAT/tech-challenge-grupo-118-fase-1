@@ -7,6 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Products.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -34,8 +37,15 @@ public class OrderController : ControllerBase
         Detail = "Please check the order ID and ensure that payment details are available."
     };
 
-    public OrderController(IOrderRepository orderRepository, IProductRepository productRepository)
+    /// <summary>
+    /// Order constructor
+    /// </summary>
+    /// <param name="cleanArchDbContext"></param>
+    public OrderController(CleanArchDbContext cleanArchDbContext)
     {
+        var orderRepository = OrderRepository.Create(cleanArchDbContext);
+        var productRepository = ProductRepository.Create(cleanArchDbContext);
+        
         _orderController = Presentation.Controllers.Order.OrderController.Create(orderRepository, productRepository);
     }
 

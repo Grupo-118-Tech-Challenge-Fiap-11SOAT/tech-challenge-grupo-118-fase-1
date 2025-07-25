@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Common.Interfaces.Order.Repositories;
 using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Presentation.Controllers.Payments;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
@@ -17,10 +20,17 @@ public class PaymentsController : ControllerBase
 {
     private readonly IPaymentController _paymentController;
 
-    public PaymentsController(IPaymentRepository paymentRepository,
-        IOrderRepository orderRepository,
+    /// <summary>
+    /// Payments constructor
+    /// </summary>
+    /// <param name="cleanArchDbContext"></param>
+    /// <param name="paymentProcessorFactory"></param>
+    public PaymentsController(CleanArchDbContext cleanArchDbContext,
         IPaymentProcessorFactory paymentProcessorFactory)
     {
+        var paymentRepository = PaymentRepository.Create(cleanArchDbContext);
+        var orderRepository = OrderRepository.Create(cleanArchDbContext);
+        
         _paymentController = PaymentController.Create(paymentRepository, orderRepository, paymentProcessorFactory);
     }
 

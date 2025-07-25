@@ -14,6 +14,11 @@ public class ProductRepository : IProductRepository
         _dbContext = context;
     }
 
+    public static IProductRepository Create(CleanArchDbContext context)
+    {
+        return new ProductRepository(context);
+    }
+
     public async Task<List<Product>?> GetProductsAsync(int skip = 0, int take = 10,
         bool searchActiveProducts = false,
         CancellationToken cancellationToken = default)

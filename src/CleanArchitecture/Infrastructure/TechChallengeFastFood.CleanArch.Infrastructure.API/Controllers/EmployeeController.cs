@@ -4,6 +4,8 @@ using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositories;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -20,9 +22,11 @@ public class EmployeeController : ControllerBase
     /// <summary>
     /// Inicializa uma nova instância de <see cref="EmployeeController"/>.
     /// </summary>
-    /// <param name="employeeController">Serviço de controle de funcionários.</param>
-    public EmployeeController(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
+    /// <param name="cleanArchDbContext"></param>
+    /// <param name="passwordManager"></param>
+    public EmployeeController(CleanArchDbContext cleanArchDbContext, IPasswordManager passwordManager)
     {
+        var employeeRepository = EmployeeRepository.Create(cleanArchDbContext);
         _employeeController = Presentation.Controllers.Employee.EmployeeController.Create(employeeRepository, passwordManager);
     }
 

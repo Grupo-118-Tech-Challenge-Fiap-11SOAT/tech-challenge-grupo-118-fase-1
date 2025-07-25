@@ -12,6 +12,11 @@ public class EmployeeRepository : IEmployeeRepository
         _dbContext = dbContext;
     }
 
+    public static IEmployeeRepository Create(CleanArchDbContext dbContext)
+    {
+        return new EmployeeRepository(dbContext);
+    }
+    
     public async Task<Common.Dto.Employee.Database.Employee> CreateAsync(Common.Dto.Employee.Database.Employee employee, CancellationToken cancellationToken = default)
     {
         await _dbContext.Employees.AddAsync(employee, cancellationToken);
