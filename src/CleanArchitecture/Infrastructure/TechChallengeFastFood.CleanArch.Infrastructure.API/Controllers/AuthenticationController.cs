@@ -5,9 +5,12 @@ using Common.Interfaces.Employee.Gateway;
 using Common.Interfaces.Employee.Presenter;
 using Common.Interfaces.Employee.Repositories;
 using Common.Interfaces.Login.Gateway;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 using TechChallengeFastFood.CleanArch.Application.UseCases.Login;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database;
+using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositories;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
 using TechChallengeFastFood.CleanArch.Presentation.Gateway.Login;
 
@@ -24,8 +27,15 @@ public class AuthenticationController : Controller
 
     private readonly IEmployeePresenter _employeePresenter;
 
-    public AuthenticationController(IEmployeeRepository employeeRepository, IPasswordManager passwordManager)
+    /// <summary>
+    /// Authentication constructor
+    /// </summary>
+    /// <param name="cleanArchDbContext"></param>
+    /// <param name="passwordManager"></param>
+    public AuthenticationController(CleanArchDbContext cleanArchDbContext, IPasswordManager passwordManager)
     {
+        var employeeRepository = EmployeeRepository.Create(cleanArchDbContext);
+
         IEmployeeGateway employeeGateway = EmployeeGateway.Create(employeeRepository, passwordManager);
         ILoginGateway loginGateway = LoginGateway.Create(passwordManager);
 
@@ -36,13 +46,14 @@ public class AuthenticationController : Controller
     }
 
     /// <summary>
-    /// Realiza o registro de um novo funcionário.
+    /// Realiza o registro de um novo funcionÃ¡rio.
     /// </summary>
-    /// <param name="employeeRequestDto">DTO contendo os dados do funcionário a ser registrado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Retorna os dados do funcionário criado.</returns>
+    /// <param name="employeeRequestDto">DTO contendo os dados do funcionÃ¡rio a ser registrado.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operaÃ§Ã£o assÃ­ncrona.</param>
+    /// <returns>Retorna os dados do funcionÃ¡rio criado.</returns>
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> RegisterAsync([FromBody] EmployeeRequestDto employeeRequestDto,
+        CancellationToken cancellationToken)
     {
         var createdEmployee = await _createEmployeeUseCase.ExecuteAsync(employeeRequestDto, cancellationToken);
         return Ok(_employeePresenter.Convert(createdEmployee));
@@ -50,17 +61,18 @@ public class AuthenticationController : Controller
 
 
     /// <summary>
-    /// Realiza o login de um funcionário utilizando as credenciais fornecidas.
+    /// Realiza o login de um funcionÃ¡rio utilizando as credenciais fornecidas.
     /// </summary>
-    /// <param name="loginRequestDto">DTO contendo o e-mail e a senha do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="loginRequestDto">DTO contendo o e-mail e a senha do funcionÃ¡rio.</param>
+    /// <param name="cancellationToken">Token para cancelamento da operaÃ§Ã£o assÃ­ncrona.</param>
     /// <returns>
-    /// Retorna um token de autenticação caso o login seja bem-sucedido.
-    /// Caso o funcionário não seja encontrado, retorna <see cref="NotFound"/>.
-    /// Caso a senha seja inválida ou o token não seja gerado, retorna <see cref="Unauthorized"/>.
+    /// Retorna um token de autenticaÃ§Ã£o caso o login seja bem-sucedido.
+    /// Caso o funcionÃ¡rio nÃ£o seja encontrado, retorna <see cref="NotFound"/>.
+    /// Caso a senha seja invÃ¡lida ou o token nÃ£o seja gerado, retorna <see cref="Unauthorized"/>.
     /// </returns>
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto loginRequestDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto loginRequestDto,
+        CancellationToken cancellationToken)
     {
         var employee = await _getByEmployeeEmailUseCase.ExecuteAsync(loginRequestDto.Email, cancellationToken);
 

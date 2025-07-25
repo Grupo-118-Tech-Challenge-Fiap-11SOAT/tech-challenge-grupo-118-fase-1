@@ -13,6 +13,11 @@ public class CustomerRepository : ICustomerRepository
         _dbContext = dbContext;
     }
 
+    public static ICustomerRepository Create(CleanArchDbContext context)
+    {
+        return new CustomerRepository(context);
+    }
+
     public async Task<Customer> CreateAsync(Customer customer, CancellationToken cancellationToken = default)
     {
         await _dbContext.Customers.AddAsync(customer, cancellationToken);
