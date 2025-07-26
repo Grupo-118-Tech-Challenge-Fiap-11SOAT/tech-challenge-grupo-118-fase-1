@@ -137,3 +137,108 @@ docker build . -f src/CleanArchitecture/Infrastructure/TechChallengeFastFood.Cle
 ```bash
 helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallengefastfoodapi118fase2
 ```
+
+## Data Flow Diagram
+```mermaid
+%% Objects Definition
+flowchart TD
+
+  User
+
+%% Infrastructure Layer
+API(🔵Handler)
+Repository(🔵Database Access)
+Database[(🔵Database created with Entity Framework)]
+
+%%Presentation Layer
+Controller[🟢Clean Architecture Controller]
+Gateway[🟢Clean Architecture Gateway]
+Presenter[🟢Clean Architecture Presenter]
+
+%% Application
+UseCase[🔴Clean Architecture UseCase]
+
+%% Domain Layer
+Entity[🟡Clean Architecture Domain]
+
+%% Data inbound 
+User ---> | 1-HTTP Request | API
+API ---> | 2-Parse/Validate | Controller
+Controller ----> | 3-Call | UseCase
+UseCase ---> | 4-Validate Inputs | Entity
+UseCase -----> | 5-Call | Gateway
+Gateway ---> | 6-Create Database Entity | Repository
+Repository ---> | 7-Using EF Core | Database
+
+%% Data outbound
+Repository ---> | 8-Returns values | Gateway
+Gateway ---> | 9-Convert DB Entity to Domain Entity | UseCase
+UseCase ---> | 10-Returns | Controller
+Controller ---> | 11-Call | Presenter
+Presenter ---> | 12-Creates Output Result | Controller
+Controller ---> | 13-Return Data | API
+API ---> | 14-Return Data | User
+```
+
+## Order Sequence Diagram
+```mermaid
+sequenceDiagram
+    actor Client
+    participant APIOrderController
+    
+    participant CleanOrderController
+
+    participant GetActiveProductsByIdsUseCase
+    participant ProductGateway
+    participant ProductRepository
+
+    participant OrderGateway
+    participant OrderRepository
+    participant OrderPresenter
+    participant OrderItemPresenter
+
+    participant CreateOrderUseCase
+
+
+    participant Order
+    participant Database
+
+    %% Request from client to API
+    Client ->> APIOrderController: HTTP POST
+    APIOrderController ->> CleanOrderController: DataConversion and <br/>Validation
+    
+    %% Clean Order Controller Logic
+    CleanOrderController ->> GetActiveProductsByIdsUseCase: Search ActiveProducts
+    GetActiveProductsByIdsUseCase ->> ProductGateway: Search ActiveProducts
+    ProductGateway ->> ProductRepository: Search ActiveProducts
+    ProductRepository ->> Database: Get Products Elements
+
+    %% Search Active Products
+    Database -->> ProductRepository: List<Product>
+    ProductRepository -->> ProductGateway: List<Product>
+    ProductGateway -->> GetActiveProductsByIdsUseCase: List<Product>
+    GetActiveProductsByIdsUseCase -->> CleanOrderController: List<Product>
+
+    %% Create Order
+    CleanOrderController ->> CreateOrderUseCase: Create Order Request
+    CreateOrderUseCase ->> Order: Create Order Entity
+    CreateOrderUseCase ->> OrderGateway: Call Gateway to Persist
+    OrderGateway ->> OrderRepository: Persist Data
+    OrderRepository ->> Database: Create Order Entry
+
+    %% Return Persisted Data
+    OrderRepository -->> OrderGateway: Return Created Order
+    OrderGateway -->> CreateOrderUseCase: Return Domain Entity Order
+    CreateOrderUseCase -->> CleanOrderController: Return OrderGateway
+
+    %% Send Data to Presenter
+    CleanOrderController -> OrderPresenter: Send Order Entity to Convert
+    OrderPresenter -> OrderItemPresenter: Convert elements to items
+
+    OrderItemPresenter -->> OrderPresenter: Return items
+    OrderPresenter -->> CleanOrderController: Return converted items
+
+    %% Send Data to API
+    CleanOrderController -->> APIOrderController: Create Order result data
+    APIOrderController -->> Client: Return data to client
+```
