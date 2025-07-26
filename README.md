@@ -82,17 +82,20 @@ as variáveis de ambiemte com o prefixo "MercadoPago__" no docker-compose.yaml.
 
 Por ainda não ser possível confirmar um pagamento pix em ambiente de sandbox, a simulação de confirmação pode ser feita através do endpoint /payment/{id}, informando o código do pagamento a ser confirmado.
 
-## Image Build (from the root of the project)
+## Build da Imagem (da raiz do projeto)
 
 ```bash
 docker build . -f src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:latest -t fiaptechchallengelocal/techchallengefastfoodapi118fase2:1.0.0
 ```
 
-## Deploy with no secrets or config (from the root of the project)
+## Deploy (da raiz do projeto)
 
 ```bash
 helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallengefastfoodapi118fase2
 ```
+
+## Acessando a API
+Se o deploy foi realizado com sucesso, a API estará acessível através do endereço: http://localhost:30080
 
 # Diagramas
 
