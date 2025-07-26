@@ -115,8 +115,8 @@ volumeMounts: []
 
 # ConfigMap configuration
 configMap:
-  enabled: false
-  name: ""  # If empty, will use the chart fullname
+  enabled: true
+  name: "tech-challenge-fast-food-api-fase2"  # If empty, will use the chart fullname
   annotations: {}
   # ConfigMap data - these values will be stored as plain text
   data:
@@ -142,7 +142,7 @@ configMap:
       configMapKey: "Jwt__ExpirationMinutes"
 
     - name: "MercadoPago__NotificationUrl"
-      secretKey: "MercadoPago__NotificationUrl"      
+      configMapKey: "MercadoPago__NotificationUrl"      
 
 # Secret configuration
 secret:
