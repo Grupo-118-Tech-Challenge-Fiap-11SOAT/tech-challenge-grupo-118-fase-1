@@ -289,9 +289,11 @@ sequenceDiagram
 ## Kubernetes
 
 ### Arquitetura do Cluster - Cenário Local
+A ideia desse modelo e termos um modelo adequado para desenvolvimento, tendo o acesso a banco de dados em um container configurado via NodePort, dessa maneira podemos conectar enquanto implementamos as funcionalidades e ao mesmo tempo, a aplicação implantada dentro do cluster irá acessar via ClusterIP service
 
 ![Arquitetura do Cluster Local](1%20-%20Kubernetes%20Architecture%20-%20Tech%20Challenge%20-%20Abordagem%20Local.drawio.png)
 
 ### Arquitetura do Cluster - Cenário Produção
+Nesse modelo, apesar de não estar contido inteiramente em nosso Helm chart por inteiro, pensamos em como implementariamos a arquitetura da aplicação num contexto produtivo. Então pensamos em inserir um Ingress, para permitir o acesso via URL amigavel. Além disso, inserimos um service do tipo [ExternalName](https://kubernetes.io/docs/concepts/services-networking/service/#externalname) para mapear o host de banco de dados do provedor de cloud, para um service de Kubernetes. Desse modo, caso seja necessãrio migrar esse host para outro (mantendo as configurações de usuário e senha), podemos apenas ajustar esse ExternalName
 
 ![Arquitetura do Cluster Produção](2%20-%20Kubernetes%20Architecture%20-%20Tech%20Challenge%20-%20Abordagem%20_Produtiva_.drawio.png)
