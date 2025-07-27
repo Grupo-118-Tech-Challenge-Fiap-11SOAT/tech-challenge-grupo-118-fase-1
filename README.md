@@ -98,8 +98,8 @@ helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallenge
 Se o deploy foi realizado com sucesso, a API estará acessível através do endereço: http://localhost:30080
 
 # Diagramas
-
-## Diagrama de fluxo de dados
+## Aplicação
+### Diagrama de fluxo de dados
 ```mermaid
 %% Objects Definition
 flowchart TD
@@ -141,7 +141,7 @@ Controller ---> | 13-Return Data | API
 API ---> | 14-Return Data | User
 ```
 
-## Diagrama de sequência - Pedido
+### Diagrama de sequência - Pedido
 ```mermaid
 sequenceDiagram
     actor Client
@@ -204,7 +204,7 @@ sequenceDiagram
     APIOrderController -->> Client: Return data to client
 ```
 
-## Diagrama de sequência - Pagamento
+### Diagrama de sequência - Pagamento
 ```mermaid
 sequenceDiagram
     actor Client
@@ -285,3 +285,13 @@ sequenceDiagram
     PaymentPresenter -->> PaymentController: PaymentResponse
     PaymentController -->> Client: Return PaymentResponse
 ```
+
+## Kubernetes
+
+### Arquitetura do Cluster - Cenário Local
+
+![Arquitetura do Cluster Local](1%20-%20Kubernetes%20Architecture%20-%20Tech%20Challenge%20-%20Abordagem%20Local.drawio.png)
+
+### Arquitetura do Cluster - Cenário Produção
+
+![Arquitetura do Cluster Produção](2%20-%20Kubernetes%20Architecture%20-%20Tech%20Challenge%20-%20Abordagem%20_Produtiva_.drawio.png)
