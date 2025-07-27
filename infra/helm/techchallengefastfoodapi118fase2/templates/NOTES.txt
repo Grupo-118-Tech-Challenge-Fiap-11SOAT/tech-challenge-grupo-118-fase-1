@@ -8,13 +8,12 @@
 {{- else }}
 {{- range .Values.service.instances }}
 {{- if eq .type "NodePort" }}
-  export NODE_PORT=$(kubectl get --namespace {{ $.Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "techchallengefastfoodapi118fase2.fullname" $ }}-{{ .name }})
-  export NODE_IP=$(kubectl get nodes --namespace {{ $.Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo "{{ .name }}: http://$NODE_IP:$NODE_PORT"
+  export NODE_PORT=$(kubectl get --namespace {{ $.Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ .name }})
+  echo "{{ .name }}: http://localhost:$NODE_PORT"
 {{- else if eq .type "LoadBalancer" }}
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.
-           You can watch its status by running 'kubectl get --namespace {{ $.Release.Namespace }} svc -w {{ include "techchallengefastfoodapi118fase2.fullname" $ }}-{{ .name }}'
-  export SERVICE_IP=$(kubectl get svc --namespace {{ $.Release.Namespace }} {{ include "techchallengefastfoodapi118fase2.fullname" $ }}-{{ .name }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+           You can watch its status by running 'kubectl get --namespace {{ $.Release.Namespace }} svc -w {{ .name }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ $.Release.Namespace }} {{ .name }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
   echo "{{ .name }}: http://$SERVICE_IP:{{ .port }}"
 {{- else if eq .type "ClusterIP" }}
   export POD_NAME=$(kubectl get pods --namespace {{ $.Release.Namespace }} -l "app.kubernetes.io/name={{ include "techchallengefastfoodapi118fase2.name" $ }},app.kubernetes.io/instance={{ $.Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
