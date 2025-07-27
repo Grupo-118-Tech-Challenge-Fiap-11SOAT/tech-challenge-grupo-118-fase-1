@@ -203,3 +203,85 @@ sequenceDiagram
     CleanOrderController -->> APIOrderController: Create Order result data
     APIOrderController -->> Client: Return data to client
 ```
+
+## Diagrama de sequência - Pagamento
+```mermaid
+sequenceDiagram
+    actor Client
+    participant PaymentController
+    participant GetOrderByIdUseCase
+    participant OrderGateway
+    participant OrderRepository
+
+    participant CreatePaymentUseCase
+    participant Payment
+    participant PaymentGateway
+    participant PaymentRepository
+    participant PaymentProcessorFactory
+    participant PaymentProcessor
+    participant PaymentPresenter
+
+    participant GetPaymentByIdUseCase
+    participant ConfirmPaymentUseCase
+    participant ConfirmOrderUseCase
+
+    %% Create Payment Flow
+    Client ->> PaymentController: CreatePaymentAsync(PaymentRequest)
+    PaymentController ->> GetOrderByIdUseCase: ExecuteAsync(OrderId)
+    GetOrderByIdUseCase ->> OrderGateway: GetByIdAsync
+    OrderGateway ->> OrderRepository: GetByIdAsync
+    OrderRepository -->> OrderGateway: Order
+    OrderGateway -->> GetOrderByIdUseCase: Order
+    GetOrderByIdUseCase -->> PaymentController: Order
+
+    PaymentController ->> CreatePaymentUseCase: ExecuteAsync(Order, PaymentRequest)
+    CreatePaymentUseCase ->> Payment: new Payment(...)
+    CreatePaymentUseCase ->> PaymentGateway: ProcessPaymentAsync(Payment)
+    PaymentGateway ->> PaymentProcessorFactory: GetProcessor
+    PaymentProcessorFactory -->> PaymentGateway: PaymentProcessor
+    PaymentGateway ->> PaymentProcessor: ProcessAsync
+    PaymentProcessor -->> PaymentGateway: ProcessedPaymentDto
+    PaymentGateway -->> CreatePaymentUseCase: ProcessedPaymentDto
+    CreatePaymentUseCase ->> PaymentGateway: CreatePaymentAsync
+    PaymentGateway ->> PaymentRepository: CreateAsync
+    PaymentRepository -->> PaymentGateway: Persisted PaymentEntity
+    PaymentGateway -->> CreatePaymentUseCase: Payment
+    CreatePaymentUseCase -->> PaymentController: Payment
+
+    PaymentController ->> PaymentPresenter: Convert(Payment)
+    PaymentPresenter -->> PaymentController: PaymentResponse
+    PaymentController -->> Client: Return PaymentResponse
+
+    %% Confirm Payment Flow
+    Client ->> PaymentController: ConfirmPaymentAsync(PaymentId)
+    PaymentController ->> GetPaymentByIdUseCase: ExecuteAsync(id)
+    GetPaymentByIdUseCase ->> PaymentGateway: GetPaymentByIdAsync
+    PaymentGateway ->> PaymentRepository: GetByIdAsync
+    PaymentRepository -->> PaymentGateway: PaymentEntity
+    PaymentGateway -->> GetPaymentByIdUseCase: Domain Payment
+    GetPaymentByIdUseCase -->> PaymentController: Payment
+
+    PaymentController ->> GetOrderByIdUseCase: ExecuteAsync(OrderId)
+    GetOrderByIdUseCase ->> OrderGateway: GetByIdAsync
+    OrderGateway ->> OrderRepository: GetByIdAsync
+    OrderRepository -->> OrderGateway: Order
+    OrderGateway -->> GetOrderByIdUseCase: Order
+    GetOrderByIdUseCase -->> PaymentController: Order
+
+    PaymentController ->> ConfirmPaymentUseCase: ExecuteAsync(Payment, Order)
+    ConfirmPaymentUseCase ->> Payment: SetStatusToApproved
+    ConfirmPaymentUseCase ->> PaymentGateway: ConfirmPaymentAsync
+    PaymentGateway ->> PaymentRepository: UpdateAsync
+    PaymentRepository -->> PaymentGateway: void
+    ConfirmPaymentUseCase ->> ConfirmOrderUseCase: ExecuteAsync(Order)
+    ConfirmOrderUseCase ->> OrderGateway: UpdateAsync
+    OrderGateway ->> OrderRepository: UpdateAsync
+    OrderRepository -->> OrderGateway: void
+    OrderGateway -->> ConfirmOrderUseCase: void
+    ConfirmOrderUseCase -->> ConfirmPaymentUseCase: void
+    ConfirmPaymentUseCase -->> PaymentController: Updated Payment
+
+    PaymentController ->> PaymentPresenter: Convert(Payment)
+    PaymentPresenter -->> PaymentController: PaymentResponse
+    PaymentController -->> Client: Return PaymentResponse
+```
