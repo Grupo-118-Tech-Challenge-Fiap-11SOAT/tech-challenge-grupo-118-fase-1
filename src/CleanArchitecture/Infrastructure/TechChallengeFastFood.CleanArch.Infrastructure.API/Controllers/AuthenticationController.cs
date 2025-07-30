@@ -9,6 +9,9 @@ using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositor
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
+/// <summary>
+/// Controller for handling employee authentication operations such as registration and login.
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class AuthenticationController : Controller
