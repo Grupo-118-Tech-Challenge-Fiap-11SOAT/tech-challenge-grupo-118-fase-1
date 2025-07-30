@@ -1,18 +1,11 @@
 using Common.Dto.Employee;
 using Common.Dto.Login;
 using Common.Interfaces.Employee.Controller;
-using Common.Interfaces.Employee.Gateway;
-using Common.Interfaces.Employee.Presenter;
-using Common.Interfaces.Login.Gateway;
 using Infra.Password;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
-using TechChallengeFastFood.CleanArch.Application.UseCases.Login;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositories;
-using TechChallengeFastFood.CleanArch.Presentation.Gateway.Employee;
-using TechChallengeFastFood.CleanArch.Presentation.Gateway.Login;
 
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
@@ -20,33 +13,6 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 [Route("[controller]")]
 public class AuthenticationController : Controller
 {
-    // private readonly CreateEmployeeUseCase _createEmployeeUseCase;
-    // private readonly GetByEmployeeEmailUseCase _getByEmployeeEmailUseCase;
-    // private readonly LoginUseCase _loginUseCase;
-    // private readonly VerifyPasswordUseCase _verifyPasswordUseCase;
-    //
-    // private readonly IEmployeePresenter _employeePresenter;
-
-    // /// <summary>
-    // /// Authentication constructor
-    // /// </summary>
-    // /// <param name="cleanArchDbContext"></param>
-    // /// <param name="configuration"></param>
-    // public AuthenticationController(CleanArchDbContext cleanArchDbContext, IConfiguration configuration)
-    // {
-    //     var passwordManager = PasswordManager.Create(configuration);
-    //     
-    //     var employeeRepository = EmployeeRepository.Create(cleanArchDbContext);
-    //
-    //     IEmployeeGateway employeeGateway = EmployeeGateway.Create(employeeRepository, passwordManager);
-    //     ILoginGateway loginGateway = LoginGateway.Create(passwordManager);
-    //
-    //     _createEmployeeUseCase = CreateEmployeeUseCase.Create(employeeGateway);
-    //     _getByEmployeeEmailUseCase = GetByEmployeeEmailUseCase.Create(employeeGateway);
-    //     _loginUseCase = LoginUseCase.Create(loginGateway);
-    //     _verifyPasswordUseCase = VerifyPasswordUseCase.Create(loginGateway);
-    // }
-
     private readonly IAuthenticationController _authenticationController;
 
     public AuthenticationController(CleanArchDbContext dbContext, IConfiguration configuration)
