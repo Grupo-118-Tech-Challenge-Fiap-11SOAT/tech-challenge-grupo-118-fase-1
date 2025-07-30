@@ -4,7 +4,7 @@ using Common.Interfaces.Employee.Gateway;
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para atualização de dados de um funcionário.
+/// Use case for updating employee data.
 /// </summary>
 public class UpdateEmployeeUseCase
 {
@@ -12,9 +12,9 @@ public class UpdateEmployeeUseCase
     private readonly GetByEmployeeIdUseCase _getByEmployeeIdUseCase;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="UpdateEmployeeUseCase"/>.
+    /// Initializes a new instance of <see cref="UpdateEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
     public UpdateEmployeeUseCase(IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
@@ -22,22 +22,22 @@ public class UpdateEmployeeUseCase
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="UpdateEmployeeUseCase"/>.
+    /// Creates an instance of <see cref="UpdateEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
-    /// <returns>Instância de <see cref="UpdateEmployeeUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
+    /// <returns>Instance of <see cref="UpdateEmployeeUseCase"/>.</returns>
     public static UpdateEmployeeUseCase Create(IEmployeeGateway employeeGateway)
     {
         return new UpdateEmployeeUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Atualiza os dados de um funcionário existente.
+    /// Updates the data of an existing employee.
     /// </summary>
-    /// <param name="updateEmployeeDto">DTO contendo os dados atualizados do funcionário.</param>
-    /// <param name="employee">Entidade do funcionário a ser atualizada.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Funcionário atualizado ou <c>null</c> se não encontrado.</returns>
+    /// <param name="updateEmployeeDto">DTO containing the updated employee data.</param>
+    /// <param name="employee">Employee entity to be updated.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Updated employee or <c>null</c> if not found.</returns>
     public async Task<Domain.Entities.Employee.Entities.Employee?> ExecuteAsync(
         UpdateEmployeeDto updateEmployeeDto,
         Domain.Entities.Employee.Entities.Employee employee,

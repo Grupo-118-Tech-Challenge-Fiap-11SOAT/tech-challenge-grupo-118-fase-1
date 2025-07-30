@@ -3,37 +3,37 @@
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Login;
 
 /// <summary>
-/// Caso de uso responsável por verificar a senha informada pelo usuário.
+/// Use case responsible for verifying the password provided by the user.
 /// </summary>
 public class VerifyPasswordUseCase
 {
     private readonly ILoginGateway _loginGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="VerifyPasswordUseCase"/>.
+    /// Initializes a new instance of <see cref="VerifyPasswordUseCase"/>.
     /// </summary>
-    /// <param name="loginGateway">Gateway responsável pelas operações de login.</param>
+    /// <param name="loginGateway">Gateway responsible for login operations.</param>
     public VerifyPasswordUseCase(ILoginGateway loginGateway)
     {
         _loginGateway = loginGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="VerifyPasswordUseCase"/>.
+    /// Creates an instance of <see cref="VerifyPasswordUseCase"/>.
     /// </summary>
-    /// <param name="loginGateway">Gateway responsável pelas operações de login.</param>
-    /// <returns>Uma nova instância de <see cref="VerifyPasswordUseCase"/>.</returns>
+    /// <param name="loginGateway">Gateway responsible for login operations.</param>
+    /// <returns>A new instance of <see cref="VerifyPasswordUseCase"/>.</returns>
     public static VerifyPasswordUseCase Create(ILoginGateway loginGateway)
     {
         return new VerifyPasswordUseCase(loginGateway);
     }
 
     /// <summary>
-    /// Executa a verificação da senha informada em relação à senha armazenada.
+    /// Executes the verification of the provided password against the stored password.
     /// </summary>
-    /// <param name="password">Senha informada pelo usuário.</param>
-    /// <param name="storedPassword">Senha armazenada para comparação.</param>
-    /// <returns><c>true</c> se a senha for válida; caso contrário, <c>false</c>.</returns>
+    /// <param name="password">Password provided by the user.</param>
+    /// <param name="storedPassword">Stored password for comparison.</param>
+    /// <returns><c>true</c> if the password is valid; otherwise, <c>false</c>.</returns>
     public bool Execute(string password, string storedPassword)
     {
         return _loginGateway.VerifyPassword(password, storedPassword);

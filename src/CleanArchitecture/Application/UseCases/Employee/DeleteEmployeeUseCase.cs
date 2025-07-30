@@ -3,38 +3,38 @@
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para exclusão de um funcionário.
+/// Use case for deleting an employee.
 /// </summary>
 public class DeleteEmployeeUseCase
 {
     private readonly IEmployeeGateway _employeeGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="DeleteEmployeeUseCase"/>.
+    /// Initializes a new instance of <see cref="DeleteEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
     public DeleteEmployeeUseCase(IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="DeleteEmployeeUseCase"/>.
+    /// Creates an instance of <see cref="DeleteEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
-    /// <returns>Instância de <see cref="DeleteEmployeeUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
+    /// <returns>Instance of <see cref="DeleteEmployeeUseCase"/>.</returns>
     public static DeleteEmployeeUseCase Create(IEmployeeGateway employeeGateway)
     {
         return new DeleteEmployeeUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Executa a exclusão de um funcionário pelo identificador informado.
+    /// Executes the deletion of an employee by the provided identifier.
     /// </summary>
-    /// <param name="id">Identificador do funcionário a ser excluído.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Identifier of the employee to be deleted.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <c>true</c> se o funcionário foi excluído com sucesso; caso contrário, <c>false</c>.
+    /// <c>true</c> if the employee was successfully deleted; otherwise, <c>false</c>.
     /// </returns>
     public async Task<bool> ExecuteAsync(int id, CancellationToken cancellationToken)
     {

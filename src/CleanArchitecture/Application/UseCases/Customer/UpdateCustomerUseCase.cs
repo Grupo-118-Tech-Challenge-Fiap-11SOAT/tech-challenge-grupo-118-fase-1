@@ -4,38 +4,38 @@ using Common.Interfaces.Customer.Gateway;
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
 
 /// <summary>
-/// Caso de uso para atualizar os dados de um cliente.
+/// Use case for updating customer data.
 /// </summary>
 public class UpdateCustomerUseCase
 {
     private readonly ICustomerGateway _customerGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="UpdateCustomerUseCase"/>.
+    /// Initializes a new instance of <see cref="UpdateCustomerUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
     public UpdateCustomerUseCase(ICustomerGateway customerGateway)
     {
         _customerGateway = customerGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="UpdateCustomerUseCase"/>.
+    /// Creates an instance of <see cref="UpdateCustomerUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
-    /// <returns>Instância de <see cref="UpdateCustomerUseCase"/>.</returns>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
+    /// <returns>Instance of <see cref="UpdateCustomerUseCase"/>.</returns>
     public static UpdateCustomerUseCase Create(ICustomerGateway customerGateway)
     {
         return new UpdateCustomerUseCase(customerGateway);
     }
 
     /// <summary>
-    /// Atualiza os dados de um cliente existente.
+    /// Updates the data of an existing customer.
     /// </summary>
-    /// <param name="customerUpdateDto">DTO contendo os dados atualizados do cliente.</param>
-    /// <param name="customer">Entidade do cliente a ser atualizada.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Cliente atualizado ou <c>null</c> se não encontrado.</returns>
+    /// <param name="customerUpdateDto">DTO containing the updated customer data.</param>
+    /// <param name="customer">Customer entity to be updated.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Updated customer or <c>null</c> if not found.</returns>
     public async Task<Domain.Entities.Customer.Entities.Customer?> ExecuteAsync(
         CustomerUpdateDto customerUpdateDto,
         Domain.Entities.Customer.Entities.Customer customer,

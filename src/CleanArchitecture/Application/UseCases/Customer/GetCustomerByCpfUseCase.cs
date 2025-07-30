@@ -3,38 +3,38 @@
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
 
 /// <summary>
-/// Caso de uso para obter um cliente pelo CPF.
+/// Use case for getting a customer by CPF.
 /// </summary>
 public class GetCustomerByCpfUseCase
 {
     private readonly ICustomerGateway _customerGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="GetCustomerByCpfUseCase"/>.
+    /// Initializes a new instance of <see cref="GetCustomerByCpfUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
     public GetCustomerByCpfUseCase(ICustomerGateway customerGateway)
     {
         _customerGateway = customerGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="GetCustomerByCpfUseCase"/>.
+    /// Creates an instance of <see cref="GetCustomerByCpfUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
-    /// <returns>Instância de <see cref="GetCustomerByCpfUseCase"/>.</returns>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
+    /// <returns>Instance of <see cref="GetCustomerByCpfUseCase"/>.</returns>
     public static GetCustomerByCpfUseCase Create(ICustomerGateway customerGateway)
     {
         return new GetCustomerByCpfUseCase(customerGateway);
     }
 
     /// <summary>
-    /// Obtém um cliente pelo CPF de forma assíncrona.
+    /// Gets a customer by CPF asynchronously.
     /// </summary>
-    /// <param name="cpf">CPF do cliente.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação.</param>
+    /// <param name="cpf">Customer's CPF.</param>
+    /// <param name="cancellationToken">Token for cancelling the operation.</param>
     /// <returns>
-    /// Uma instância de <see cref="Domain.Entities.Customer.Entities.Customer"/> se encontrado; caso contrário, <c>null</c>.
+    /// An instance of <see cref="Domain.Entities.Customer.Entities.Customer"/> if found; otherwise, <c>null</c>.
     /// </returns>
     public async Task<Domain.Entities.Customer.Entities.Customer?> ExecuteAsync(string cpf, CancellationToken cancellationToken)
     {
