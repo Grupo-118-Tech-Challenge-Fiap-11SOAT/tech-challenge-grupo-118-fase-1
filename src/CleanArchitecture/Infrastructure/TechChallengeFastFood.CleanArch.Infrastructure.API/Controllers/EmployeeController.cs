@@ -1,7 +1,6 @@
 using Common.Dto.Employee;
-using Common.Interfaces.Employee;
 using Common.Interfaces.Employee.Controller;
-using Common.Interfaces.Employee.Repositories;
+using Infra.Password;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
@@ -10,7 +9,7 @@ using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositor
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador responsável pelas operações de funcionários.
+/// Controller responsible for managing employee operations.
 /// </summary>
 [ApiController]
 [Route("[controller]")]
@@ -20,12 +19,14 @@ public class EmployeeController : ControllerBase
     private readonly IEmployeeController _employeeController;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="EmployeeController"/>.
+    /// Initializes a new instance of the <see cref="EmployeeController"/> class.
     /// </summary>
     /// <param name="cleanArchDbContext"></param>
-    /// <param name="passwordManager"></param>
-    public EmployeeController(CleanArchDbContext cleanArchDbContext, IPasswordManager passwordManager)
+    /// <param name="configuration"></param>
+    public EmployeeController(CleanArchDbContext cleanArchDbContext, IConfiguration configuration)
     {
+        var passwordManager = PasswordManager.Create(configuration);
+        
         var employeeRepository = EmployeeRepository.Create(cleanArchDbContext);
         _employeeController = Presentation.Controllers.Employee.EmployeeController.Create(employeeRepository, passwordManager);
     }
@@ -38,11 +39,11 @@ public class EmployeeController : ControllerBase
     };
 
     /// <summary>
-    /// Obtém um funcionário pelo identificador.
+    /// Get a specific employee by their ID.
     /// </summary>
-    /// <param name="id">Identificador do funcionário.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcionário encontrado ou erro 404.</returns>
+    /// <param name="id">Employee ID</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Valid employee</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}")]
@@ -56,12 +57,12 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Obtém todos os funcionários com paginação.
+    /// Get all employees with pagination support.
     /// </summary>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <param name="skip">Quantidade de registros a pular.</param>
-    /// <param name="take">Quantidade de registros a retornar.</param>
-    /// <returns>Lista de funcionários ou erro 404.</returns>
+    /// <param name="cancellationToken"></param>
+    /// <param name="skip">Registers count to skip</param>
+    /// <param name="take">Registers count to take</param>
+    /// <returns>Employee list</returns>
     [ProducesResponseType(typeof(List<EmployeeResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpGet]
@@ -75,11 +76,11 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Cria um novo funcionário.
+    /// Creates a new employee with the provided data.
     /// </summary>
-    /// <param name="employeeDto">Dados do funcionário.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcionário criado.</returns>
+    /// <param name="employeeDto">Employee data.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Created employee</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
     [HttpPost]
@@ -91,12 +92,12 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Atualiza os dados de um funcionário existente.
+    /// Updates an existing employee with the provided data.
     /// </summary>
-    /// <param name="id">Identificador do funcionário.</param>
-    /// <param name="employeeDto">Dados atualizados do funcionário.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Funcionário atualizado ou erro 404.</returns>
+    /// <param name="id">Employee ID</param>
+    /// <param name="employeeDto">Employee updated data</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Updated employee</returns>
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(EmployeeResponseDto), StatusCodes.Status400BadRequest)]
     [HttpPut("{id}")]
@@ -110,11 +111,11 @@ public class EmployeeController : ControllerBase
     }
 
     /// <summary>
-    /// Remove um funcionário pelo identificador.
+    /// Remove an employee by their ID.
     /// </summary>
-    /// <param name="id">Identificador do funcionário.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resposta sem conteúdo.</returns>
+    /// <param name="id">Employee ID</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("{id}")]
