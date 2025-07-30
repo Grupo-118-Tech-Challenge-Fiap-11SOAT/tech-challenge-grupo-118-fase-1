@@ -1,6 +1,5 @@
 using Common.Dto.Products;
 using Common.Interfaces.Products.Controller;
-using Common.Interfaces.Products.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
