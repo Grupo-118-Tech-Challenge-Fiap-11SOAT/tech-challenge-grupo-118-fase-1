@@ -36,11 +36,11 @@ public class CustomerController : ControllerBase
     };
 
     /// <summary>
-    /// Get a customer by theif CPF
+    /// Get a customer by their CPF
     /// </summary>
-    /// <param name="cpf">CPF do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
+    /// <param name="cpf">Customer's CPF.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Customer found or <see cref="NotFoundResult"/> if not exists.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -55,9 +55,9 @@ public class CustomerController : ControllerBase
     /// <summary>
     /// Get a specific customer by their ID.
     /// </summary>
-    /// <param name="id">ID do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
+    /// <param name="id">Customer ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Customer found or <see cref="NotFoundResult"/> if not exists.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -73,9 +73,9 @@ public class CustomerController : ControllerBase
     /// <summary>
     /// Create a new customer with the provided details.
     /// </summary>
-    /// <param name="customerDto">Dados do cliente a ser criado.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resultado da criacao do cliente.</returns>
+    /// <param name="customerDto">Customer data to be created.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Result of customer creation.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

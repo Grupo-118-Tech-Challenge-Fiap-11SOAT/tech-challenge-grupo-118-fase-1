@@ -1,12 +1,7 @@
 using Common.Dto.Order;
 using Common.Enums;
 using Common.Interfaces.Order.Controller;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
-using System.Threading.Tasks;
-using Common.Interfaces.Order.Repositories;
-using Common.Interfaces.Products.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Products.Repositories;

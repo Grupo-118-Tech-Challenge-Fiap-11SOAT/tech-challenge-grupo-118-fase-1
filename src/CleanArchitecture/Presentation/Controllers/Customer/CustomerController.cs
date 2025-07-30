@@ -36,12 +36,12 @@ public class CustomerController : ICustomerController
     }
 
     /// <summary>
-    /// Cria um novo cliente com os dados informados.
+    /// Creates a new customer with the provided data.
     /// </summary>
-    /// <param name="customer">Objeto <see cref="CustomerRequestDto"/> contendo os dados do cliente a ser criado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="customer">A <see cref="CustomerRequestDto"/> object containing the data of the customer to be created.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="CustomerResponseDto"/> contendo os dados do cliente criado.
+    /// <see cref="CustomerResponseDto"/> containing the created customer's data.
     /// </returns>
     public async Task<CustomerResponseDto> CreateAsync(CustomerRequestDto customer,
         CancellationToken cancellationToken = default)
@@ -52,13 +52,13 @@ public class CustomerController : ICustomerController
     }
 
     /// <summary>
-    /// Obtém um cliente pelo CPF informado.
+    /// Gets a customer by the provided CPF.
     /// </summary>
-    /// <param name="cpf">CPF do cliente a ser consultado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="cpf">CPF of the customer to be retrieved.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="CustomerResponseDto"/> contendo os dados do cliente encontrado,
-    /// ou <c>null</c> caso não exista cliente com o CPF informado.
+    /// <see cref="CustomerResponseDto"/> containing the found customer's data,
+    /// or <c>null</c> if no customer exists with the provided CPF.
     /// </returns>
     public async Task<CustomerResponseDto?> GetCustomerByCpf(string cpf, CancellationToken cancellationToken = default)
     {
@@ -68,13 +68,13 @@ public class CustomerController : ICustomerController
     }
 
     /// <summary>
-    /// Obtém os dados de um cliente pelo identificador único.
+    /// Gets the data of a customer by their unique identifier.
     /// </summary>
-    /// <param name="id">Identificador único do cliente.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Unique identifier of the customer.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="CustomerResponseDto"/> contendo os dados do cliente encontrado,
-    /// ou <c>null</c> caso não exista cliente com o identificador informado.
+    /// <see cref="CustomerResponseDto"/> containing the found customer's data,
+    /// or <c>null</c> if no customer exists with the provided identifier.
     /// </returns>
     public async Task<CustomerResponseDto?> GetCustomerById(int id, CancellationToken cancellationToken = default)
     {
@@ -84,13 +84,13 @@ public class CustomerController : ICustomerController
     }
 
     /// <summary>
-    /// Atualiza os dados de um cliente existente.
+    /// Updates the data of an existing customer.
     /// </summary>
-    /// <param name="customer">Objeto <see cref="CustomerUpdateDto"/> contendo os dados atualizados do cliente.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="customer">A <see cref="CustomerUpdateDto"/> object containing the updated customer data.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="CustomerResponseDto"/> contendo os dados do cliente atualizado,
-    /// ou <c>null</c> caso o cliente não seja encontrado.
+    /// <see cref="CustomerResponseDto"/> containing the updated customer's data,
+    /// or <c>null</c> if the customer is not found.
     /// </returns>
     public async Task<CustomerResponseDto?> UpdateAsync(CustomerUpdateDto customer,
         CancellationToken cancellationToken = default)
