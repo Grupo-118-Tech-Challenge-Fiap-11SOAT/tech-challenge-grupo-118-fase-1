@@ -17,7 +17,7 @@ public class OrderRepository : IOrderRepository
     {
         return new OrderRepository(context);
     }
-    
+
     public async Task<List<Common.Dto.Order.Database.Order>> GetAllAsync(OrderStatus status,
         CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {
@@ -26,6 +26,7 @@ public class OrderRepository : IOrderRepository
             .Skip(skip)
             .Take(take)
             .Include(o => o.OrderItems)
+            .ThenInclude(i => i.Product)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
@@ -40,6 +41,7 @@ public class OrderRepository : IOrderRepository
             .Skip(skip)
             .Take(take)
             .Include(o => o.OrderItems)
+            .ThenInclude(i => i.Product)
             .OrderByDescending(o => o.Status == OrderStatus.Ready)
             .ThenByDescending(o => o.Status == OrderStatus.InPreparation)
             .ThenByDescending(o => o.Status == OrderStatus.Received)
@@ -78,7 +80,7 @@ public class OrderRepository : IOrderRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
-    
+
     public async Task<Common.Dto.Order.Database.Order> UpdateAsync(Common.Dto.Order.Database.Order order,
         CancellationToken cancellationToken = default)
     {
