@@ -4,37 +4,37 @@ using Common.Interfaces.Employee.Gateway;
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para criação de um novo funcionário.
+/// Use case for creating a new employee.
 /// </summary>
 public class CreateEmployeeUseCase
 {
     private readonly IEmployeeGateway _employeeGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="CreateEmployeeUseCase"/>.
+    /// Initializes a new instance of <see cref="CreateEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
     public CreateEmployeeUseCase(IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="CreateEmployeeUseCase"/>.
+    /// Creates an instance of <see cref="CreateEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
-    /// <returns>Instância de <see cref="CreateEmployeeUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
+    /// <returns>Instance of <see cref="CreateEmployeeUseCase"/>.</returns>
     public static CreateEmployeeUseCase Create(IEmployeeGateway employeeGateway)
     {
         return new CreateEmployeeUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Executa o caso de uso para criar um novo funcionário.
+    /// Executes the use case to create a new employee.
     /// </summary>
-    /// <param name="employeeRequestDto">DTO contendo os dados do funcionário a ser criado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Entidade <see cref="Domain.Entities.Employee.Entities.Employee"/> criada.</returns>
+    /// <param name="employeeRequestDto">DTO containing the data of the employee to be created.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Created <see cref="Domain.Entities.Employee.Entities.Employee"/> entity.</returns>
     public async Task<Domain.Entities.Employee.Entities.Employee> ExecuteAsync(EmployeeRequestDto employeeRequestDto, CancellationToken cancellationToken)
     {
         var employee = new Domain.Entities.Employee.Entities.Employee(

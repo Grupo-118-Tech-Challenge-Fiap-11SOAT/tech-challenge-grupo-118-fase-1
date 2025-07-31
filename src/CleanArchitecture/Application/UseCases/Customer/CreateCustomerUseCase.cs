@@ -4,37 +4,37 @@ using Common.Interfaces.Customer.Gateway;
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Customer;
 
 /// <summary>
-/// Caso de uso para criação de um novo cliente.
+/// Use case for creating a new customer.
 /// </summary>
 public class CreateCustomerUseCase
 {
     private readonly ICustomerGateway _customerGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="CreateCustomerUseCase"/>.
+    /// Initializes a new instance of <see cref="CreateCustomerUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
     public CreateCustomerUseCase(ICustomerGateway customerGateway)
     {
         _customerGateway = customerGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="CreateCustomerUseCase"/>.
+    /// Creates an instance of <see cref="CreateCustomerUseCase"/>.
     /// </summary>
-    /// <param name="customerGateway">Gateway para operações de cliente.</param>
-    /// <returns>Instância de <see cref="CreateCustomerUseCase"/>.</returns>
+    /// <param name="customerGateway">Gateway for customer operations.</param>
+    /// <returns>Instance of <see cref="CreateCustomerUseCase"/>.</returns>
     public static CreateCustomerUseCase Create(ICustomerGateway customerGateway)
     {
         return new CreateCustomerUseCase(customerGateway);
     }
 
     /// <summary>
-    /// Executa a criação de um novo cliente de forma assíncrona.
+    /// Executes the creation of a new customer asynchronously.
     /// </summary>
-    /// <param name="customerRequestDto">DTO contendo os dados do cliente a ser criado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Entidade <see cref="Domain.Entities.Customer.Entities.Customer"/> criada.</returns>
+    /// <param name="customerRequestDto">DTO containing the data of the customer to be created.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Created <see cref="Domain.Entities.Customer.Entities.Customer"/> entity.</returns>
     public async Task<Domain.Entities.Customer.Entities.Customer> ExecuteAsync(CustomerRequestDto customerRequestDto, CancellationToken cancellationToken)
     {
         var customer = new Domain.Entities.Customer.Entities.Customer(

@@ -1,38 +1,38 @@
 ﻿namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para obter um funcionário pelo seu identificador.
+/// Use case for getting an employee by their identifier.
 /// </summary>
 public class GetByEmployeeIdUseCase
 {
     private readonly Common.Interfaces.Employee.Gateway.IEmployeeGateway _employeeGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="GetByEmployeeIdUseCase"/>.
+    /// Initializes a new instance of <see cref="GetByEmployeeIdUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para acesso aos dados de funcionários.</param>
+    /// <param name="employeeGateway">Gateway for accessing employee data.</param>
     public GetByEmployeeIdUseCase(Common.Interfaces.Employee.Gateway.IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="GetByEmployeeIdUseCase"/>.
+    /// Creates an instance of <see cref="GetByEmployeeIdUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para acesso aos dados de funcionários.</param>
-    /// <returns>Instância de <see cref="GetByEmployeeIdUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for accessing employee data.</param>
+    /// <returns>Instance of <see cref="GetByEmployeeIdUseCase"/>.</returns>
     public static GetByEmployeeIdUseCase Create(Common.Interfaces.Employee.Gateway.IEmployeeGateway employeeGateway)
     {
         return new GetByEmployeeIdUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Obtém um funcionário pelo seu identificador.
+    /// Gets an employee by their identifier.
     /// </summary>
-    /// <param name="id">Identificador do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Employee identifier.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// Uma instância de <see cref="Domain.Entities.Employee.Entities.Employee"/> se encontrada; caso contrário, <c>null</c>.
+    /// An instance of <see cref="Domain.Entities.Employee.Entities.Employee"/> if found; otherwise, <c>null</c>.
     /// </returns>
     public async Task<Domain.Entities.Employee.Entities.Employee?> ExecuteAsync(int id, CancellationToken cancellationToken)
     {

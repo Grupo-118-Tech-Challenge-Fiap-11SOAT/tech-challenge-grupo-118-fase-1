@@ -1,37 +1,37 @@
 ﻿namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para obter um funcionário pelo e-mail.
+/// Use case for getting an employee by email.
 /// </summary>
 public class GetByEmployeeEmailUseCase
 {
     private readonly Common.Interfaces.Employee.Gateway.IEmployeeGateway _employeeGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="GetByEmployeeEmailUseCase"/>.
+    /// Initializes a new instance of <see cref="GetByEmployeeEmailUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
     public GetByEmployeeEmailUseCase(Common.Interfaces.Employee.Gateway.IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="GetByEmployeeEmailUseCase"/>.
+    /// Creates an instance of <see cref="GetByEmployeeEmailUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
-    /// <returns>Instância de <see cref="GetByEmployeeEmailUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
+    /// <returns>Instance of <see cref="GetByEmployeeEmailUseCase"/>.</returns>
     public static GetByEmployeeEmailUseCase Create(Common.Interfaces.Employee.Gateway.IEmployeeGateway employeeGateway)
     {
         return new GetByEmployeeEmailUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Executa a busca de funcionário pelo e-mail informado.
+    /// Executes the search for an employee by the provided email.
     /// </summary>
-    /// <param name="email">E-mail do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação.</param>
-    /// <returns>Entidade <see cref="Domain.Entities.Employee.Entities.Employee"/> correspondente ou null se não encontrado.</returns>
+    /// <param name="email">Employee's email.</param>
+    /// <param name="cancellationToken">Token for cancelling the operation.</param>
+    /// <returns>Corresponding <see cref="Domain.Entities.Employee.Entities.Employee"/> entity or null if not found.</returns>
     public async Task<Domain.Entities.Employee.Entities.Employee?> ExecuteAsync(string email, CancellationToken cancellationToken)
     {
         return await _employeeGateway.GetByEmailAsync(email, cancellationToken);

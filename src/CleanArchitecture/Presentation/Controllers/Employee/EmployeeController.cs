@@ -39,12 +39,12 @@ public class EmployeeController : IEmployeeController
     }
 
     /// <summary>
-    /// Cria um novo funcionário.
+    /// Creates a new employee.
     /// </summary>
-    /// <param name="employee">DTO contendo os dados do funcionário a ser criado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="employee">DTO containing the data of the employee to be created.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="EmployeeResponseDto"/> representando o funcionário criado.
+    /// <see cref="EmployeeResponseDto"/> representing the created employee.
     /// </returns>
     public async Task<EmployeeResponseDto> CreateAsync(EmployeeRequestDto employee,
         CancellationToken cancellationToken = default)
@@ -55,12 +55,12 @@ public class EmployeeController : IEmployeeController
     }
 
     /// <summary>
-    /// Exclui um funcionário pelo identificador fornecido.
+    /// Deletes an employee by the provided identifier.
     /// </summary>
-    /// <param name="id">Identificador único do funcionário a ser excluído.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Unique identifier of the employee to be deleted.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <c>true</c> se o funcionário foi excluído com sucesso; caso contrário, <c>false</c>.
+    /// <c>true</c> if the employee was successfully deleted; otherwise, <c>false</c>.
     /// </returns>
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
@@ -70,13 +70,13 @@ public class EmployeeController : IEmployeeController
     }
 
     /// <summary>
-    /// Recupera uma lista paginada de funcionários.
+    /// Retrieves a paginated list of employees.
     /// </summary>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <param name="skip">Quantidade de registros a serem ignorados para paginação.</param>
-    /// <param name="take">Quantidade máxima de registros a serem retornados.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <param name="skip">Number of records to skip for pagination.</param>
+    /// <param name="take">Maximum number of records to return.</param>
     /// <returns>
-    /// Uma lista de <see cref="EmployeeResponseDto"/> representando os funcionários encontrados, ou <c>null</c> se nenhum funcionário for encontrado.
+    /// A list of <see cref="EmployeeResponseDto"/> representing the found employees, or <c>null</c> if no employees are found.
     /// </returns>
     public async Task<List<EmployeeResponseDto>?> GetAllAsync(CancellationToken cancellationToken = default,
         int skip = 0, int take = 10)
@@ -87,12 +87,12 @@ public class EmployeeController : IEmployeeController
     }
 
     /// <summary>
-    /// Recupera um funcionário pelo identificador fornecido.
+    /// Retrieves an employee by the provided identifier.
     /// </summary>
-    /// <param name="id">Identificador único do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Unique identifier of the employee.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="EmployeeResponseDto"/> representando o funcionário encontrado, ou <c>null</c> se não existir.
+    /// <see cref="EmployeeResponseDto"/> representing the found employee, or <c>null</c> if not found.
     /// </returns>
     public async Task<EmployeeResponseDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
@@ -102,12 +102,12 @@ public class EmployeeController : IEmployeeController
     }
 
     /// <summary>
-    /// Atualiza os dados de um funcionário existente.
+    /// Updates the data of an existing employee.
     /// </summary>
-    /// <param name="employee">DTO contendo os dados atualizados do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="employee">DTO containing the updated data of the employee.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// <see cref="EmployeeResponseDto"/> representando o funcionário atualizado, ou <c>null</c> se o funcionário não existir.
+    /// <see cref="EmployeeResponseDto"/> representing the updated employee, or <c>null</c> if the employee does not exist.
     /// </returns>
     public async Task<EmployeeResponseDto?> UpdateAsync(UpdateEmployeeDto employee,
         CancellationToken cancellationToken = default)

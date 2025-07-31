@@ -24,11 +24,11 @@ public class EmployeeGateway : IEmployeeGateway
     }
 
     /// <summary>
-    /// Cria um novo funcionário no repositório.
+    /// Creates a new employee in the repository.
     /// </summary>
-    /// <param name="employee">Objeto de domínio do funcionário a ser criado.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Retorna o funcionário criado como objeto de domínio.</returns>
+    /// <param name="employee">Domain object of the employee to be created.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Returns the created employee as a domain object.</returns>
     public async Task<EmployeeDomain> CreateAsync(EmployeeDomain employee, CancellationToken cancellationToken = default)
     {
         _passwordManager.CreatePasswordHash(employee.Password, out var hashedPassword);
@@ -61,11 +61,11 @@ public class EmployeeGateway : IEmployeeGateway
     }
 
     /// <summary>
-    /// Exclui um funcionário do repositório pelo identificador.
+    /// Deletes an employee from the repository by identifier.
     /// </summary>
-    /// <param name="id">Identificador único do funcionário a ser excluído.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <returns>Retorna <c>true</c> se a exclusão foi realizada com sucesso.</returns>
+    /// <param name="id">Unique identifier of the employee to be deleted.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <returns>Returns <c>true</c> if the deletion was successful.</returns>
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
         await _employeeRepository.DeleteAsync(id, cancellationToken);
@@ -73,14 +73,14 @@ public class EmployeeGateway : IEmployeeGateway
     }
 
     /// <summary>
-    /// Recupera uma lista paginada de funcionários do repositório.
+    /// Retrieves a paginated list of employees from the repository.
     /// </summary>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <param name="skip">Número de registros a serem ignorados para paginação.</param>
-    /// <param name="take">Número máximo de registros a serem retornados.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <param name="skip">Number of records to skip for pagination.</param>
+    /// <param name="take">Maximum number of records to return.</param>
     /// <returns>
-    /// Retorna uma lista de objetos de domínio <see cref="EmployeeDomain"/> representando os funcionários,
-    /// ou <c>null</c> caso não existam registros.
+    /// Returns a list of <see cref="EmployeeDomain"/> domain objects representing the employees,
+    /// or <c>null</c> if no records exist.
     /// </returns>
     public async Task<List<EmployeeDomain>?> GetAllAsync(CancellationToken cancellationToken = default, int skip = 0, int take = 10)
     {
@@ -131,13 +131,13 @@ public class EmployeeGateway : IEmployeeGateway
     }
 
     /// <summary>
-    /// Recupera um funcionário do repositório pelo identificador único.
+    /// Retrieves an employee from the repository by unique identifier.
     /// </summary>
-    /// <param name="id">Identificador único do funcionário.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="id">Unique identifier of the employee.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// Retorna o objeto de domínio <see cref="EmployeeDomain"/> representando o funcionário encontrado,
-    /// ou <c>null</c> caso não exista um funcionário com o identificador informado.
+    /// Returns the <see cref="EmployeeDomain"/> domain object representing the found employee,
+    /// or <c>null</c> if no employee exists with the provided identifier.
     /// </returns>
     public async Task<EmployeeDomain?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
@@ -161,13 +161,13 @@ public class EmployeeGateway : IEmployeeGateway
     }
 
     /// <summary>
-    /// Atualiza os dados de um funcionário existente no repositório.
+    /// Updates the data of an existing employee in the repository.
     /// </summary>
-    /// <param name="employee">Objeto de domínio do funcionário com os dados atualizados.</param>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
+    /// <param name="employee">Domain object of the employee with updated data.</param>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
     /// <returns>
-    /// Retorna o objeto de domínio <see cref="EmployeeDomain"/> representando o funcionário atualizado,
-    /// ou <c>null</c> caso a atualização não seja bem-sucedida.
+    /// Returns the <see cref="EmployeeDomain"/> domain object representing the updated employee,
+    /// or <c>null</c> if the update is not successful.
     /// </returns>
     public async Task<EmployeeDomain?> UpdateAsync(EmployeeDomain employee, CancellationToken cancellationToken = default)
     {
