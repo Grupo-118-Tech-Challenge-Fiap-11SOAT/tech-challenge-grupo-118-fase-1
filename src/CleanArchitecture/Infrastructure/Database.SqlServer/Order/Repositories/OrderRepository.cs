@@ -76,6 +76,7 @@ public class OrderRepository : IOrderRepository
     {
         return await _dbContext.Orders
             .Include(x => x.OrderItems)
+            .ThenInclude(i=> i.Product)
             .Include(x => x.Payment)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
