@@ -69,18 +69,16 @@ Abaixo segue a modelagem do nosso banco de dados, contendo como as entidades se 
 
 # Helm - API
 
-## Utilizando a autenticação
-Inicialmente temos um usuário admin cadastrado, para validar as credenciais acesse no swagger o endpoint de Login, fornecendo as credenciais
-```
-email: admin@admin.com
-password:  adminPass
-```
-
-## Configuração
+## Configuração de Webhook do Mercado Pago
 Para geração do qr code com o mercado pago, estão sendo utilizadas credenciais de sandbox. Para utilizar sua própria conta, basta atualizar
-as variáveis de ambiemte com o prefixo "MercadoPago__" no docker-compose.yaml.
+as variáveis de ambiemte com o prefixo "MercadoPago__" no `values.yaml`.
 
-Por ainda não ser possível confirmar um pagamento pix em ambiente de sandbox, a simulação de confirmação pode ser feita através do endpoint /payment/{id}, informando o código do pagamento a ser confirmado.
+Para realizar os testes do Webhook, é necessário configurar o endpoint com uma URL de tunelamento, como o [ngrok](https://ngrok.com/). Após configurar o ngrok, atualize a variável `MercadoPago__NotificationUrl` no `values.yaml` com a URL base fornecida pelo ngrok mais o endpoint responsável por receber a requisição, como o exemplo abaixo.
+
+```yaml
+  # Mercado Pago configuration
+    MercadoPago__NotificationUrl: "https://00b2abcc8276.ngrok-free.app/payments/webhooks/mercado-pago"
+```
 
 ## Build da Imagem (da raiz do projeto)
 
@@ -96,6 +94,13 @@ helm upgrade --install techchallengefastfoodapi118fase2 infra/helm/techchallenge
 
 ## Acessando a API
 Se o deploy foi realizado com sucesso, a API estará acessível através do endereço: http://localhost:30080
+
+## Utilizando a autenticação
+Inicialmente temos um usuário admin cadastrado, para validar as credenciais acesse no swagger o endpoint de Login, fornecendo as credenciais
+```
+email: admin@admin.com
+password:  adminPass
+```
 
 # Diagramas
 ## Aplicação
