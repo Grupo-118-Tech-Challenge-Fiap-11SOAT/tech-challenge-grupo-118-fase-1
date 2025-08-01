@@ -77,6 +77,7 @@ public class PaymentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("webhooks/mercado-pago/{paymentUuid:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ProcessCallbackAsync(Guid paymentUuid, [FromBody] MercadoPagoCallbackRequest request, CancellationToken cancellationToken)
     {
         await _paymentController.ProcessCallbackAsync(paymentUuid, request, cancellationToken);
