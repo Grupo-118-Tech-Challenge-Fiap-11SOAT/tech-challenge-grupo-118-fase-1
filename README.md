@@ -40,7 +40,7 @@ Para facilitar a visualização do funcionamento da API, foi criado um vídeo de
 # Collection do Postman
 Para facilitar o teste dos endpoints da API, foi criada uma que contém todos os endpoints disponíveis, incluindo os de autenticação e os de criação de pedidos.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)]()
+[![Run in Postman](https://run.pstmn.io/button.svg)](Tech-Challenge-118-Fase2.postman_collection.json)
 
 # Helm - SQL Server
 
