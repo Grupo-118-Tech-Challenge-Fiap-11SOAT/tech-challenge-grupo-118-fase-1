@@ -56,7 +56,7 @@
 									"var token;",
 									"try {",
 									"    var response = JSON.parse(responseBody); ",
-									"    token = response.access_token; ",
+									"    token = response.token; ",
 									"    pm.collectionVariables.set(\"token\", token);",
 									"}",
 									"catch (err) {",
@@ -71,14 +71,23 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{UserLogin}}\",\r\n  \"password\": \"{{PassLogin}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{host}}/Authentication/register",
+							"raw": "{{host}}/Authentication/login",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"Authentication",
-								"register"
+								"login"
 							]
 						}
 					},
@@ -722,7 +731,7 @@
 					"response": []
 				},
 				{
-					"name": "Webhook",
+					"name": "Webhook usado na integração com o Mercado Pago",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1116,6 +1125,9 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer"
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -1141,7 +1153,7 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "http://localhost:5157",
+			"value": "http://localhost:30080",
 			"type": "string"
 		},
 		{
@@ -1157,6 +1169,31 @@
 		{
 			"key": "employeeId",
 			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cpf",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "IOrderId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "OrderId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "UserLogin",
+			"value": "admin@admin.com",
+			"type": "string"
+		},
+		{
+			"key": "PassLogin",
+			"value": "adminPass",
 			"type": "string"
 		}
 	]
