@@ -108,6 +108,14 @@ email: admin@admin.com
 password:  adminPass
 ```
 
+# Endpoints básicos
+No nosso projeto, realizamos um seed que já cria alguns produtos (com suas respectivas imagens) e um usuário admin, para facilitar os testes. Com esses dados já inicializados, pode-se usar os endpoints de `Orders` e `Payments` para realizar pedidos e pagamentos.
+- `POST` `/Order`: Cria um pedido com os produtos ativos cadastrados
+- `POST` `/payments`: Cria um pagamento para o pedido criado, utilizando o Mercado Pago como gateway de pagamento
+- `GET` `/Order{id}/payment-details`: Retorna os detalhes do pagamento do pedido.
+
+Mais detalhes sobre os endpoints podem ser encontrados na [Collection do Postman](#collection-do-postman) ou no Swagger da aplicação.
+
 # Diagramas
 ## Aplicação
 ### Diagrama de fluxo de dados
