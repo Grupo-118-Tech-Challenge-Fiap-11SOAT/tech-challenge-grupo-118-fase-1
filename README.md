@@ -35,12 +35,18 @@ Com isso deve ser gerado um token que deve ser fornecido no canto superior direi
 # Vídeo de Demonstração
 Para facilitar a visualização do funcionamento da API, foi criado um vídeo de demonstração que mostra o fluxo de criação de pedidos, incluindo a autenticação e o uso do Mercado Pago para pagamento via Pix. Para assistir, clique na imagem abaixo:
 
-[![Watch the video](11SOAT%20-%20Fase%202%20-%20Grupo%20118.jpeg)](https://www.youtube.com/watch?v=VIDEO_ID)
+[![Watch the video](11SOAT%20-%20Fase%202%20-%20Grupo%20118.jpeg)](https://youtu.be/AF6J7upO0sc)
 
 # Collection do Postman
 Para facilitar o teste dos endpoints da API, foi criada uma que contém todos os endpoints disponíveis, incluindo os de autenticação e os de criação de pedidos.
 
 [![Run in Postman](https://run.pstmn.io/button.svg)]()
+
+# Como executar o projeto
+Elaboramos os Helm Charts para serem executados em um cluster Kubernetes de maneira local. Então, para executar o projeto, é necessário ter instalado ferramentas para execução de um cluster local, como por exemplo:
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- [Rancher Desktop](https://rancherdesktop.io/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/)
 
 # Helm - SQL Server
 
