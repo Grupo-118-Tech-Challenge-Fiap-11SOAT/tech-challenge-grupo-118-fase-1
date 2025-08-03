@@ -12,6 +12,16 @@
 				{
 					"name": "Authentication/Register",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -38,26 +48,37 @@
 				},
 				{
 					"name": "Authentication/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var token;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    token = response.access_token; ",
+									"    pm.collectionVariables.set(\"token\", token);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{host}}/Authentication/login",
+							"raw": "{{host}}/Authentication/register",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"Authentication",
-								"login"
+								"register"
 							]
 						}
 					},
@@ -119,19 +140,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/Customer/{id?id",
+							"raw": "{{host}}/Customer/{{customerId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"Customer",
-								"{id"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": null
-								}
+								"{{customerId}}"
 							]
 						}
 					},
@@ -162,19 +177,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/Customer/?Id",
+							"raw": "{{host}}/Customer/{{customerId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"Customer",
-								""
-							],
-							"query": [
-								{
-									"key": "Id",
-									"value": null
-								}
+								"{{customerId}}"
 							]
 						}
 					},
@@ -182,6 +191,26 @@
 				},
 				{
 					"name": "Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var customerId;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    customerId = response.Id; ",
+									"    pm.collectionVariables.set(\"customerId\", token);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -237,18 +266,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/Employee?Id",
+							"raw": "{{host}}/Employee/{{employeeId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"Employee"
-							],
-							"query": [
-								{
-									"key": "Id",
-									"value": null
-								}
+								"Employee",
+								"{{employeeId}}"
 							]
 						}
 					},
@@ -279,18 +303,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/Employee?Id",
+							"raw": "{{host}}/Employee/{{employeeId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"Employee"
-							],
-							"query": [
-								{
-									"key": "Id",
-									"value": null
-								}
+								"Employee",
+								"{{employeeId}}"
 							]
 						}
 					},
@@ -299,22 +318,26 @@
 				{
 					"name": "Employee",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/Employee/?Id=",
+							"raw": "{{host}}/Employee/{{employeeId}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"Employee",
-								""
-							],
-							"query": [
-								{
-									"key": "Id",
-									"value": ""
-								}
+								"{{employeeId}}"
 							]
 						}
 					},
@@ -359,6 +382,26 @@
 				},
 				{
 					"name": "Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var employeeId;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    employeeId = response.Id; ",
+									"    pm.collectionVariables.set(\"employeeId\", employeeId);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1103,6 +1146,16 @@
 		},
 		{
 			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "customerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "employeeId",
 			"value": "",
 			"type": "string"
 		}
