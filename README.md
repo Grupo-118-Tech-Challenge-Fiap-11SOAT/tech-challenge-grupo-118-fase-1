@@ -40,7 +40,7 @@ Para facilitar a visualização do funcionamento da API, foi criado um vídeo de
 # Collection do Postman
 Para facilitar o teste dos endpoints da API, foi criada uma que contém todos os endpoints disponíveis, incluindo os de autenticação e os de criação de pedidos.
 
-[![Run in Postman](https://run.pstmn.io/button.svg)]()
+[![Run in Postman](https://run.pstmn.io/button.svg)](Tech-Challenge-118-Fase2.postman_collection.json)
 
 # Como executar o projeto
 Elaboramos os Helm Charts para serem executados em um cluster Kubernetes de maneira local. Então, para executar o projeto, é necessário ter instalado ferramentas para execução de um cluster local, como por exemplo:
