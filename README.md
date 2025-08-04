@@ -35,7 +35,7 @@ Com isso deve ser gerado um token que deve ser fornecido no canto superior direi
 # Vídeo de Demonstração
 Para facilitar a visualização do funcionamento da API, foi criado um vídeo de demonstração que mostra o fluxo de criação de pedidos, incluindo a autenticação e o uso do Mercado Pago para pagamento via Pix. Para assistir, clique na imagem abaixo:
 
-[![Watch the video](11SOAT%20-%20Fase%202%20-%20Grupo%20118.jpeg)](https://youtu.be/AF6J7upO0sc)
+[![Watch the video](11SOAT%20-%20Fase%202%20-%20Grupo%20118.jpeg)](https://youtu.be/FkBYzvneXAM)
 
 # Collection do Postman
 Para facilitar o teste dos endpoints da API, foi criada uma que contém todos os endpoints disponíveis, incluindo os de autenticação e os de criação de pedidos.
