@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{ .Values.name }}
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Values.name }}
+        app: {{ .Values.name }}
+    spec:
+      initContainers:
+        - name: volumepermissions
+          image: busybox
+          command: ["sh", "-c", "chown -R 10001:0 /var/opt/mssql"]
+          volumeMounts:
+            - mountPath: "/var/opt/mssql"
+              name: sqldata-storage
+      volumes:
+        - name: sqldata-storage
+          persistentVolumeClaim:
+            claimName: dbclaim
+      containers:
+        - name: {{ .Values.name }}
+          volumeMounts:
+            - mountPath: "/var/opt/mssql/data"
+              name: sqldata-storage
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sql-password
+                  key: sa_password
+            - name: MSSQL_PID
+              value: Developer
+            - name: MSSQL_MEMORY_LIMIT_MB
+              value: "1000"

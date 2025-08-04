@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>TechChallengeFastFood.CleanArch.Presentation.Gateway</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\Common.Dto\Common.Dto.csproj" />
+      <ProjectReference Include="..\..\Common\Common.Interfaces\Common.Interfaces.csproj" />
+      <ProjectReference Include="..\..\Domain\Entities\Entities.csproj" />
+    </ItemGroup>
+
+</Project>

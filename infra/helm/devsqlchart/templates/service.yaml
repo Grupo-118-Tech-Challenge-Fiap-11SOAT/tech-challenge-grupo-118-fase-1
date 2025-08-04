@@ -1,0 +1,42 @@
+{{- if .Values.service }}
+{{- $name := .Values.name -}}
+{{- $labels := .Values.service.labels -}}
+{{- $annotations := .Values.service.annotations -}}
+{{- range $service := .Values.service.instances }}
+apiVersion: v1
+kind: Service
+metadata:
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- with $labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  name: {{ $service.name }}
+spec:
+  type: {{ $service.type }}
+  {{- if $service.loadBalancerIP }}
+  loadBalancerIP: {{ $service.loadBalancerIP }}
+  {{- end }}
+  ports:
+  {{- if $service.portAndTargetList }}
+  {{- range $service.portAndTargetList }}
+  - name: "{{ .port }}-{{ .targetPort }}"
+    port: {{ .port }}
+    targetPort: {{ .targetPort }}
+  {{- end }}
+  {{- else }}
+  - name: "{{ $service.name }}-{{ $service.port }}-{{ $service.targetPort }}"
+    port: {{ $service.port }}
+    targetPort: {{ $service.targetPort }}
+    {{- if $service.nodePort }}
+    nodePort: {{ $service.nodePort }}
+    {{- end }}
+  {{- end }}
+  selector:
+    name: {{ $name }}
+---
+{{- end }}
+{{- end }}
