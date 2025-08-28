@@ -10,7 +10,7 @@ env:
   REGISTRY: ${{ vars.DOCKER_REGISTRY }} # your-acr-name.azurecr.io
   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }} #your-app-name
   HELM_CHART_NAME: ${{ vars.HELM_CHART_NAME }} #your-helm-chart
-  DOTNET_VERSION: '8.0.x'  # Adjust to your .NET version
+  DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
 
 jobs:
   build-dotnet:
