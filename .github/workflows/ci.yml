@@ -57,7 +57,7 @@ jobs:
         tags: |
           type=ref,event=branch
           type=raw,value=pr-${{ github.event.pull_request.number }}
-          type=sha,prefix={{branch}}-
+          type=sha,prefix={{branch}}
           type=raw,value=latest,enable={{is_default_branch}}
 
     - name: Build Docker image (All branches)
