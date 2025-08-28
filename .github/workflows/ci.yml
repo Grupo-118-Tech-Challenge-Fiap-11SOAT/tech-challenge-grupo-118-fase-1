@@ -7,10 +7,17 @@ on:
     branches: [ main, develop ]
 
 env:
-  REGISTRY: ${{ vars.DOCKER_REGISTRY }} # your-acr-name.azurecr.io
-  IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }} #your-app-name
-  HELM_CHART_NAME: ${{ vars.HELM_CHART_NAME }} #your-helm-chart
+  REGISTRY: 'techchallengefastfoodapi118fase2.azurecr.io'
+  IMAGE_NAME: 'techchallengefastfoodapi118fase2'
+  HELM_CHART_NAME: 'techchallengefastfoodapi118fase2' 
   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
+
+    #   REGISTRY: ${{ vars.DOCKER_REGISTRY }} # your-acr-name.azurecr.io
+#   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }} #your-app-name
+#   HELM_CHART_NAME: ${{ vars.HELM_CHART_NAME }} #your-helm-chart
+#   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
+
+
 
 jobs:
   build-dotnet:
