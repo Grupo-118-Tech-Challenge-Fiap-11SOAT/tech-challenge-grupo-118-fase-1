@@ -57,14 +57,28 @@ jobs:
         tags: |
           type=ref,event=branch
           type=raw,value=pr-${{ github.event.pull_request.number }}
-          type=sha,prefix={{branch}}
+          type=sha
+          type=schedule,pattern={{date 'YYYYMMDD'}},enable={{is_default_branch}} 
           type=raw,value=latest,enable={{is_default_branch}}
 
-    - name: Build Docker image (All branches)
+    - name: Build Docker image (PR)
+      if: github.event_name == 'pull_request'  
       uses: docker/build-push-action@v5
       with:
         context: .
         push: false
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        file: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile # Adjust path if necessary
+
+    - name: Build Docker image (Main branch)
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
