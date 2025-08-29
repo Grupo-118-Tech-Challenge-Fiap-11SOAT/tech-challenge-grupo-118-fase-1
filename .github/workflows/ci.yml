@@ -1,0 +1,102 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
+  HELM_CHART_NAME: 'techchallengefastfoodapi118fase2'
+  DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
+  ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+  ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
+#   HELM_CHART_NAME: ${{ vars.HELM_CHART_NAME }} #your-helm-chart
+
+
+
+jobs:
+  build-dotnet:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build .NET application
+      run: dotnet build --no-restore --configuration Release
+
+  build-docker:
+    needs: build-dotnet
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4    
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=raw,value=pr-${{ github.event.pull_request.number }}
+          type=sha
+          type=schedule,pattern={{date 'YYYYMMDD'}},enable={{is_default_branch}} 
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build Docker image (PR)
+      if: github.event_name == 'pull_request'  
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: false
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        file: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile # Adjust path if necessary
+
+    - name: Build Docker image (Main branch)
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        file: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile # Adjust path if necessary
+
+    - name: Set up Helm
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'      
+      uses: azure/setup-helm@v3
+      with:
+        version: '3.12.0'
+    
+    - name: Package Helm chart
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
+      run: |
+        helm package ./infra/helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
+        
+    - name: Push Helm chart to ACR
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
+      run: |
+        helm registry login ${{ env.REGISTRY }} --username ${{ env.ACR_USERNAME }} --password ${{ env.ACR_PASSWORD }}
+        helm push ${{ env.HELM_CHART_NAME }}-${{ github.sha }}.tgz oci://${{ env.REGISTRY }}/helm        
