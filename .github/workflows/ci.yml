@@ -8,8 +8,8 @@ on:
 
 env:
   # REGISTRY: 'techchallengefastfoodapi118fase2.azurecr.io'
-  REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-  IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+  REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+  IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
   HELM_CHART_NAME: 'techchallengefastfoodapi118fase2'
   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
