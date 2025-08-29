@@ -7,9 +7,10 @@ on:
     branches: [ main, develop ]
 
 env:
-  REGISTRY: 'techchallengefastfoodapi118fase2.azurecr.io'
-  IMAGE_NAME: 'techchallengefastfoodapi118fase2'
-  HELM_CHART_NAME: 'techchallengefastfoodapi118fase2' 
+  # REGISTRY: 'techchallengefastfoodapi118fase2.azurecr.io'
+  REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+  IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+  HELM_CHART_NAME: 'techchallengefastfoodapi118fase2'
   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
@@ -98,7 +99,7 @@ jobs:
     - name: Package Helm chart
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
       run: |
-        helm package ./helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
+        helm package ./infra/helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
         
     - name: Push Helm chart to ACR
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
