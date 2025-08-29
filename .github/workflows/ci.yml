@@ -11,11 +11,15 @@ env:
   IMAGE_NAME: 'techchallengefastfoodapi118fase2'
   HELM_CHART_NAME: 'techchallengefastfoodapi118fase2' 
   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
+  ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+  ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
-    #   REGISTRY: ${{ vars.DOCKER_REGISTRY }} # your-acr-name.azurecr.io
+#   REGISTRY: ${{ vars.DOCKER_REGISTRY }} # your-acr-name.azurecr.io
 #   IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }} #your-app-name
 #   HELM_CHART_NAME: ${{ vars.HELM_CHART_NAME }} #your-helm-chart
 #   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
+#   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+#   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
 
 
@@ -74,7 +78,7 @@ jobs:
         file: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile # Adjust path if necessary
 
     - name: Build Docker image (Main branch)
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -84,4 +88,20 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         file: src/CleanArchitecture/Infrastructure/TechChallengeFastFood.CleanArch.Infrastructure.API/Dockerfile # Adjust path if necessary
+
+    - name: Set up Helm
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'      
+      uses: azure/setup-helm@v3
+      with:
+        version: '3.12.0'
     
+    - name: Package Helm chart
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
+      run: |
+        helm package ./helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
+        
+    - name: Push Helm chart to ACR
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
+      run: |
+        helm registry login ${{ env.REGISTRY }} --username ${{ env.ACR_USERNAME }} --password ${{ env.ACR_PASSWORD }}
+        helm push ${{ env.HELM_CHART_NAME }}-${{ github.sha }}.tgz oci://${{ env.REGISTRY }}/helm        
