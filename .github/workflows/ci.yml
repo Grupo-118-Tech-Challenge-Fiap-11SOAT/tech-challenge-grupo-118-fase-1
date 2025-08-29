@@ -55,7 +55,6 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
           type=ref,event=branch
-          type=raw,value=pr-${{ github.event.pull_request.number }}
           type=sha
           type=schedule,pattern={{date 'YYYYMMDD'}},enable={{is_default_branch}} 
           type=raw,value=latest,enable={{is_default_branch}}
