@@ -101,7 +101,7 @@ jobs:
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
       run: |
         VERSION="1.0.${{ github.run_number }}"
-        helm package ./infra/helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
+        helm package ./infra/helm/${{ env.HELM_CHART_NAME }} --version $VERSION
         echo "HELM_VERSION=$VERSION" >> $GITHUB_ENV
         
     - name: Push Helm chart to ACR
