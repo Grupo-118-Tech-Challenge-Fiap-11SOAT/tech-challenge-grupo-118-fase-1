@@ -100,10 +100,12 @@ jobs:
     - name: Package Helm chart
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
       run: |
+        VERSION="1.0.${{ github.run_number }}"
         helm package ./infra/helm/${{ env.HELM_CHART_NAME }} --version ${{ github.sha }}
+        echo "HELM_VERSION=$VERSION" >> $GITHUB_ENV
         
     - name: Push Helm chart to ACR
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'    
       run: |
         helm registry login ${{ env.REGISTRY }} --username ${{ env.ACR_USERNAME }} --password ${{ env.ACR_PASSWORD }}
-        helm push ${{ env.HELM_CHART_NAME }}-${{ github.sha }}.tgz oci://${{ env.REGISTRY }}/helm        
+        helm push ${{ env.HELM_CHART_NAME }}-${{ env.HELM_VERSION }}.tgz oci://${{ env.REGISTRY }}/helm        
