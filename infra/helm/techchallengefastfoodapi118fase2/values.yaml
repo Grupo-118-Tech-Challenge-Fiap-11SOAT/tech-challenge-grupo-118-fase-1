@@ -148,21 +148,21 @@ secret:
   # Secret data - these values will be base64 encoded automatically
   data:
     # JWT Variables
-    Jwt__Key: "08fa1d833b85a776166dd0a30ec21687"
-    Jwt__Issuer: "http://localhost:8080"
-    Jwt__Audience: "http://localhost:8080"
+    Jwt__Key: ""
+    Jwt__Issuer: ""
+    Jwt__Audience: ""
 
     # Security Key
-    Security__Key: "ea9083a270357e95a1bdb53188a66bb4"
+    Security__Key: ""
 
     # Mercado Pago configuration
-    MercadoPago__BaseUrl: "https://api.mercadopago.com"
-    MercadoPago__AccessToken: "APP_USR-306289084918862-072219-fa7e95087dbe33b631ffe685a321f0f9-2430042968"
-    MercadoPago__UserId: "2430042968"
-    MercadoPago__PosId: "POS01"
+    MercadoPago__BaseUrl: ""
+    MercadoPago__AccessToken: ""
+    MercadoPago__UserId: ""
+    MercadoPago__PosId: ""
 
     #Database configuration
-    ConnectionStrings__DefaultConnection: "Data Source=sqlserver-clusterip, 1433;Database=TechChallengeFastFoodFase2;Integrated Security=false;User ID=sa;Password=Mssql!Passw0rd;TrustServerCertificate=true;Max Pool Size=200;Min Pool Size=10;Connection Timeout=30;"
+    ConnectionStrings__DefaultConnection: ""
 
   # Environment variables to create from secret keys
   envVars:
