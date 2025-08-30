@@ -108,7 +108,7 @@ volumes: []
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
 
-# ConfigMap configuration
+# ConfigMap configuration.
 configMap:
   enabled: true
   name: "tech-challenge-fast-food-api-fase2"  # If empty, will use the chart fullname
