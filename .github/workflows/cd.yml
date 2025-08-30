@@ -40,10 +40,11 @@ jobs:
       uses: azure/setup-helm@v3
       with:
         version: '3.12.0'      
-        
-    - name: Get AKS credentials
-      run: |
-        az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
+
+# TODO: Uncomment if you need to fetch AKS credentials dynamically        
+    # - name: Get AKS credentials
+    #   run: |
+    #     az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AKS_CLUSTER_NAME }}
 
     - name: Generate values file from template
       run: |
@@ -80,17 +81,18 @@ jobs:
       run: |
         helm registry login ${{ env.REGISTRY }} --username ${{ secrets.ACR_USERNAME }} --password ${{ secrets.ACR_PASSWORD }}
 
-    - name: Deploy to Kubernetes
-      run: |
-        helm upgrade --install ${{ env.HELM_CHART_NAME }} \
-          oci://${{ env.REGISTRY }}/helm/${{ env.HELM_CHART_NAME }} \
-          --version ${{ env.HELM_CHART_VERSION }} \
-          --namespace ${{ env.KUBERNETES_NAMESPACE }} \
-          --create-namespace \
-          --values values-production.yaml \
-          --wait \
-          --timeout=10m \
-          --atomic
+#TODO: Uncomment if you want to deploy using Helm directly from the registry        
+    # - name: Deploy to Kubernetes
+    #   run: |
+    #     helm upgrade --install ${{ env.HELM_CHART_NAME }} \
+    #       oci://${{ env.REGISTRY }}/helm/${{ env.HELM_CHART_NAME }} \
+    #       --version ${{ env.HELM_CHART_VERSION }} \
+    #       --namespace ${{ env.KUBERNETES_NAMESPACE }} \
+    #       --create-namespace \
+    #       --values values-production.yaml \
+    #       --wait \
+    #       --timeout=10m \
+    #       --atomic
 
     - name: Clean up temporary files
       if: always()
