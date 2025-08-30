@@ -1,0 +1,199 @@
+# Default values for techchallengefastfoodapi118fase2.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 1
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: ${REGISTRY}  # Replace with your actual image name
+  imageName: ${IMAGE_NAME}
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ${IMAGE_TAG}  # Override this with your actual image tag
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # Default port for ingress and test compatibility
+  port: 80
+  instances:
+    # Configuration to test the api that runs inside cluster
+    - name: fastfood-api-clusterip
+      type: ClusterIP
+      port: 80
+      targetPort: 8080
+      portName: http
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /healthz  # Update this to match your API's health endpoint
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /healthz  # Update this to match your API's health endpoint
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 20
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+
+# ConfigMap configuration
+configMap:
+  enabled: true
+  name: "tech-challenge-fast-food-api-fase2"  # If empty, will use the chart fullname
+  annotations: {}
+  # ConfigMap data - these values will be stored as plain text
+  data:
+    # Application configuration
+    LOGGING__LOGLEVEL: "Information"
+    AllowedHosts: "*"
+    
+    # Configure JWT Timer
+    Jwt__ExpirationMinutes: "60"
+    
+    # Mercado Pago configuration
+    MercadoPago__NotificationUrl: "${MERCADO_PAGO_NOTIFICATION_URL}"
+
+  # Environment variables to create from configMap keys
+  envVars:
+    - name: "LOGGING__LOGLEVEL"
+      configMapKey: "LOGGING__LOGLEVEL"
+
+    - name: "AllowedHosts"
+      configMapKey: "AllowedHosts"
+
+    - name: "Jwt__ExpirationMinutes"
+      configMapKey: "Jwt__ExpirationMinutes"
+
+    - name: "MercadoPago__NotificationUrl"
+      configMapKey: "MercadoPago__NotificationUrl"
+
+# Secret configuration
+secret:
+  enabled: true
+  name: "tech-challenge-fast-food-api-fase2"  # If empty, will use the chart fullname
+  annotations: {}
+  # Secret data - these values will be base64 encoded automatically
+  data:
+    # JWT Variables
+    Jwt__Key: "${JWT_KEY}"
+    Jwt__Issuer: "${JWT_ISSUER}"
+    Jwt__Audience: "${JWT_AUDIENCE}"
+
+    # Security Key
+    Security__Key: "${JWT_SECURITY_KEY}"
+
+    # Mercado Pago configuration
+    MercadoPago__BaseUrl: "${MERCADO_PAGO_BASE_URL}"
+    MercadoPago__AccessToken: "${MERCADO_PAGO_ACCESS_TOKEN}"
+    MercadoPago__UserId: "${MERCADO_PAGO_USER_ID}"
+    MercadoPago__PosId: "${MERCADO_PAGO_POS_ID}"
+
+    #Database configuration
+    ConnectionStrings__DefaultConnection: "${DATABASE_CONNECTION_STRING}"
+
+  # Environment variables to create from secret keys
+  envVars:
+    - name: "Jwt__Key"
+      secretKey: "Jwt__Key"
+
+    - name: "Jwt__Issuer"
+      secretKey: "Jwt__Issuer"
+
+    - name: "Jwt__Audience"
+      secretKey: "Jwt__Audience"
+
+    - name: "Security__Key"
+      secretKey: "Security__Key"
+
+    - name: "MercadoPago__BaseUrl"
+      secretKey: "MercadoPago__BaseUrl"
+
+    - name: "MercadoPago__AccessToken"
+      secretKey: "MercadoPago__AccessToken"
+
+    - name: "MercadoPago__UserId"
+      secretKey: "MercadoPago__UserId"
+
+    - name: "MercadoPago__PosId"
+      secretKey: "MercadoPago__PosId"
+
+    - name: "ConnectionStrings__DefaultConnection"
+      secretKey: "ConnectionStrings__DefaultConnection"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

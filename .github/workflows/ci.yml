@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
   IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
-  HELM_CHART_NAME: 'techchallengefastfoodapi118fase2'
+  HELM_CHART_NAME: ${{ secrets.HELM_CHART_NAME }} #your-helm-chart
   DOTNET_VERSION: '8.0.x'  # Adjust to your current .NET version
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
