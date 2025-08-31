@@ -90,9 +90,7 @@ jobs:
           --namespace ${{ env.KUBERNETES_NAMESPACE }} \
           --create-namespace \
           --values values-production.yaml \
-          --wait \
           --timeout=10m \
-          --atomic
 
     - name: Clean up temporary files
       if: always()
