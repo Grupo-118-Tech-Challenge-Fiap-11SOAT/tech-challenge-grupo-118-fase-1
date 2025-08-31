@@ -50,6 +50,8 @@ jobs:
         export REGISTRY="${{ env.REGISTRY }}"
         export IMAGE_NAME="${{ env.IMAGE_NAME }}"
         export IMAGE_TAG="${{ env.IMAGE_TAG }}"
+        export ACR_USERNAME="${{ secrets.ACR_USERNAME }}"
+        export ACR_PASSWORD="${{ secrets.ACR_PASSWORD }}"
 
         export MERCADO_PAGO_NOTIFICATION_URL="${{ secrets.MERCADO_PAGO_NOTIFICATION_URL }}"
 

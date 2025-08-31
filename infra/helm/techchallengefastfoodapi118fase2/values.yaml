@@ -14,8 +14,18 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.0.0"  # Override this with your actual image tag
 
+
+
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
+imagePullSecrets:
+  - name: acr-secret
+
+acrCredentials:
+  enabled: false
+  registry: "yourregistry.azurecr.io"
+  username: ""  # Will be set via --set or CI/CD
+  password: ""  # Will be set via --set or CI/CD
+
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""
