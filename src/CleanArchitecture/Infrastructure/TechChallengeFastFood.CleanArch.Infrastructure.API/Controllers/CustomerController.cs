@@ -9,7 +9,7 @@ using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Reposito
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controlador responsavel pelas operações relacionadas ao cliente.
+/// Controller responsible for managing customer operations.
 /// </summary>
 [Route("[controller]")]
 public class CustomerController : ControllerBase
@@ -17,7 +17,7 @@ public class CustomerController : ControllerBase
     private readonly ICustomerController _customerController;
 
     /// <summary>
-    /// Inicializa uma nova instancia de <see cref="CustomerController"/>.
+    /// Initializes a new instance of the <see cref="CustomerController"/> class.
     /// </summary>
     /// <param name="cleanArchDbContext"></param>
     public CustomerController(CleanArchDbContext cleanArchDbContext)
@@ -35,11 +35,11 @@ public class CustomerController : ControllerBase
     };
 
     /// <summary>
-    /// Obtem um cliente pelo CPF.
+    /// Get a customer by their CPF
     /// </summary>
-    /// <param name="cpf">CPF do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
+    /// <param name="cpf">Customer's CPF.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Customer found or <see cref="NotFoundResult"/> if not exists.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -52,11 +52,11 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Obtem um cliente pelo ID.
+    /// Get a specific customer by their ID.
     /// </summary>
-    /// <param name="id">ID do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente encontrado ou <see cref="NotFoundResult"/> se nao existir.</returns>
+    /// <param name="id">Customer ID.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Customer found or <see cref="NotFoundResult"/> if not exists.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -70,11 +70,11 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Cria um novo cliente.
+    /// Create a new customer with the provided details.
     /// </summary>
-    /// <param name="customerDto">Dados do cliente a ser criado.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Resultado da criacao do cliente.</returns>
+    /// <param name="customerDto">Customer data to be created.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Result of customer creation.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -87,12 +87,12 @@ public class CustomerController : ControllerBase
     }
 
     /// <summary>
-    /// Atualiza os dados de um cliente existente.
+    /// Update an existing customer with the provided details.
     /// </summary>
-    /// <param name="id">ID do cliente.</param>
-    /// <param name="customerDto">Dados atualizados do cliente.</param>
-    /// <param name="cancellationToken">Token de cancelamento.</param>
-    /// <returns>Cliente atualizado ou <see cref="NotFoundResult"/> se nao existir.</returns>
+    /// <param name="id">Customer ID.</param>
+    /// <param name="customerDto">Customer data to be updated.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>Updated customer or <see cref="NotFoundResult"/> if not exists.</returns>
     [ProducesResponseType(typeof(CustomerResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

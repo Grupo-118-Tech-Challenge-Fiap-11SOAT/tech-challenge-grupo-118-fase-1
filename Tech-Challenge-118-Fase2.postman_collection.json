@@ -1,0 +1,1200 @@
+{
+	"info": {
+		"_postman_id": "b34e0e42-2f20-46d9-a0f6-9e680e1139ed",
+		"name": "Tech-Challenge-118-Fase2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7323317"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Authentication/Register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"string\",\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"email\": \"string\",\n  \"birthDay\": \"2025-08-02\",\n  \"password\": \"string\",\n  \"role\": \"Admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Authentication/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Authentication",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authentication/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var token;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    token = response.token; ",
+									"    pm.collectionVariables.set(\"token\", token);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"{{UserLogin}}\",\r\n  \"password\": \"{{PassLogin}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Authentication/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "Customer by CPF",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Customer/cpf/{cpf}?cpf",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Customer",
+								"cpf",
+								"{cpf}"
+							],
+							"query": [
+								{
+									"key": "cpf",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Customer/{{customerId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Customer",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer PUT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"cpf\": \"string\",\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"email\": \"string\",\n  \"birthDate\": \"2025-08-02\",\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Customer/{{customerId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Customer",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var customerId;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    customerId = response.Id; ",
+									"    pm.collectionVariables.set(\"customerId\", token);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"string\",\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"email\": \"string\",\n  \"birthDate\": \"2025-08-02\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Customer",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Customer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Employee/{{employeeId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Employee",
+								"{{employeeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"cpf\": \"string\",\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"email\": \"string\",\n  \"birthDate\": \"2025-08-02\",\n  \"password\": \"string\",\n  \"role\": \"Admin\",\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Employee/{{employeeId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Employee",
+								"{{employeeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Employee/{{employeeId}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Employee",
+								"{{employeeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Employee?skip=0&take=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Employee"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var employeeId;",
+									"try {",
+									"    var response = JSON.parse(responseBody); ",
+									"    employeeId = response.Id; ",
+									"    pm.collectionVariables.set(\"employeeId\", employeeId);",
+									"}",
+									"catch (err) {",
+									"    console.warn(err.message);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"string\",\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"email\": \"string\",\n  \"birthDay\": \"2025-08-02\",\n  \"password\": \"string\",\n  \"role\": \"Admin\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/Employee",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Employee"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Order All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Order/all?status=Received&skip=0&take=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order",
+								"all"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "Received"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order monitor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Order/monitor?skip=0&take=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order",
+								"monitor"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cpf\": \"string\",\n  \"items\": [\n    {\n      \"productId\": 0,\n      \"quantity\": 0\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Order",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order change-status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Order/{{Id}}/change-status",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order",
+								"{{Id}}",
+								"change-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Order?Id=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order"
+							],
+							"query": [
+								{
+									"key": "Id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order by Payment-details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Order/{id}/payment-details",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Order",
+								"{id}",
+								"payment-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orderId\": 0,\n  \"provider\": \"MercadoPago\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Payments",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"uuid\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"orderId\": 0,\n  \"provider\": \"MercadoPago\",\n  \"status\": \"Pending\",\n  \"userPaymentCode\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Payments/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Payments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webhook usado na integração com o Mercado Pago",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"string\",\n  \"api_version\": \"string\",\n  \"data\": {\n    \"id\": \"string\"\n  },\n  \"date_created\": \"2025-08-02T02:04:31.261Z\",\n  \"id\": 0,\n  \"live_mode\": true,\n  \"type\": \"string\",\n  \"user_id\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/payments/webhooks/mercado-pago/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"payments",
+								"webhooks",
+								"mercado-pago",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products?skip=0&take=10&searchActiveProducts=true",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								},
+								{
+									"key": "searchActiveProducts",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"category\": \"Snack\",\n  \"price\": 0,\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Products",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products/type/1/?skip=0&take=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"type",
+								"1",
+								""
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products by ProductId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products/12",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put Products",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"category\": \"Snack\",\n  \"price\": 0,\n  \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Products/10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Images",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products/10/images?skip=0&take=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10",
+								"images"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Images",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"position\": 0,\n  \"url\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Products/10/Images",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10",
+								"Images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products by Images",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products/10/images/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10",
+								"images",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/Products/10/images/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10",
+								"images",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 0,\n  \"position\": 0,\n  \"url\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/Products/10/images/2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"Products",
+								"10",
+								"images",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:30080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "customerId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "employeeId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cpf",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "IOrderId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "OrderId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "UserLogin",
+			"value": "admin@admin.com",
+			"type": "string"
+		},
+		{
+			"key": "PassLogin",
+			"value": "adminPass",
+			"type": "string"
+		}
+	]
+}

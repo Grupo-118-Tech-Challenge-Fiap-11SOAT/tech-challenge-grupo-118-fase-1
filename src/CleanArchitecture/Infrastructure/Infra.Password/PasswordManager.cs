@@ -29,6 +29,16 @@ public class PasswordManager : IPasswordManager
     }
 
     /// <summary>
+    /// Create the password manager instance.
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IPasswordManager Create(IConfiguration configuration)
+    {
+        return new PasswordManager(configuration);
+    }
+    
+    /// <summary>
     /// Cria um hash para a senha especificada usando HMACSHA512 e uma chave secreta.
     /// </summary>
     /// <param name="password">A senha em texto plano a ser hasheada.</param>

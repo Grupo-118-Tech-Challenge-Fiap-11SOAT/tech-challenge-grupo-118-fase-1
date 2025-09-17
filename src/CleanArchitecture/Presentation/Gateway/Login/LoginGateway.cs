@@ -5,36 +5,36 @@ using Common.Interfaces.Login.Gateway;
 namespace TechChallengeFastFood.CleanArch.Presentation.Gateway.Login;
 
 /// <summary>
-/// Implementação do gateway de login, responsável por autenticação e verificação de senha.
+/// Login gateway implementation, responsible for authentication and password verification.
 /// </summary>
 public class LoginGateway : ILoginGateway
 {
     /// <summary>
-    /// Gerenciador de senhas utilizado para operações de autenticação.
+    /// Password manager used for authentication operations.
     /// </summary>
     private readonly IPasswordManager _passwordManager;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="LoginGateway"/>.
+    /// Initializes a new instance of <see cref="LoginGateway"/>.
     /// </summary>
-    /// <param name="passwordManager">Instância de <see cref="IPasswordManager"/> para gerenciamento de senhas.</param>
+    /// <param name="passwordManager">Instance of <see cref="IPasswordManager"/> for password management.</param>
     public LoginGateway(IPasswordManager passwordManager)
     {
         _passwordManager = passwordManager;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="ILoginGateway"/> utilizando o gerenciador de senhas fornecido.
+    /// Creates an instance of <see cref="ILoginGateway"/> using the provided password manager.
     /// </summary>
-    /// <param name="passwordManager">Instância de <see cref="IPasswordManager"/>.</param>
-    /// <returns>Uma nova instância de <see cref="ILoginGateway"/>.</returns>
+    /// <param name="passwordManager">Instance of <see cref="IPasswordManager"/>.</param>
+    /// <returns>A new instance of <see cref="ILoginGateway"/>.</returns>
     public static ILoginGateway Create(IPasswordManager passwordManager)
     {
         return new LoginGateway(passwordManager);
     }
 
     /// <summary>
-    /// Realiza o login do funcionário, gerando um token de autenticação.
+    /// Performs employee login, generating an authentication token.
     /// </summary>
     /// <param name="id">Identificador do funcionário.</param>
     /// <param name="name">Nome do funcionário.</param>
@@ -46,11 +46,11 @@ public class LoginGateway : ILoginGateway
     }
 
     /// <summary>
-    /// Verifica se a senha informada corresponde à senha armazenada.
+    /// Checks if the provided password matches the stored password.
     /// </summary>
-    /// <param name="password">Senha em texto puro informada pelo usuário.</param>
-    /// <param name="storedPassword">Senha armazenada (hash).</param>
-    /// <returns>Verdadeiro se a senha corresponder; caso contrário, falso.</returns>
+    /// <param name="password">Plain text password provided by the user.</param>
+    /// <param name="storedPassword">Stored (hashed) password.</param>
+    /// <returns>True if the password matches; otherwise, false.</returns>
     public bool VerifyPassword(string password, string storedPassword)
     {
         return _passwordManager.VerifyPassword(password, storedPassword);

@@ -88,8 +88,6 @@ public class Program
                 $"Bearer {builder.Configuration.GetSection("MercadoPago:AccessToken").Value}");
         });
 
-        builder.Services.AddTransient<IPasswordManager, PasswordManager>();
-
         builder.Services.AddSwaggerGen(s =>
         {
             s.SwaggerDoc("v1", new OpenApiInfo

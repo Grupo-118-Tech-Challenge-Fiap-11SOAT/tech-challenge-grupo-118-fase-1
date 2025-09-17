@@ -2,6 +2,8 @@ using Common.Dto.Payments;
 using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Controller;
 using Microsoft.AspNetCore.Mvc;
+using Common.Interfaces.Payments;
+using Microsoft.AspNetCore.Authorization;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
@@ -14,6 +16,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("payments")]
+[Authorize]
 public class PaymentsController : ControllerBase
 {
     private readonly IPaymentController _paymentController;
@@ -75,6 +78,7 @@ public class PaymentsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [HttpPost("webhooks/mercado-pago/{paymentUuid:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> ProcessCallbackAsync(Guid paymentUuid, [FromBody] MercadoPagoCallbackRequest request, CancellationToken cancellationToken)
     {
         await _paymentController.ProcessCallbackAsync(paymentUuid, request, cancellationToken);

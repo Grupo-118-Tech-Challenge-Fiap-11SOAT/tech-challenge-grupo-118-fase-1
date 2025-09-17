@@ -3,38 +3,38 @@
 namespace TechChallengeFastFood.CleanArch.Application.UseCases.Employee;
 
 /// <summary>
-/// Caso de uso para obter todos os funcionários.
+/// Use case for getting all employees.
 /// </summary>
 public class GetAllEmployeeUseCase
 {
     private readonly IEmployeeGateway _employeeGateway;
 
     /// <summary>
-    /// Inicializa uma nova instância de <see cref="GetAllEmployeeUseCase"/>.
+    /// Initializes a new instance of <see cref="GetAllEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
     public GetAllEmployeeUseCase(IEmployeeGateway employeeGateway)
     {
         _employeeGateway = employeeGateway;
     }
 
     /// <summary>
-    /// Cria uma instância de <see cref="GetAllEmployeeUseCase"/>.
+    /// Creates an instance of <see cref="GetAllEmployeeUseCase"/>.
     /// </summary>
-    /// <param name="employeeGateway">Gateway para operações de funcionário.</param>
-    /// <returns>Instância de <see cref="GetAllEmployeeUseCase"/>.</returns>
+    /// <param name="employeeGateway">Gateway for employee operations.</param>
+    /// <returns>Instance of <see cref="GetAllEmployeeUseCase"/>.</returns>
     public static GetAllEmployeeUseCase Create(IEmployeeGateway employeeGateway)
     {
         return new GetAllEmployeeUseCase(employeeGateway);
     }
 
     /// <summary>
-    /// Obtém uma lista paginada de funcionários.
+    /// Gets a paginated list of employees.
     /// </summary>
-    /// <param name="cancellationToken">Token para cancelamento da operação assíncrona.</param>
-    /// <param name="skip">Quantidade de registros a serem ignorados (para paginação).</param>
-    /// <param name="take">Quantidade máxima de registros a serem retornados.</param>
-    /// <returns>Lista de funcionários ou null se não houver registros.</returns>
+    /// <param name="cancellationToken">Token for cancelling the asynchronous operation.</param>
+    /// <param name="skip">Number of records to skip (for pagination).</param>
+    /// <param name="take">Maximum number of records to return.</param>
+    /// <returns>List of employees or null if no records exist.</returns>
     public async Task<List<Domain.Entities.Employee.Entities.Employee>?> ExecuteAsync(
         CancellationToken cancellationToken,
         int skip = 0,
