@@ -11,7 +11,7 @@ public class UpdateEmployeeDto
     public string Email { get; set; }
     public DateOnly BirthDate { get; set; }
     public string Password { get; set; }
-    public EmployeeRole Role { get; set; }
+    public Roles Role { get; set; }
     public bool IsActive { get; set; }
 
     public UpdateEmployeeDto()
@@ -26,7 +26,7 @@ public class UpdateEmployeeDto
         string email,
         DateOnly birthDate,
         string password,
-        EmployeeRole role,
+        Roles role,
         bool isActive)
     {
         Id = id;

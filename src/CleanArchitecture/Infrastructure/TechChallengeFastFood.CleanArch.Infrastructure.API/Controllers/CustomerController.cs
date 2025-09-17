@@ -1,6 +1,6 @@
 using Common.Dto.Customers;
+using Common.Enums;
 using Common.Interfaces.Customer.Controller;
-using Common.Interfaces.Customer.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
@@ -11,7 +11,6 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// <summary>
 /// Controlador responsavel pelas operações relacionadas ao cliente.
 /// </summary>
-[Authorize]
 [Route("[controller]")]
 public class CustomerController : ControllerBase
 {

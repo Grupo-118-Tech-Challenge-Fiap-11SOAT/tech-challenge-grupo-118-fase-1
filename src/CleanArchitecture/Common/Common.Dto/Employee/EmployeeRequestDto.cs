@@ -10,7 +10,7 @@ public class EmployeeRequestDto
     public string Email { get; set; }
     public DateOnly BirthDay { get; set; }
     public string Password { get; set; }
-    public EmployeeRole Role { get; set; }
+    public Roles Role { get; set; }
     
     public EmployeeRequestDto()
     {
@@ -23,7 +23,7 @@ public class EmployeeRequestDto
         string email,
         DateOnly birthDay,
         string password,
-        EmployeeRole role)
+        Roles role)
     {
         Cpf = cpf;
         Name = name;

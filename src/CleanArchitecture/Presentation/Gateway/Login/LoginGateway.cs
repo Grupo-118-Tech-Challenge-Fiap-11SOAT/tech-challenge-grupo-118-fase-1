@@ -40,7 +40,7 @@ public class LoginGateway : ILoginGateway
     /// <param name="name">Nome do funcionário.</param>
     /// <param name="role">Cargo do funcionário.</param>
     /// <returns>Token de autenticação gerado.</returns>
-    public string Login(int id, string name, EmployeeRole role)
+    public string Login(int id, string name, Roles role)
     {
         return _passwordManager.CreateToken(id, name, role);
     }

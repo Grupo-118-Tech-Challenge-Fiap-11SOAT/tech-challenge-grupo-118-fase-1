@@ -47,7 +47,7 @@ public class PasswordManager : IPasswordManager
     /// <param name="name">Nome do funcionário.</param>
     /// <param name="role">Cargo do funcionário.</param>
     /// <returns>Uma string representando o token JWT gerado.</returns>
-    public string CreateToken(int id, string name, EmployeeRole role)
+    public string CreateToken(int id, string name, Roles role)
     {
         var claims = new List<Claim>
             {

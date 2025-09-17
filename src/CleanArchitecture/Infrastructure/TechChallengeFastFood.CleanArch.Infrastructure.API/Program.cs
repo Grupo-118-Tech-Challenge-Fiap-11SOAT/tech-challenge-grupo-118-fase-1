@@ -1,4 +1,5 @@
 using Common.Dto.MercadoPago;
+using Common.Enums;
 using Common.Interfaces.Employee;
 using Common.Interfaces.Payments;
 using External.Factories;
@@ -136,6 +137,15 @@ public class Program
                             System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
                 };
             });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(nameof(Roles.Manager), policy => policy.RequireRole([Roles.Manager.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Cook), policy => policy.RequireRole([Roles.Cook.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Waiter), policy => policy.RequireRole([Roles.Waiter.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Cleaner), policy => policy.RequireRole([Roles.Cleaner.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Customer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Admin.ToString()));
+        });
 
         builder.Services.AddHealthChecks().AddDbContextCheck<CleanArchDbContext>();
 

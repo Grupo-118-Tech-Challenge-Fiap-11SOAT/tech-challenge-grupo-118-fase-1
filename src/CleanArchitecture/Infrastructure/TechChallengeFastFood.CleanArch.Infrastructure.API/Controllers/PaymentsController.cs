@@ -1,9 +1,7 @@
 using Common.Dto.Payments;
+using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Controller;
 using Microsoft.AspNetCore.Mvc;
-using Common.Interfaces.Order.Repositories;
-using Common.Interfaces.Payments;
-using Common.Interfaces.Payments.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Payments.Repositories;
@@ -30,7 +28,7 @@ public class PaymentsController : ControllerBase
     {
         var paymentRepository = PaymentRepository.Create(cleanArchDbContext);
         var orderRepository = OrderRepository.Create(cleanArchDbContext);
-        
+
         _paymentController = PaymentController.Create(paymentRepository, orderRepository, paymentProcessorFactory);
     }
 

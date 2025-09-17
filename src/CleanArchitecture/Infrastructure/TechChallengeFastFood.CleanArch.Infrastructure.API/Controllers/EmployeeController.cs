@@ -1,4 +1,5 @@
 using Common.Dto.Employee;
+using Common.Enums;
 using Common.Interfaces.Employee;
 using Common.Interfaces.Employee.Controller;
 using Common.Interfaces.Employee.Repositories;
@@ -14,7 +15,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+[Authorize(nameof(Roles.Manager))]
 public class EmployeeController : ControllerBase
 {
     private readonly IEmployeeController _employeeController;

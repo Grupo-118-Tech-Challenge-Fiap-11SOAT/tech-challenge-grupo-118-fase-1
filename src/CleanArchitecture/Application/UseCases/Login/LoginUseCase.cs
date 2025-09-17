@@ -38,7 +38,7 @@ public class LoginUseCase
     /// <returns>
     /// Retorna uma string representando o resultado do login (ex: token de autenticação).
     /// </returns>
-    public string Execute(int id, string name, EmployeeRole role)
+    public string Execute(int id, string name, Roles role)
     {
         return _loginGateway.Login(id, name, role);
     }
