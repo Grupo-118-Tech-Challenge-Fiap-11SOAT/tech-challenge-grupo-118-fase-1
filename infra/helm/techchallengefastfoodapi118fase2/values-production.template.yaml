@@ -93,14 +93,19 @@ livenessProbe:
   httpGet:
     path: /healthz  # Update this to match your API's health endpoint
     port: http
-  initialDelaySeconds: 30
-  periodSeconds: 10
+  initialDelaySeconds: 90
+  periodSeconds: 30
+  timeoutSeconds: 30
+  successThreshold: 1
+  failureThreshold: 4
 readinessProbe:
   httpGet:
     path: /healthz  # Update this to match your API's health endpoint
     port: http
-  initialDelaySeconds: 5
+  initialDelaySeconds: 30
   periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 10
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
