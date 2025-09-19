@@ -28,9 +28,9 @@ spec:
       paths:
       - backend:
           service:
-            name: {{ include "techchallengefastfoodapi118fase2.fullname" $ }}
+            name: {{ (index .Values.service.instances 0).name }}
             port:
-              number: {{ $.Values.service.port }}
+              number: {{ (index .Values.service.instances 0).port }}
         path: /
         pathType: Prefix
 {{- end }}
