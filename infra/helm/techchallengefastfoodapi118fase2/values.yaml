@@ -57,13 +57,12 @@ securityContext: {}
 service:
   # Default port for ingress and test compatibility
   port: 80
-  instances:      
-# Configuration to test the api that runs inside cluster
-    - name: fastfood-api-nodeport
-      type: NodePort
+  instances:
+    # Configuration to test the api that runs inside cluster
+    - name: fastfood-api-clusterip
+      type: ClusterIP
       port: 80
       targetPort: 8080
-      nodePort: 30080
       portName: http
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
