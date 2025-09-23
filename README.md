@@ -1,4 +1,4 @@
-# Tech Challenge - Fast Food API - Fase 2 - Grupo 118
+# Tech Challenge - Fast Food API - Fase 3 - Grupo 118
 
 # Membros do Grupo
 - Sabrina Cardoso de Oliveira
