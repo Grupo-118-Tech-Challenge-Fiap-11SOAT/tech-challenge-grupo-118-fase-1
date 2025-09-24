@@ -18,7 +18,7 @@
   - **Usuário Discord**: _viniciusnunes
 
 # Tecnologias utilizadas
-- **Linguagem**: C# / Asp.Net Core Web Api (dotnet 8)
+- **Linguagem**: C# / ASP.NET Core Web Api (dotnet 8)
 - **Banco de Dados**: SQL Server 2022
 - **ORM**: Entity Framework Core
   - **Migration** sendo aplicada no startup da aplicação
