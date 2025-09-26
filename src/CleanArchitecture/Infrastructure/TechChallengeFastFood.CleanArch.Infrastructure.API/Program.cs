@@ -91,7 +91,7 @@ public class Program
         {
             s.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Tech Challenge - Fast Food API - Fase 2",
+                Title = "Tech Challenge - Fast Food API - Fase 3",
                 Version = "v1",
                 Description =
                     "API para gerenciamento de pedidos para lanchonete usando conceitos de Clean Architecture.",
@@ -154,7 +154,7 @@ public class Program
         {
             s.SwaggerEndpoint("../swagger/v1/swagger.json", "Tech Challenge - Fast Food API");
             s.RoutePrefix = string.Empty;
-            s.DocumentTitle = "Tech Challenge - Fast Food API - Fase 2 | Swagger";
+            s.DocumentTitle = "Tech Challenge - Fast Food API - Fase 3 | Swagger";
         });
 
         app.UseHttpsRedirection();

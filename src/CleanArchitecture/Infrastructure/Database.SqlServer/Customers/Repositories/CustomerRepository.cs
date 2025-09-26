@@ -18,13 +18,6 @@ public class CustomerRepository : ICustomerRepository
         return new CustomerRepository(context);
     }
 
-    public async Task<Customer> CreateAsync(Customer customer, CancellationToken cancellationToken = default)
-    {
-        await _dbContext.Customers.AddAsync(customer, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        return customer;
-    }
-
     public async Task<Customer?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Customers
@@ -35,11 +28,5 @@ public class CustomerRepository : ICustomerRepository
     {
         return await _dbContext.Customers
             .FirstOrDefaultAsync(c => c.Cpf == cpf, cancellationToken);
-    }
-
-    public async Task UpdateAsync(Customer customer, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Customers.Update(customer).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

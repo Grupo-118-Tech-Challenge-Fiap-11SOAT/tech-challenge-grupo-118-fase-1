@@ -1,7 +1,6 @@
 ﻿using Common.Interfaces.Customer.Gateway;
 using Common.Interfaces.Customer.Repositories;
 using CustomerDomain = TechChallengeFastFood.CleanArch.Domain.Entities.Customer.Entities.Customer;
-using CustomerEntity = Common.Dto.Customers.Database.Customer;
 
 namespace TechChallengeFastFood.CleanArch.Presentation.Gateway.Customer;
 
@@ -24,36 +23,6 @@ public class CustomerGateway : ICustomerGateway
     public static ICustomerGateway Create(ICustomerRepository customerRepository)
     {
         return new CustomerGateway(customerRepository);
-    }
-
-    /// <summary>
-    /// Asynchronously creates a new customer.
-    /// </summary>
-    /// <param name="customer">Domain entity of the customer to be created.</param>
-    /// <param name="cancellationToken">Token for cancelling the operation.</param>
-    /// <returns>Domain entity of the created customer.</returns>
-    public async Task<CustomerDomain> CreateAsync(CustomerDomain customer,
-        CancellationToken cancellationToken = default)
-    {
-        var customerEntity = new CustomerEntity
-        (
-            customer.Id,
-            customer.Name,
-            customer.Cpf,
-            customer.Email
-        );
-
-        var createdCustomer = await _customerRepository.CreateAsync(customerEntity, cancellationToken);
-
-        return new CustomerDomain
-        (
-            createdCustomer.Cpf,
-            createdCustomer.Name,
-            createdCustomer.Surname,
-            createdCustomer.Email,
-            createdCustomer.BirthDay,
-            createdCustomer.IsActive
-        );
     }
 
     /// <summary>
@@ -102,27 +71,5 @@ public class CustomerGateway : ICustomerGateway
             customer.BirthDay,
             customer.IsActive
         );
-    }
-
-    /// <summary>
-    /// Asynchronously updates a customer's data.
-    /// </summary>
-    /// <param name="customer">Domain entity of the customer with updated data.</param>
-    /// <param name="cancellationToken">Token for cancelling the operation.</param>
-    /// <returns>Domain entity of the updated customer.</returns>
-    public async Task<CustomerDomain?> UpdateAsync(CustomerDomain customer,
-        CancellationToken cancellationToken = default)
-    {
-        var customerEntity = new CustomerEntity
-        (
-            customer.Id,
-            customer.Name,
-            customer.Cpf,
-            customer.Email
-        );
-
-        await _customerRepository.UpdateAsync(customerEntity, cancellationToken);
-
-        return customer;
     }
 }
