@@ -1,4 +1,4 @@
-# Tech Challenge - Fast Food API - Fase 2 - Grupo 118
+# Tech Challenge - Fast Food API - Fase 3 - Grupo 118
 
 # Membros do Grupo
 - Sabrina Cardoso de Oliveira
@@ -18,7 +18,7 @@
   - **Usuário Discord**: _viniciusnunes
 
 # Tecnologias utilizadas
-- **Linguagem**: C# / Asp.Net Core Web Api (dotnet 8)
+- **Linguagem**: C# / ASP.NET Core Web Api (dotnet 8)
 - **Banco de Dados**: SQL Server 2022
 - **ORM**: Entity Framework Core
   - **Migration** sendo aplicada no startup da aplicação
@@ -72,6 +72,47 @@ Data Source=localhost,31390;Database=TechChallengeFastFoodFase2;Integrated Secur
 Abaixo segue a modelagem do nosso banco de dados, contendo como as entidades se relacionam.
 
 ![Diagrama do Banco de Dados](TechChallengeFastFoodDatabaseDiagram-V2.png)
+
+## MER - Conceitual
+
+Abaixo segue o diagrama conceitual contendo o fluxograma da ações na aplicação.
+
+![MER - TechChallenge.png](MER%20-%20TechChallenge.png)
+
+## Boas práticas adotadas 
+
+A aplicação faz uso de migrações do Entity Framework (EF) demonstrando várias boas práticas de desenvolvimento de banco de dados e migrações. Ele gera script automaticamente pelo EF Core, o que já garante uma estrutura robusta e segura.
+
+## Boas Práticas Identificadas
+
+---
+
+### Transações e Integridade
+O script inicial de migração utiliza uma **transação** (`BEGIN TRANSACTION` e `COMMIT`). Isso é crucial para garantir a integridade do banco de dados. Se qualquer comando dentro da transação falhar, a transação inteira é revertida (rollback), evitando um estado inconsistente do banco de dados.
+
+### Verificação de Existência
+O script inicial de migração começa verificando se a tabela `[__EFMigrationsHistory]` já existe usando `IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL`. Isso impede erros caso o script seja executado mais de uma vez, tornando-o **idempotente**. Essa é uma prática essencial para scripts de migração.
+
+### Colunas de Controle
+As tabelas `Customers`, `Employees`, `Orders`, `Products`, e `ImageProducts` incluem colunas de controle, como `CreatedAt` e `UpdatedAt`. Essas colunas são fundamentais para auditoria e rastreamento de mudanças, e a utilização de **`SYSDATETIMEOFFSET()`** como valor padrão garante que a data e hora de criação e atualização sejam registradas automaticamente no momento da inserção.
+
+### Padronização de Nomenclatura
+Para a nomenclatura segue uma convenção de nomenclatura clara para tabelas (`[NomeDaTabela]`), colunas (`[NomeDaColuna]`), e chaves (`[PK_NomeDaTabela]`, `[FK_TabelaOrigem_TabelaDestino_Coluna]`). Essa **padronização** facilita a leitura e manutenção do esquema do banco de dados.
+
+### Chaves e Índices
+- **Chaves Primárias**: Cada tabela tem uma chave primária (`CONSTRAINT [PK_...] PRIMARY KEY ([Id])`), que é uma **boa prática** de design de banco de dados, garantindo a unicidade de cada registro.
+- **Chaves Estrangeiras**: As relações entre tabelas, como `ImageProducts` e `OrderItems`, são definidas com chaves estrangeiras (`FOREIGN KEY`), garantindo a **integridade referencial**. O uso de `ON DELETE CASCADE` garante que, ao deletar um registro pai, os registros filhos associados também sejam excluídos.
+- **Índices de Unicidade**: Os índices únicos (`CREATE UNIQUE INDEX`) nas colunas `Cpf` e `Email` das tabelas `Customers` e `Employees`, e nas colunas `Uuid` e `OrderId` da tabela `Payments`, garantem que não haja dados duplicados nessas colunas, o que é vital para a **integridade dos dados**.
+- **Índices de Otimização**: A criação de índices (`CREATE INDEX`) em colunas de chave estrangeira (`[IX_ImageProducts_ProductId]`, `[IX_OrderItems_ProductId]`) melhora significativamente o desempenho de consultas que envolvem junções de tabelas.
+
+### Inserção de Dados
+O script inicial gerado inclui comandos `INSERT` para popular as tabelas `Employees`, `Products` e `ImageProducts` com dados iniciais.
+- **Controle de Identidade**: Os comandos `SET IDENTITY_INSERT ... ON/OFF` são utilizados para permitir a inserção de valores explícitos nas colunas de identidade (`Id`). Isso é útil para garantir que os dados de "seed" (iniciais) tenham IDs consistentes entre ambientes.
+- **Dados Sensíveis**: O script mostra um exemplo de uma senha de administrador que está **hasheada** (`QBYnGddxOZ/...`), o que é uma prática de segurança fundamental para proteger informações sensíveis.
+- **Idempotência de Inserção**: O uso de `IF EXISTS` antes dos comandos `SET IDENTITY_INSERT` garante que os comandos de inserção só sejam executados se a tabela e as colunas de identidade existirem.
+
+### Rastreamento de Migração
+Após a criação de novos itens é gerado script que insere registros na tabela `[__EFMigrationsHistory]`, o que permite ao Entity Framework rastrear quais migrações já foram aplicadas no banco de dados. Isso evita a aplicação de migrações repetidas. O uso de dois `INSERT INTO [__EFMigrationsHistory]` demonstra que o script combina duas migrações diferentes em um único arquivo, uma prática comum para otimizar o processo.
 
 # Helm - API
 

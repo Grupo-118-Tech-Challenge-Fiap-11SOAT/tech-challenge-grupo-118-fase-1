@@ -36,11 +36,11 @@ public class LoginGateway : ILoginGateway
     /// <summary>
     /// Performs employee login, generating an authentication token.
     /// </summary>
-    /// <param name="id">Employee identifier.</param>
-    /// <param name="name">Employee name.</param>
-    /// <param name="role">Employee role.</param>
-    /// <returns>Generated authentication token.</returns>
-    public string Login(int id, string name, EmployeeRole role)
+    /// <param name="id">Identificador do funcionário.</param>
+    /// <param name="name">Nome do funcionário.</param>
+    /// <param name="role">Cargo do funcionário.</param>
+    /// <returns>Token de autenticação gerado.</returns>
+    public string Login(int id, string name, Roles role)
     {
         return _passwordManager.CreateToken(id, name, role);
     }

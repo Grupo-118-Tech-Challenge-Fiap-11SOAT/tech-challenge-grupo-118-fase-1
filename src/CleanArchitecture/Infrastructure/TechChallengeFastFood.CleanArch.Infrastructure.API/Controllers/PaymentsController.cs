@@ -1,4 +1,5 @@
 using Common.Dto.Payments;
+using Common.Interfaces.Payments;
 using Common.Interfaces.Payments.Controller;
 using Microsoft.AspNetCore.Mvc;
 using Common.Interfaces.Payments;
@@ -30,7 +31,7 @@ public class PaymentsController : ControllerBase
     {
         var paymentRepository = PaymentRepository.Create(cleanArchDbContext);
         var orderRepository = OrderRepository.Create(cleanArchDbContext);
-        
+
         _paymentController = PaymentController.Create(paymentRepository, orderRepository, paymentProcessorFactory);
     }
 

@@ -1,4 +1,5 @@
 using Common.Dto.MercadoPago;
+using Common.Enums;
 using Common.Interfaces.Employee;
 using Common.Interfaces.Payments;
 using External.Factories;
@@ -91,7 +92,7 @@ public class Program
         {
             s.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Tech Challenge - Fast Food API - Fase 2",
+                Title = "Tech Challenge - Fast Food API - Fase 3",
                 Version = "v1",
                 Description =
                     "API para gerenciamento de pedidos para lanchonete usando conceitos de Clean Architecture.",
@@ -135,6 +136,15 @@ public class Program
                 };
             });
 
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(nameof(Roles.Manager), policy => policy.RequireRole([Roles.Manager.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Cook), policy => policy.RequireRole([Roles.Cook.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Waiter), policy => policy.RequireRole([Roles.Waiter.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Cleaner), policy => policy.RequireRole([Roles.Cleaner.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Customer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Admin.ToString()));
+        });
+
         builder.Services.AddHealthChecks().AddDbContextCheck<CleanArchDbContext>();
 
         var app = builder.Build();
@@ -154,7 +164,7 @@ public class Program
         {
             s.SwaggerEndpoint("../swagger/v1/swagger.json", "Tech Challenge - Fast Food API");
             s.RoutePrefix = string.Empty;
-            s.DocumentTitle = "Tech Challenge - Fast Food API - Fase 2 | Swagger";
+            s.DocumentTitle = "Tech Challenge - Fast Food API - Fase 3 | Swagger";
         });
 
         app.UseHttpsRedirection();

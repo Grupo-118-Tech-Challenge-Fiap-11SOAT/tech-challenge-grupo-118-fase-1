@@ -6,7 +6,7 @@ namespace Common.Dto.Employee.Database;
 public class Employee : Person
 {
     public string Password { get; protected set; }
-    public EmployeeRole Role { get; protected set; }
+    public Roles Role { get; protected set; }
 
     protected Employee()
     {
@@ -23,7 +23,7 @@ public class Employee : Person
         string email,
         DateOnly birthday,
         string password,
-        EmployeeRole role,
+        Roles role,
         bool isActive,
         int id = 0)
     {
