@@ -11,7 +11,7 @@ public class EmployeeResponseDto
     public string Surname { get; set; }
     public string Email { get; set; }
     public DateOnly BirthDate { get; set; }
-    public EmployeeRole Role { get; set; }
+    public Roles Role { get; set; }
     public bool IsActive { get; set; }
     public bool Error { get; set; }
     public string ErrorMessage { get; set; }
@@ -28,7 +28,7 @@ public class EmployeeResponseDto
         string surname,
         string email,
         DateOnly birthdate,
-        EmployeeRole role,
+        Roles role,
         bool isActive)
     {
         Id = id;

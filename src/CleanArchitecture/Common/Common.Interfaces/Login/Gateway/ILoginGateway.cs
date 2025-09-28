@@ -5,6 +5,6 @@ namespace Common.Interfaces.Login.Gateway;
 
 public interface ILoginGateway
 {
-    string Login(int id, string name, EmployeeRole role);
+    string Login(int id, string name, Roles role);
     bool VerifyPassword(string password, string storedPassword);
 }

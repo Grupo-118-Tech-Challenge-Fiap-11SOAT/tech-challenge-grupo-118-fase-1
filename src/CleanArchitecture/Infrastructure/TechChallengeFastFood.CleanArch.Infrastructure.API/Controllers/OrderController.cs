@@ -1,6 +1,7 @@
 using Common.Dto.Order;
 using Common.Enums;
 using Common.Interfaces.Order.Controller;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Order.Repositories;
@@ -40,7 +41,7 @@ public class OrderController : ControllerBase
     {
         var orderRepository = OrderRepository.Create(cleanArchDbContext);
         var productRepository = ProductRepository.Create(cleanArchDbContext);
-        
+
         _orderController = Presentation.Controllers.Order.OrderController.Create(orderRepository, productRepository);
     }
 
