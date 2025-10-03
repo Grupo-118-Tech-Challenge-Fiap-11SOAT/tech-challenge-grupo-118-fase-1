@@ -14,7 +14,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize(nameof(Roles.Cook))]
+[Authorize(nameof(Roles.Kitchen))]
 public class ProductsController : ControllerBase
 {
     private readonly IProductController _productController;

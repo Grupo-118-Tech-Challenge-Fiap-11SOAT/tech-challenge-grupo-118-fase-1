@@ -139,11 +139,11 @@ public class Program
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy(nameof(Roles.Manager), policy => policy.RequireRole([Roles.Manager.ToString(), Roles.Admin.ToString()]));
-            options.AddPolicy(nameof(Roles.Cook), policy => policy.RequireRole([Roles.Cook.ToString(), Roles.Admin.ToString()]));
+            options.AddPolicy(nameof(Roles.Kitchen), policy => policy.RequireRole([Roles.Kitchen.ToString(), Roles.Admin.ToString()]));
             options.AddPolicy(nameof(Roles.Waiter), policy => policy.RequireRole([Roles.Waiter.ToString(), Roles.Admin.ToString()]));
             options.AddPolicy(nameof(Roles.Cleaner), policy => policy.RequireRole([Roles.Cleaner.ToString(), Roles.Admin.ToString()]));
             options.AddPolicy(nameof(Roles.Customer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Admin.ToString()));
-            options.AddPolicy(nameof(Roles.CookCustomer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Cook.ToString(), Roles.Admin.ToString()));
+            options.AddPolicy(nameof(Roles.KitchenCustomer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Kitchen.ToString(), Roles.Admin.ToString()));
         });
 
         builder.Services.AddHealthChecks().AddDbContextCheck<CleanArchDbContext>();
