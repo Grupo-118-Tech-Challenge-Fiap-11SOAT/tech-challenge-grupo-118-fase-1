@@ -25,6 +25,7 @@ public class EmployeeController : ControllerBase
     /// </summary>
     /// <param name="cleanArchDbContext"></param>
     /// <param name="configuration"></param>
+
     public EmployeeController(CleanArchDbContext cleanArchDbContext, IConfiguration configuration)
     {
         var passwordManager = PasswordManager.Create(configuration);
