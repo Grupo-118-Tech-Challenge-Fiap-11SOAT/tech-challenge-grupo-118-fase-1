@@ -1,4 +1,5 @@
 using Common.Dto.Customers;
+using Common.Enums;
 using Common.Interfaces.Customer.Controller;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
@@ -9,7 +10,6 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// <summary>
 /// Controller responsible for managing customer operations.
 /// </summary>
-[Authorize]
 [Route("[controller]")]
 public class CustomerController : ControllerBase
 {

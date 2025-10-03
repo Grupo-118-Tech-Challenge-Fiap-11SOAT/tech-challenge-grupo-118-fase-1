@@ -1,10 +1,11 @@
 namespace Common.Enums;
 
-public enum EmployeeRole
+public enum Roles
 {
     Admin,
     Manager,
     Cook,
     Waiter,
-    Cleaner
+    Cleaner,
+    Customer
 }

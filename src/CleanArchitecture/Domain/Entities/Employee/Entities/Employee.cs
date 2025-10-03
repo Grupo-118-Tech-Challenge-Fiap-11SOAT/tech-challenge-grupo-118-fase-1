@@ -9,7 +9,7 @@ namespace TechChallengeFastFood.CleanArch.Domain.Entities.Employee.Entities;
 public class Employee : Person
 {
     public string Password { get; protected set; }
-    public EmployeeRole Role { get; protected set; }
+    public Roles Role { get; protected set; }
 
     public Employee(string cpf,
         string name,
@@ -17,7 +17,7 @@ public class Employee : Person
         string email,
         DateOnly birthday,
         string password,
-        EmployeeRole role,
+        Roles role,
         bool isActive,
         int id = 0)
     {
@@ -94,7 +94,7 @@ public class Employee : Person
         string email,
         DateOnly birthday,
         string password,
-        EmployeeRole role,
+        Roles role,
         bool isActive)
     {
         Cpf = cpf;
