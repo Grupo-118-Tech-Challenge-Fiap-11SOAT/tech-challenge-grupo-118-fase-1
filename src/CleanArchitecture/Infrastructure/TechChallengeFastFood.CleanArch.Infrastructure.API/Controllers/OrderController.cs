@@ -15,6 +15,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
+[Authorize(nameof(Roles.KitchenCustomer))]
 public class OrderController : ControllerBase
 {
     private readonly IOrderController _orderController;

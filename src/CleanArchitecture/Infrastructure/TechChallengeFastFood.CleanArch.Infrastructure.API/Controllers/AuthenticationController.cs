@@ -10,7 +10,7 @@ using TechChallengeFastFood.CleanArch.Infrastructure.Database.Employee.Repositor
 namespace TechChallengeFastFood.CleanArch.API.Controllers;
 
 /// <summary>
-/// Controller for handling employee authentication operations such as registration and login.
+/// Controller for handling employee authentication operations such as registration and login. (Deprecated)
 /// </summary>
 [ApiController]
 [Route("[controller]")]
@@ -37,8 +37,8 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> RegisterAsync([FromBody] EmployeeRequestDto employeeRequestDto,
         CancellationToken cancellationToken)
     {
-        var createdEmployee = await _authenticationController.RegisterAsync(employeeRequestDto, cancellationToken);
-        return Ok(createdEmployee);
+        //var createdEmployee = await _authenticationController.RegisterAsync(employeeRequestDto, cancellationToken);
+        return StatusCode(501);
     }
 
 
@@ -56,13 +56,13 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto loginRequestDto,
         CancellationToken cancellationToken)
     {
-        var token = await _authenticationController.LoginAsync(loginRequestDto, cancellationToken);
+        //var token = await _authenticationController.LoginAsync(loginRequestDto, cancellationToken);
 
-        if (string.IsNullOrEmpty(token))
-        {
-            return Unauthorized("Invalid credentials.");
-        }
+        //if (string.IsNullOrEmpty(token))
+        //{
+        //    return Unauthorized("Invalid credentials.");
+        //}
 
-        return Ok(token);
+        return StatusCode(501);
     }
 }

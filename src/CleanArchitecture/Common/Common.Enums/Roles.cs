@@ -4,8 +4,9 @@ public enum Roles
 {
     Admin,
     Manager,
-    Cook,
+    Kitchen,
     Waiter,
     Cleaner,
-    Customer
+    Customer,
+    KitchenCustomer
 }

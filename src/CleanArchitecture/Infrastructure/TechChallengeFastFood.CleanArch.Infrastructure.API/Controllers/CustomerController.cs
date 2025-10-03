@@ -1,7 +1,6 @@
 using Common.Dto.Customers;
 using Common.Enums;
 using Common.Interfaces.Customer.Controller;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database;
 using TechChallengeFastFood.CleanArch.Infrastructure.Database.Customers.Repositories;

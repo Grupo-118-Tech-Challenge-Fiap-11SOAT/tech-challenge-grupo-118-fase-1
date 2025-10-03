@@ -1,4 +1,5 @@
 using Common.Dto.Products;
+using Common.Enums;
 using Common.Interfaces.Products.Controller;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+[Authorize(nameof(Roles.Kitchen))]
 public class ProductsController : ControllerBase
 {
     private readonly IProductController _productController;
