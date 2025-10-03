@@ -7,5 +7,6 @@ public enum Roles
     Cook,
     Waiter,
     Cleaner,
-    Customer
+    Customer,
+    CookCustomer
 }

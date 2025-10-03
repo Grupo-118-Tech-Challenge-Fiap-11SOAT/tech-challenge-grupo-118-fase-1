@@ -143,6 +143,7 @@ public class Program
             options.AddPolicy(nameof(Roles.Waiter), policy => policy.RequireRole([Roles.Waiter.ToString(), Roles.Admin.ToString()]));
             options.AddPolicy(nameof(Roles.Cleaner), policy => policy.RequireRole([Roles.Cleaner.ToString(), Roles.Admin.ToString()]));
             options.AddPolicy(nameof(Roles.Customer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Admin.ToString()));
+            options.AddPolicy(nameof(Roles.CookCustomer), policy => policy.RequireRole(Roles.Customer.ToString(), Roles.Cook.ToString(), Roles.Admin.ToString()));
         });
 
         builder.Services.AddHealthChecks().AddDbContextCheck<CleanArchDbContext>();

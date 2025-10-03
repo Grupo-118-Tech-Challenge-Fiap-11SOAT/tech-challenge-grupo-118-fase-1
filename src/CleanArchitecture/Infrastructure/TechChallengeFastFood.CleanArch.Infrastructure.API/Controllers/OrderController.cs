@@ -15,7 +15,7 @@ namespace TechChallengeFastFood.CleanArch.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize(nameof(Roles.Customer))]
+[Authorize(nameof(Roles.CookCustomer))]
 public class OrderController : ControllerBase
 {
     private readonly IOrderController _orderController;
@@ -54,7 +54,6 @@ public class OrderController : ControllerBase
     /// <param name="skip">The number of records to skip. Used for pagination.</param>
     /// <param name="take">The number of records to take. Used for pagination.</param>
     /// <returns>The list of orders matching the specified criteria or appropriate status code if no orders are found.</returns>
-    [AllowAnonymous]
     [HttpGet("all")]
     public async Task<IActionResult> GetAllAsync(OrderStatus status, CancellationToken cancellationToken, int skip = 0,
         int take = 10)
@@ -74,7 +73,6 @@ public class OrderController : ControllerBase
     /// <param name="skip"></param>
     /// <param name="take"></param>
     /// <returns></returns>
-    [AllowAnonymous]
     [HttpGet("monitor")]
     [ProducesResponseType(typeof(List<OrderResponseDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -95,7 +93,6 @@ public class OrderController : ControllerBase
     /// <param name="orderDto">The data transfer object containing the details of the order to create.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The details of the created order, including its unique identifier.</returns>
-    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> PostAsync([FromBody] OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
@@ -110,7 +107,6 @@ public class OrderController : ControllerBase
     /// <param name="id">The ID of the order whose status needs to be updated.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The result of the operation or an appropriate status code.</returns>
-    [AllowAnonymous]
     [HttpPatch("{id}/change-status")]
     public async Task<IActionResult> PatchStatus(int id, CancellationToken cancellationToken)
     {
@@ -125,7 +121,6 @@ public class OrderController : ControllerBase
     /// <param name="id">The unique identifier of the order.</param>
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The order details if found, or a NotFound status if the order does not exist.</returns>
-    [AllowAnonymous]
     [ProducesResponseType(typeof(OrderResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("{id}"), ActionName("GetById")]
@@ -142,7 +137,6 @@ public class OrderController : ControllerBase
     /// <param name="id">The unique identifier of the order</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [AllowAnonymous]
     [ProducesResponseType(typeof(OrderPaymentResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("{id}/payment-details")]
