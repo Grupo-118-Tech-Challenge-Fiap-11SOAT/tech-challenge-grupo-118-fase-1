@@ -94,6 +94,7 @@ public class OrderController : ControllerBase
     /// <param name="cancellationToken">The cancellation token to monitor for request cancellation.</param>
     /// <returns>The details of the created order, including its unique identifier.</returns>
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> PostAsync([FromBody] OrderRequestDto orderDto, CancellationToken cancellationToken)
     {
         var result = await _orderController.CreateAsync(orderDto, cancellationToken);
