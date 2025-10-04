@@ -27,6 +27,9 @@
   - **Helm**: Utilizado para facilitar o deploy da aplicação e do banco de dados
   - **Docker**: Utilizado para containerização da aplicação e do banco de dados
   - **Docker Desktop/Rancher Desktop**: Utilizados para simular o ambiente de produção localmente
+- **Terraform**: criação da infraestrutura
+  - **Terraform Cloud**: gerenciamento dos estados da infraestrutura
+- **Github Actions**: mecanismos de execução de buidls e deploys
 
 Escolhas efetuadas de acordo com a familiariade de todo o grupo para acelerarmos o tempo de desenvolvimento e focarmos nas atividades fundamentais
 
